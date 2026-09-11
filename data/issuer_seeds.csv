@@ -1,0 +1,18 @@
+source_id,company_ids,source_kind,source_url,report_date,firm,analyst_name,discovered_from,expected_format
+broadcom_sec_companyfacts,broadcom,sec_companyfacts,https://data.sec.gov/api/xbrl/companyfacts/CIK0001730168.json,,,,https://www.sec.gov/search-filings/edgar-application-programming-interfaces,json
+broadcom_sec_submissions,broadcom,sec_submissions,https://data.sec.gov/submissions/CIK0001730168.json,,,,https://www.sec.gov/search-filings/edgar-application-programming-interfaces,json
+alphabet_sec_companyfacts,alphabet,sec_companyfacts,https://data.sec.gov/api/xbrl/companyfacts/CIK0001652044.json,,,,https://www.sec.gov/search-filings/edgar-application-programming-interfaces,json
+alphabet_sec_submissions,alphabet,sec_submissions,https://data.sec.gov/submissions/CIK0001652044.json,,,,https://www.sec.gov/search-filings/edgar-application-programming-interfaces,json
+nvidia_sec_companyfacts,nvidia,sec_companyfacts,https://data.sec.gov/api/xbrl/companyfacts/CIK0001045810.json,,,,https://www.sec.gov/search-filings/edgar-application-programming-interfaces,json
+nvidia_sec_submissions,nvidia,sec_submissions,https://data.sec.gov/submissions/CIK0001045810.json,,,,https://www.sec.gov/search-filings/edgar-application-programming-interfaces,json
+micron_sec_companyfacts,micron,sec_companyfacts,https://data.sec.gov/api/xbrl/companyfacts/CIK0000723125.json,,,,https://www.sec.gov/search-filings/edgar-application-programming-interfaces,json
+micron_sec_submissions,micron,sec_submissions,https://data.sec.gov/submissions/CIK0000723125.json,,,,https://www.sec.gov/search-filings/edgar-application-programming-interfaces,json
+sandisk_sec_companyfacts,sandisk,sec_companyfacts,https://data.sec.gov/api/xbrl/companyfacts/CIK0002023554.json,,,,https://www.sec.gov/search-filings/edgar-application-programming-interfaces,json
+sandisk_sec_submissions,sandisk,sec_submissions,https://data.sec.gov/submissions/CIK0002023554.json,,,,https://www.sec.gov/search-filings/edgar-application-programming-interfaces,json
+asml_sec_companyfacts,asml,sec_companyfacts,https://data.sec.gov/api/xbrl/companyfacts/CIK0000937966.json,,,,https://www.sec.gov/search-filings/edgar-application-programming-interfaces,json
+asml_sec_submissions,asml,sec_submissions,https://data.sec.gov/submissions/CIK0000937966.json,,,,https://www.sec.gov/search-filings/edgar-application-programming-interfaces,json
+samsung_earnings_archive,samsung_electronics,issuer_archive,https://www.samsung.com/global/ir/financial-information/earnings-release/,,,,verified issuer page,html
+samsung_statements_archive,samsung_electronics,issuer_archive,https://www.samsung.com/global/ir/financial-information/audited-financial-statements/,,,,verified issuer page,html
+hynix_2021_results,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-inc-reports-fiscal-year-2021-and-fourth-quarter-results/,,,,verified issuer page,html
+hynix_2022_results,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-reports-2022-and-fourth-quarter-financial-results/,,,,verified issuer page,html
+hynix_earnings_archive,sk_hynix,issuer_archive,https://news.skhynix.com/en/tag/earnings/,,,,verified issuer page,html

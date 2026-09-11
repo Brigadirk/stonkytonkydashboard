@@ -1,0 +1,290 @@
+{
+  "generated_at": "2026-09-10T18:53:07.677338+00:00",
+  "requested_start": "2020-09-10",
+  "cutoff": "2026-09-10",
+  "total_prices": 13928,
+  "split_events": 4,
+  "price_field": "indicators.quote[0].close",
+  "dividend_adjusted": false,
+  "adjustment_definition_verified": true,
+  "adjustment_definition_url": "https://ca.finance.yahoo.com/quote/NVDA/history/",
+  "coverage": [
+    {
+      "company_id": "broadcom",
+      "symbol": "AVGO",
+      "currency": "USD",
+      "rows": 1506,
+      "first_date": "2020-09-10",
+      "last_date": "2026-09-09",
+      "missing_provider_bars": [],
+      "excluded_incomplete_sessions": [
+        "2026-09-10"
+      ],
+      "adjustment_basis": "split_adjusted_to_cutoff",
+      "post_cutoff_split_factor_undone": 1.0,
+      "exchange_timezone": "America/New_York",
+      "source_sha256": "daeeef64dab9f79ac515bb5119e0f151de6cb0c479f1bf6618c8e3f50cc49023",
+      "regular_market_quote_not_used": 362.35,
+      "status": "available",
+      "supplemented_dates": [],
+      "remaining_missing_provider_bars": []
+    },
+    {
+      "company_id": "alphabet",
+      "symbol": "GOOGL",
+      "currency": "USD",
+      "rows": 1506,
+      "first_date": "2020-09-10",
+      "last_date": "2026-09-09",
+      "missing_provider_bars": [],
+      "excluded_incomplete_sessions": [
+        "2026-09-10"
+      ],
+      "adjustment_basis": "split_adjusted_to_cutoff",
+      "post_cutoff_split_factor_undone": 1.0,
+      "exchange_timezone": "America/New_York",
+      "source_sha256": "dbf15ddc43f01bfe288a9f34c494c68e0ca7249319d644a72e474245b624629d",
+      "regular_market_quote_not_used": 332.48,
+      "status": "available",
+      "supplemented_dates": [],
+      "remaining_missing_provider_bars": []
+    },
+    {
+      "company_id": "nvidia",
+      "symbol": "NVDA",
+      "currency": "USD",
+      "rows": 1506,
+      "first_date": "2020-09-10",
+      "last_date": "2026-09-09",
+      "missing_provider_bars": [],
+      "excluded_incomplete_sessions": [
+        "2026-09-10"
+      ],
+      "adjustment_basis": "split_adjusted_to_cutoff",
+      "post_cutoff_split_factor_undone": 1.0,
+      "exchange_timezone": "America/New_York",
+      "source_sha256": "c291297799fd34c6546ded8e710dbe668f9ecb62659be2519996f255964edd79",
+      "regular_market_quote_not_used": 218.24,
+      "status": "available",
+      "supplemented_dates": [],
+      "remaining_missing_provider_bars": []
+    },
+    {
+      "company_id": "sk_hynix",
+      "symbol": "000660.KS",
+      "currency": "KRW",
+      "rows": 1467,
+      "first_date": "2020-09-10",
+      "last_date": "2026-09-10",
+      "missing_provider_bars": [
+        "2025-09-19"
+      ],
+      "excluded_incomplete_sessions": [],
+      "adjustment_basis": "split_adjusted_to_cutoff",
+      "post_cutoff_split_factor_undone": 1.0,
+      "exchange_timezone": "Asia/Seoul",
+      "source_sha256": "fcf10b1e621e181691532738e4e9f8f3c9d9ee332553b26720ac84eb7cfea35c",
+      "regular_market_quote_not_used": 1853000.0,
+      "status": "available",
+      "supplemented_dates": [],
+      "remaining_missing_provider_bars": [
+        "2025-09-19"
+      ]
+    },
+    {
+      "company_id": "samsung_electronics",
+      "symbol": "005930.KS",
+      "currency": "KRW",
+      "rows": 1467,
+      "first_date": "2020-09-10",
+      "last_date": "2026-09-10",
+      "missing_provider_bars": [
+        "2025-09-19"
+      ],
+      "excluded_incomplete_sessions": [],
+      "adjustment_basis": "split_adjusted_to_cutoff",
+      "post_cutoff_split_factor_undone": 1.0,
+      "exchange_timezone": "Asia/Seoul",
+      "source_sha256": "6fbf080583bbf819f2def9e5fc297d85ae9fe2bb8ad9f480266d9808928ea071",
+      "regular_market_quote_not_used": 269000.0,
+      "status": "available",
+      "supplemented_dates": [],
+      "remaining_missing_provider_bars": [
+        "2025-09-19"
+      ]
+    },
+    {
+      "company_id": "micron",
+      "symbol": "MU",
+      "currency": "USD",
+      "rows": 1506,
+      "first_date": "2020-09-10",
+      "last_date": "2026-09-09",
+      "missing_provider_bars": [],
+      "excluded_incomplete_sessions": [
+        "2026-09-10"
+      ],
+      "adjustment_basis": "split_adjusted_to_cutoff",
+      "post_cutoff_split_factor_undone": 1.0,
+      "exchange_timezone": "America/New_York",
+      "source_sha256": "c02d6f1a9353436b3185372ae16c3afc34c9c3a744b928b3e7299590ff908d4d",
+      "regular_market_quote_not_used": 982.245,
+      "status": "available",
+      "supplemented_dates": [],
+      "remaining_missing_provider_bars": []
+    },
+    {
+      "company_id": "sandisk",
+      "symbol": "SNDK",
+      "currency": "USD",
+      "rows": 388,
+      "first_date": "2025-02-24",
+      "last_date": "2026-09-09",
+      "missing_provider_bars": [],
+      "excluded_incomplete_sessions": [
+        "2026-09-10"
+      ],
+      "adjustment_basis": "split_adjusted_to_cutoff",
+      "post_cutoff_split_factor_undone": 1.0,
+      "exchange_timezone": "America/New_York",
+      "source_sha256": "242c90796bd6621ffe2fe3b8b15ec76a79dcb1f3ca24c7416b7c9fbb1593d871",
+      "regular_market_quote_not_used": 1713.0,
+      "status": "available",
+      "supplemented_dates": [],
+      "remaining_missing_provider_bars": []
+    },
+    {
+      "company_id": "asml",
+      "symbol": "ASML.AS",
+      "currency": "EUR",
+      "rows": 1538,
+      "first_date": "2020-09-10",
+      "last_date": "2026-09-10",
+      "missing_provider_bars": [
+        "2026-09-07"
+      ],
+      "excluded_incomplete_sessions": [],
+      "adjustment_basis": "split_adjusted_to_cutoff",
+      "post_cutoff_split_factor_undone": 1.0,
+      "exchange_timezone": "Europe/Amsterdam",
+      "source_sha256": "59d3610ff44f7f0d3c24bc1fe7cb52abaf43342408cc409850ea4b06460ddfbd",
+      "regular_market_quote_not_used": 1474.2,
+      "status": "available",
+      "supplemented_dates": [
+        "2026-09-07"
+      ],
+      "remaining_missing_provider_bars": []
+    },
+    {
+      "company_id": "apple",
+      "symbol": "AAPL",
+      "currency": "USD",
+      "rows": 1506,
+      "first_date": "2020-09-10",
+      "last_date": "2026-09-09",
+      "missing_provider_bars": [],
+      "excluded_incomplete_sessions": [
+        "2026-09-10"
+      ],
+      "adjustment_basis": "split_adjusted_to_cutoff",
+      "post_cutoff_split_factor_undone": 1.0,
+      "exchange_timezone": "America/New_York",
+      "source_sha256": "b419fb478f521cd5e2126c96e8ee1e3e1d90f293f93d8f3b795f0832ac91e9a9",
+      "regular_market_quote_not_used": 325.195,
+      "status": "available",
+      "supplemented_dates": [],
+      "remaining_missing_provider_bars": []
+    },
+    {
+      "company_id": "besi",
+      "symbol": "BESI.AS",
+      "currency": "EUR",
+      "rows": 1538,
+      "first_date": "2020-09-10",
+      "last_date": "2026-09-10",
+      "missing_provider_bars": [
+        "2026-09-07"
+      ],
+      "excluded_incomplete_sessions": [],
+      "adjustment_basis": "split_adjusted_to_cutoff",
+      "post_cutoff_split_factor_undone": 1.0,
+      "exchange_timezone": "Europe/Amsterdam",
+      "source_sha256": "8bbe4401958cb765d0c71650b42bec2b481a78a24f59341fc6e55b2af2cb1e8c",
+      "regular_market_quote_not_used": 184.1,
+      "status": "available",
+      "supplemented_dates": [
+        "2026-09-07"
+      ],
+      "remaining_missing_provider_bars": []
+    }
+  ],
+  "subscription_needed_for_prices": false,
+  "completeness_note": "Provider bars only; missing bars are not filled. No independent exchange-calendar completeness audit.",
+  "replay_note": "Current revisions of historical prices; raw retrievals retained. These are not original daily snapshots.",
+  "reviewed_daily_close_supplements": [
+    {
+      "company_id": "sk_hynix",
+      "date": "2026-09-10",
+      "currency": "KRW",
+      "native_close": 1853000,
+      "native_basis_date": "2026-09-10",
+      "source_file": "data/discovery/korean_price_gap_check/000660_20260910.txt",
+      "source_sha256": "db1727d36126218b2e8f8ea608f1ec72c3658436c4ff1089406c0aa526f0c4ab",
+      "source_url": "https://api.finance.naver.com/siseJson.naver?symbol=000660&requestType=1&startTime=20260910&endTime=20260910&timeframe=day",
+      "format": "naver_daily",
+      "supporting_evidence": [
+        {
+          "source_file": "data/discovery/korean_price_gap_check/000660_daily.txt",
+          "source_sha256": "b882dd7f8d3a5a220b76a382428268875ee225da98d3dd52ddadd68e71fb13ef",
+          "source_url": "https://finance.naver.com/item/sise_day.naver?code=000660&page=1"
+        }
+      ],
+      "note": "Original dated KRX-provided daily close, independently matched in the Naver HTML daily table. Captured after the completed session. Observation date equals this dataset cutoff, so no later split normalization is needed. No earlier Naver prices have been promoted on an undocumented adjustment assumption."
+    },
+    {
+      "company_id": "samsung_electronics",
+      "date": "2026-09-10",
+      "currency": "KRW",
+      "native_close": 269000,
+      "native_basis_date": "2026-09-10",
+      "source_file": "data/discovery/korean_price_gap_check/005930_20260910.txt",
+      "source_sha256": "fe86ea4c8e4847361cdeacee0874ea65854d8c7c33c6a0d88f9a3a63dc1c558d",
+      "source_url": "https://api.finance.naver.com/siseJson.naver?symbol=005930&requestType=1&startTime=20260910&endTime=20260910&timeframe=day",
+      "format": "naver_daily",
+      "supporting_evidence": [
+        {
+          "source_file": "data/discovery/korean_price_gap_check/005930_daily.txt",
+          "source_sha256": "655c18e2b8edc6dbfeba3a8797a7f6276ce92094498a762335f48dc683483e00",
+          "source_url": "https://finance.naver.com/item/sise_day.naver?code=005930&page=1"
+        }
+      ],
+      "note": "Original dated KRX-provided daily close, independently matched in the Naver HTML daily table. Captured after the completed session. Observation date equals this dataset cutoff, so no later split normalization is needed. No earlier Naver prices have been promoted on an undocumented adjustment assumption."
+    },
+    {
+      "company_id": "asml",
+      "date": "2026-09-07",
+      "currency": "EUR",
+      "native_close": 1500.4,
+      "native_basis_date": "2026-09-07",
+      "source_file": "data/discovery/asml_price_gap_check/a9c4e095b3be4995d444e117024a988ffa05153579d6fc40adb57dc7755c5601.html",
+      "source_sha256": "a9c4e095b3be4995d444e117024a988ffa05153579d6fc40adb57dc7755c5601",
+      "source_url": "https://live.euronext.com/fr/product/equities/NL0010273215-XAMS",
+      "format": "euronext_daily",
+      "supporting_evidence": [],
+      "note": "Original Euronext Amsterdam XAMS daily close, dated September7,2026 in the exchange historical-price table. Other four adjacent closes match the retained Yahoo series; no intervening split occurs in the retained corporate-action records. This is an observed price supplement, not an interpolation."
+    },
+    {
+      "company_id": "besi",
+      "date": "2026-09-07",
+      "currency": "EUR",
+      "native_close": 202.5,
+      "native_basis_date": "2026-09-07",
+      "source_file": "data/discovery/asml_price_gap_check/89cdab5371cf197a50ea1db5c9271360ffd7013de1a2d4b53dfc62b0ae479945.html",
+      "source_sha256": "89cdab5371cf197a50ea1db5c9271360ffd7013de1a2d4b53dfc62b0ae479945",
+      "source_url": "https://live.euronext.com/fr/product/equities/NL0012866412-XAMS",
+      "format": "euronext_daily",
+      "supporting_evidence": [],
+      "note": "Original Euronext Amsterdam XAMS dated closing-price row. No intervening split is present in the retained corporate-action history between September7 and this cutoff. Observed source value; not an interpolation."
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+source_id,company_ids,source_kind,source_url,report_date,firm,analyst_name,discovered_from,expected_format
+hynix_results_sk-hynix-reports-third-quarter-2022-results,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-reports-third-quarter-2022-results/,,,,https://news.skhynix.com/en/category/ir/page/4/,html
+hynix_results_sk-hynix-inc-reports-second-quarter-2022-results,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-inc-reports-second-quarter-2022-results/,,,,https://news.skhynix.com/en/category/ir/page/4/,html
+hynix_results_sk-hynix-inc-reports-first-quarter-2022-results,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-inc-reports-first-quarter-2022-results/,,,,https://news.skhynix.com/en/category/ir/page/4/,html
+hynix_results_sk-hynix-inc-reports-fiscal-year-2021-and-fourth-quarter-results,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-inc-reports-fiscal-year-2021-and-fourth-quarter-results/,,,,https://news.skhynix.com/en/category/ir/page/4/,html
+hynix_results_sk-hynix-inc-reports-third-quarter-2021-results,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-inc-reports-third-quarter-2021-results/,,,,https://news.skhynix.com/en/category/ir/page/4/,html
+hynix_results_sk-hynix-inc-reports-second-quarter-2021-results,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-inc-reports-second-quarter-2021-results/,,,,https://news.skhynix.com/en/category/ir/page/4/,html

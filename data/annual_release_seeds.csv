@@ -1,0 +1,6 @@
+source_id,company_ids,source_kind,source_url,report_date,firm,analyst_name,discovered_from,expected_format
+samsung_annual_release_2021,samsung_electronics,issuer_results,https://news.samsung.com/global/samsung-electronics-announces-fourth-quarter-and-fy-2021-results,,,,Verified Samsung newsroom via browser,html
+samsung_annual_release_2022,samsung_electronics,issuer_results,https://news.samsung.com/global/samsung-electronics-announces-fourth-quarter-and-fy-2022-results,,,,Verified Samsung newsroom via browser,html
+samsung_annual_release_2023,samsung_electronics,issuer_results,https://news.samsung.com/global/samsung-electronics-announces-fourth-quarter-and-fy-2023-results,,,,Verified Samsung newsroom via browser,html
+samsung_annual_release_2024,samsung_electronics,issuer_results,https://news.samsung.com/global/samsung-electronics-announces-fourth-quarter-and-fy-2024-results,,,,Verified Samsung newsroom via browser,html
+samsung_annual_release_2025,samsung_electronics,issuer_results,https://news.samsung.com/global/samsung-electronics-announces-fourth-quarter-and-fy-2025-results,,,,Verified Samsung newsroom via browser,html

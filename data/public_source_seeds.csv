@@ -1,0 +1,432 @@
+source_id,company_ids,source_kind,source_url,report_date,firm,analyst_name,discovered_from,expected_format
+issuer_3a2843b7a54d,broadcom,sec_companyfacts,https://data.sec.gov/api/xbrl/companyfacts/CIK0001730168.json,,,,data/source_catalog.csv,json
+issuer_a0bd7325c93f,broadcom,sec_submissions,https://data.sec.gov/submissions/CIK0001730168.json,,,,data/source_catalog.csv,json
+issuer_e91e3a5fdc68,alphabet,sec_companyfacts,https://data.sec.gov/api/xbrl/companyfacts/CIK0001652044.json,,,,data/source_catalog.csv,json
+issuer_da4d38e808e2,alphabet,sec_submissions,https://data.sec.gov/submissions/CIK0001652044.json,,,,data/source_catalog.csv,json
+issuer_b986f6790669,nvidia,sec_companyfacts,https://data.sec.gov/api/xbrl/companyfacts/CIK0001045810.json,,,,data/source_catalog.csv,json
+issuer_67b767aac259,nvidia,sec_submissions,https://data.sec.gov/submissions/CIK0001045810.json,,,,data/source_catalog.csv,json
+issuer_1669eda1f55a,micron,sec_companyfacts,https://data.sec.gov/api/xbrl/companyfacts/CIK0000723125.json,,,,data/source_catalog.csv,json
+issuer_72d373242573,micron,sec_submissions,https://data.sec.gov/submissions/CIK0000723125.json,,,,data/source_catalog.csv,json
+issuer_6fe3c7cc933d,sandisk,sec_companyfacts,https://data.sec.gov/api/xbrl/companyfacts/CIK0002023554.json,,,,data/source_catalog.csv,json
+issuer_9e06c9348dda,sandisk,sec_submissions,https://data.sec.gov/submissions/CIK0002023554.json,,,,data/source_catalog.csv,json
+issuer_31841fdb3fef,asml,sec_companyfacts,https://data.sec.gov/api/xbrl/companyfacts/CIK0000937966.json,,,,data/source_catalog.csv,json
+issuer_181514ab549b,asml,sec_submissions,https://data.sec.gov/submissions/CIK0000937966.json,,,,data/source_catalog.csv,json
+issuer_720ab212d491,samsung_electronics,issuer_archive,https://www.samsung.com/global/ir/financial-information/earnings-release/,,,,data/source_catalog.csv,html
+issuer_8344392dc31f,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-inc-reports-fiscal-year-2021-and-fourth-quarter-results/,,,,data/source_catalog.csv,html
+issuer_a51ab9b76ac7,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-reports-2022-and-fourth-quarter-financial-results/,,,,data/source_catalog.csv,html
+issuer_b19f4c395e87,sk_hynix,issuer_archive,https://news.skhynix.com/en/tag/earnings/,,,,data/source_catalog.csv,html
+issuer_3e3946c9c2f2,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2026_1Q_conference_eng.pdf,,,,data/source_catalog.csv,pdf
+issuer_304c4b5e73ef,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2026_2Q_conference_eng.pdf,,,,data/source_catalog.csv,pdf
+issuer_de85a9e34359,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2025_1Q_conference_eng.pdf,,,,data/source_catalog.csv,pdf
+issuer_05f9b5f5bc9c,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2025_2Q_conference_eng.pdf,,,,data/source_catalog.csv,pdf
+issuer_a40d5b33ab2a,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2025_3Q_conference_eng.pdf,,,,data/source_catalog.csv,pdf
+issuer_132bd47fa19e,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2025_4Q_conference_eng.pdf,,,,data/source_catalog.csv,pdf
+issuer_efee92f1113b,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2024_1Q_conference_eng.pdf,,,,data/source_catalog.csv,pdf
+issuer_ac3eafb0bff3,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2024_2Q_conference_eng.pdf,,,,data/source_catalog.csv,pdf
+issuer_ed78f0282a3f,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2024_3Q_conference_eng.pdf,,,,data/source_catalog.csv,pdf
+issuer_f2cd46f48609,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2024_4Q_conference_eng.pdf,,,,data/source_catalog.csv,pdf
+issuer_e7588b213b53,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2023_1Q_conference_eng.pdf,,,,data/source_catalog.csv,pdf
+issuer_cc1698c56432,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2023_2Q_conference_eng.pdf,,,,data/source_catalog.csv,pdf
+issuer_d0b6d9af26dc,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2023_3Q_conference_eng_01.pdf,,,,data/source_catalog.csv,pdf
+issuer_3bcee73ea482,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2023_4Q_conference_eng_01.pdf,,,,data/source_catalog.csv,pdf
+issuer_6435f224b15e,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2022_1Q_conference_eng.pdf,,,,data/source_catalog.csv,pdf
+issuer_2e222165f6f7,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2022_2Q_conference_eng.pdf,,,,data/source_catalog.csv,pdf
+issuer_160100bcc1a0,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2022_3Q_conference_eng.pdf,,,,data/source_catalog.csv,pdf
+issuer_b5a42b54068e,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2022_4Q_conference_eng.pdf,,,,data/source_catalog.csv,pdf
+issuer_bd8b3986522a,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2021_1Q_conference_eng.pdf,,,,data/source_catalog.csv,pdf
+issuer_914064ba4b8f,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2021_2Q_conference_eng.pdf,,,,data/source_catalog.csv,pdf
+issuer_774ee126ee5a,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2021_3Q_conference_eng.pdf,,,,data/source_catalog.csv,pdf
+issuer_c8658e48f7ac,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2021_4Q_conference_eng.pdf,,,,data/source_catalog.csv,pdf
+issuer_481f02e779da,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/p5/global/ir/docs/2020_1Q_conference_eng.pdf,,,,data/source_catalog.csv,pdf
+issuer_a29819175e0a,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/p5/global/ir/docs/2020_2Q_conference_eng.pdf,,,,data/source_catalog.csv,pdf
+issuer_736a95c4b72f,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/p5/global/ir/docs/2020_3Q_conference_eng.pdf,,,,data/source_catalog.csv,pdf
+issuer_505e9ff72fca,samsung_electronics,issuer_results,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2020_4Q_conference_eng.pdf,,,,data/source_catalog.csv,pdf
+issuer_fabf6ddf5c5f,sk_hynix,issuer_results,https://news.skhynix.com/en/q2-2026-business-results/,,,,data/source_catalog.csv,html
+issuer_dcd89b76f5bc,sk_hynix,issuer_results,https://news.skhynix.com/en/q1-2026-business-results/,,,,data/source_catalog.csv,html
+issuer_9ea090a39d1c,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-announces-fy25-financial-results/,,,,data/source_catalog.csv,html
+issuer_037392fdd71d,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-announces-3q25-financial-results/,,,,data/source_catalog.csv,html
+issuer_78a5d913fed2,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-announces-2q25-financial-results/,,,,data/source_catalog.csv,html
+issuer_89964332c5aa,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-announces-1q25-financial-results/,,,,data/source_catalog.csv,html
+issuer_145885c441cd,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-announces-4q24-financial-results/,,,,data/source_catalog.csv,html
+issuer_05bfcb281d9a,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-announces-3q24-financial-results/,,,,data/source_catalog.csv,html
+issuer_69e9f366392f,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-announces-2q24-financial-results/,,,,data/source_catalog.csv,html
+issuer_59b95d58749c,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-announces-1q24-financial-results/,,,,data/source_catalog.csv,html
+issuer_dbd4045e6a45,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-reports-fourth-quarter-2023-financial-results/,,,,data/source_catalog.csv,html
+issuer_ab13818dba25,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-reports-third-quarter-2023-financial-results/,,,,data/source_catalog.csv,html
+issuer_d671afe39982,sk_hynix,issuer_archive,https://news.skhynix.com/en/tag/earnings/page/2/,,,,data/source_catalog.csv,html
+issuer_3c1e54f9ca19,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-reports-second-quarter-2023-financial-results/,,,,data/source_catalog.csv,html
+issuer_f04a0f85a40b,sk_hynix,issuer_results,https://news.skhynix.com/en/2023-first-quarter-financial-results/,,,,data/source_catalog.csv,html
+issuer_9aa59bd57dc6,samsung_electronics,issuer_archive,https://www.samsung.com/global/ir/financial-information/audited-financial-statements/,,,,data/source_catalog.csv,html
+issuer_45939a522770,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2026_con_quarter01_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_dd453dcd5d86,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2026_con_quarter02_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_e2705727cc09,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2025_con_quarter01_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_52f6f35e0a9c,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2025_con_quarter02_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_59e104f10861,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2025_con_quarter03_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_42d94afb6263,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2025_con_quarter04_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_1bce9750dedc,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2024_con_quarter01_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_c72f3c50e7cb,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2024_con_quarter02_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_2568ee5435fa,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2024_con_quarter03_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_bd681836c053,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2024_con_quarter04_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_bc36595a3e96,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2023_con_quarter01_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_ae84b82f7a0f,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2023_con_quarter02_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_7003a7a9a30c,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2023_con_quarter03_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_f2a8b9eeb7b7,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2023_con_quarter04_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_79333d311a14,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2022_con_quarter01_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_1a5e5617577a,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2022_con_quarter02_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_1078928aad40,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2022_con_quarter03_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_5279de58e5e5,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2022_con_quarter04_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_598e51e3b62c,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2021_con_quarter01_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_84913bde85dd,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2021_con_quarter02_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_043f77c9ff3b,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2021_con_quarter03_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_1f75c3af592c,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2021_con_quarter04_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_64c66002924e,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2020_con_quarter01_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_adddf0278bc0,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2020_con_quarter02_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_30637305c6a7,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2020_con_quarter03_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_4461229ec507,samsung_electronics,issuer_financial_statement,https://images.samsung.com/is/content/samsung/assets/global/ir/docs/2020_con_quarter04_all.pdf,,,,data/source_catalog.csv,pdf
+issuer_6db385bc8478,sk_hynix,issuer_archive,https://news.skhynix.com/en/category/ir/page/4/,,,,data/source_catalog.csv,html
+issuer_8f9288f36f6d,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-reports-third-quarter-2022-results/,,,,data/source_catalog.csv,html
+issuer_dec91bf1190d,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-inc-reports-second-quarter-2022-results/,,,,data/source_catalog.csv,html
+issuer_563500bba008,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-inc-reports-first-quarter-2022-results/,,,,data/source_catalog.csv,html
+issuer_8bd42fe7657a,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-inc-reports-third-quarter-2021-results/,,,,data/source_catalog.csv,html
+issuer_1eca660825a1,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-inc-reports-second-quarter-2021-results/,,,,data/source_catalog.csv,html
+issuer_2f8d78e3ba86,samsung_electronics,issuer_results,https://news.samsung.com/global/samsung-electronics-announces-fourth-quarter-and-fy-2021-results,,,,data/source_catalog.csv,html
+issuer_38c9855765d4,sk_hynix,issuer_results,https://news.skhynix.com/cn/sk-hynix-reports-fourth-quarter-2023-financial-results/,2024-01-25,,,data/source_catalog.csv,html
+issuer_d16fcbf6b846,samsung_electronics,issuer_results,https://news.samsung.com/global/samsung-electronics-announces-fourth-quarter-and-fy-2022-results,,,,data/source_catalog.csv,html
+issuer_c45e663194ac,samsung_electronics,issuer_results,https://news.samsung.com/global/samsung-electronics-announces-fourth-quarter-and-fy-2023-results,,,,data/source_catalog.csv,html
+issuer_89769f622d4f,samsung_electronics,issuer_results,https://news.samsung.com/global/samsung-electronics-announces-fourth-quarter-and-fy-2024-results,,,,data/source_catalog.csv,html
+issuer_15c75ddf5f6d,samsung_electronics,issuer_results,https://news.samsung.com/global/samsung-electronics-announces-fourth-quarter-and-fy-2025-results,,,,data/source_catalog.csv,html
+korean_memory_88dc52511d76,sk_hynix,broker_report,https://securities.miraeasset.com/bbs/download/2088623.pdf?attachmentId=2088623,2021-10-27,mirae,Young-gun Kim,data/source_catalog.csv,pdf
+korean_memory_302bfc2d39ae,sk_hynix,broker_report,https://securities.miraeasset.com/bbs/download/2084161.pdf?attachmentId=2084161,,mirae,,data/source_catalog.csv,pdf
+korean_memory_cd7e1af0eaeb,sk_hynix;samsung_electronics,broker_report,https://securities.miraeasset.com/bbs/download/2124787.pdf?attachmentId=2124787,,mirae,,data/source_catalog.csv,pdf
+korean_memory_06ba34f6f1de,sk_hynix,broker_report,https://securities.miraeasset.com/bbs/download/2137954.pdf?attachmentId=2139502,,mirae,,data/source_catalog.csv,pdf
+korean_memory_a62c483cc349,sk_hynix,broker_report,https://securities.miraeasset.com/bbs/download/2147118.pdf?attachmentId=2147118,2026-09-07,mirae,Young-gun Kim,data/source_catalog.csv,pdf
+korean_memory_b8d9881a94e4,samsung_electronics,broker_report,https://securities.miraeasset.com/bbs/download/2147119.pdf?attachmentId=2147119,2026-09-07,mirae,Young-gun Kim,data/source_catalog.csv,pdf
+korean_memory_923e2b94ea71,samsung_electronics,broker_report,https://securities.miraeasset.com/bbs/download/2144364.pdf?attachmentId=2144364,,mirae,,data/source_catalog.csv,pdf
+korean_memory_91bf5a7e42ea,samsung_electronics,broker_report,https://rdata.kbsec.com/pdf_data/20211202130327087E.pdf,2021-12-02,kb,Jeff Kim,data/source_catalog.csv,pdf
+korean_memory_8cb45cbcc81a,sk_hynix,broker_report,https://rdata.kbsec.com/pdf_data/20230201163453690E.pdf,2023-02-01,kb,Jeff Kim,data/source_catalog.csv,pdf
+korean_memory_bacf23f3c33f,sk_hynix,broker_report,https://rdata.kbsec.com/pdf_data/20230426132228353E.pdf,2023-04-26,kb,Jeff Kim,data/source_catalog.csv,pdf
+korean_memory_d8587e1b95e3,sk_hynix,broker_report,https://rdata.kbsec.com/pdf_data/20260528173943487E.pdf,2026-05-29,kb,Jeff Kim,data/source_catalog.csv,pdf
+korean_memory_185cb1f58813,sk_hynix,broker_report,https://rdata.kbsec.com/pdf_data/20260413190727533E.pdf,2026-04-14,kb,Jeff Kim,data/source_catalog.csv,pdf
+korean_memory_99821930fed0,samsung_electronics,broker_report,https://rdata.kbsec.com/pdf_data/20260609193955660E.pdf,2026-06-10,kb,Jeff Kim,data/source_catalog.csv,pdf
+korean_memory_5eed476d8c94,sk_hynix,broker_report,https://www.hanaw.com/download/research/FileServer/WEB/industry/enterprise/2022/10/26/SKHynix_1027.pdf,2022-10-27,hana,Rok-ho Kim,data/source_catalog.csv,pdf
+korean_memory_56fdd217db01,sk_hynix,broker_report,https://www.hanaw.com/download/research/FileServer/WEB/industry/enterprise/2024/01/25/240126_SKH.pdf,2024-01-26,hana,Rok-ho Kim,data/source_catalog.csv,pdf
+korean_memory_43c8d0a3cb24,sk_hynix,broker_article,https://www.hanaw.com/main/research/research/download.cmd?attachFileSeq=1&bbsCd=2206&bbsId=&bbsSeq=1284695&dbType=,2025-10-30,hana,Rok-ho Kim,data/source_catalog.csv,html
+korean_memory_682666e476f1,samsung_electronics;sk_hynix,broker_report,https://www.hanaw.com/download/research/FileServer/WEB/industry/industry/2026/02/23/Semi_260224.pdf,2026-02-24,hana,Rok-ho Kim,data/source_catalog.csv,pdf
+korean_memory_81d7645cd50d,samsung_electronics,broker_report,https://file.hanaw.com/download/research/FileServer/WEB/industry/enterprise/2026/04/30/SEC_260504.pdf,2026-05-04,hana,Rok-ho Kim,data/source_catalog.csv,pdf
+korean_memory_4496d03d9780,sk_hynix,broker_report,https://home.imeritz.com/include/resource/research/WorkFlow/20211026201826942K_02.pdf,2021-10-27,meritz,Sunwoo Kim,data/source_catalog.csv,pdf
+korean_memory_c73b064df263,sk_hynix,broker_report,https://home.imeritz.com/include/resource/research/WorkFlow/20220727205819793K_02.pdf,2022-07-28,meritz,Sunwoo Kim,data/source_catalog.csv,pdf
+korean_memory_f1d49cb47639,sk_hynix,broker_report,https://home.imeritz.com/include/resource/research/WorkFlow/20221026234503941K_02.pdf,2022-10-27,meritz,Sunwoo Kim,data/source_catalog.csv,pdf
+korean_memory_9c6076c1bc15,samsung_electronics;sk_hynix,broker_report,https://home.imeritz.com/include/resource/research/WorkFlow/20230109194247370K_02.pdf,2023-01-10,meritz,Sunwoo Kim,data/source_catalog.csv,pdf
+korean_memory_5424caddfb1b,samsung_electronics,broker_report,https://home.imeritz.com/include/resource/research/WorkFlow/20240314073613317K_02.pdf,2024-03-14,meritz,Sunwoo Kim,data/source_catalog.csv,pdf
+korean_memory_ba405c0f1db7,samsung_electronics,broker_report,https://home.imeritz.com/include/resource/research/WorkFlow/20250704070204288K_02.pdf,2025-07-04,meritz,Sunwoo Kim,data/source_catalog.csv,pdf
+korean_memory_d91621598cd6,samsung_electronics;sk_hynix,broker_report,https://home.imeritz.com/include/resource/research/WorkFlow/20250911145348969K_02.pdf,,meritz,Sunwoo Kim,data/source_catalog.csv,pdf
+korean_memory_e883aaa9d237,sk_hynix,broker_report,https://home.imeritz.com/include/resource/research/WorkFlow/20260418170453824K_02.pdf,2026-04-18,meritz,Sunwoo Kim,data/source_catalog.csv,pdf
+korean_memory_dd5fda0f9382,sk_hynix,broker_report,https://www.hmsec.com/documents/research/20210429083306877_ko.pdf,2021-04-29,hyundai,Roh Geun-chang,data/source_catalog.csv,pdf
+korean_memory_9f5bd8f06ea4,sk_hynix,broker_report,https://www.hmsec.com/documents/research/20210108083043493_ko.pdf,2021-01-08,hyundai,Roh Geun-chang,data/source_catalog.csv,pdf
+korean_memory_b5fc12bebbdd,samsung_electronics,broker_report,https://www.hmsec.com/documents/research/20220503165001377_ko.pdf,2022-05-04,hyundai,Roh Geun-chang,data/source_catalog.csv,pdf
+korean_memory_6a31b4f065f9,samsung_electronics,broker_report,https://www.hmsec.com/documents/research/20221011080434793_ko.pdf,2022-10-11,hyundai,Roh Geun-chang,data/source_catalog.csv,pdf
+korean_memory_4c5f37b0914f,sk_hynix,broker_report,https://www.hmsec.com/documents/research/20231027081148920_ko.pdf,2023-10-27,hyundai,Roh Geun-chang,data/source_catalog.csv,pdf
+korean_memory_aa73d373373f,sk_hynix,broker_report,https://www.hmsec.com/documents/research/20240726082533097_ko.pdf,2024-07-26,hyundai,Roh Geun-chang,data/source_catalog.csv,pdf
+korean_memory_efccac9c4f8c,samsung_electronics;sk_hynix,broker_report,https://www.hmsec.com/documents/research/20250320172859373_ko.pdf,2025-03-21,hyundai,Roh Geun-chang,data/source_catalog.csv,pdf
+korean_memory_a1f1ee3cd7e9,samsung_electronics;sk_hynix,broker_report,https://www.hmsec.com/documents/research/20240424174227063_ko.pdf,2024-04-25,hyundai,Roh Geun-chang,data/source_catalog.csv,pdf
+korean_memory_280b454e1e63,samsung_electronics,broker_report,https://www.hmsec.com/documents/research/20200731074941180_ko.pdf,2020-07-31,hyundai,Roh Geun-chang,data/source_catalog.csv,pdf
+korean_memory_0cb3ef682820,samsung_electronics,broker_report,https://home.imeritz.com/include/resource/research/WorkFlow/20231031222356797K_02.pdf,2023-11-01,meritz,Sunwoo Kim,data/source_catalog.csv,pdf
+korean_memory_0d28aaa6b139,samsung_electronics,broker_report,https://home.imeritz.com/include/resource/research/WorkFlow/20240731215304284K_02.pdf,2024-07-31,meritz,Sunwoo Kim,data/source_catalog.csv,pdf
+korean_memory_aede28390873,samsung_electronics,broker_report,https://home.imeritz.com/include/resource/research/WorkFlow/20250501140550337K_02.pdf,2025-05-01,meritz,Sunwoo Kim,data/source_catalog.csv,pdf
+korean_memory_0a4760c599c4,samsung_electronics,broker_report,https://rdata.kbsec.com/pdf_data/20221020190159790E.pdf,2022-10-21,kb,Jeff Kim,data/source_catalog.csv,pdf
+korean_memory_bb3c06c1897f,samsung_electronics,broker_report,https://rdata.kbsec.com/pdf_data/20250922152803713E.pdf,2025-09-23,kb,Jeff Kim,data/source_catalog.csv,pdf
+korean_memory_f67827aec127,samsung_electronics,broker_report,https://rdata.kbsec.com/pdf_data/20250916172228903E.pdf,2025-09-17,kb,Jeff Kim,data/source_catalog.csv,pdf
+korean_round2_23a228dfd35f,samsung_electronics,broker_report,https://rdata.kbsec.com/pdf_data/20240430143822903K.pdf,2024-05-02,kb,Jeff Kim,data/source_catalog.csv,pdf
+korean_round2_1629498bdcd5,sk_hynix,broker_report,https://rdata.kbsec.com/pdf_data/20240612150416600K.pdf,2024-06-13,kb,Jeff Kim,data/source_catalog.csv,pdf
+korean_round2_4e02e7ab2cc3,sk_hynix,broker_report,https://rdata.kbsec.com/pdf_data/20240912141419303K.pdf,2024-09-13,kb,Jeff Kim,data/source_catalog.csv,pdf
+korean_round2_60cf6fbdbdd5,samsung_electronics,broker_report,https://rdata.kbsec.com/pdf_data/20241226141409780K.pdf,2024-12-26,kb,Jeff Kim,data/source_catalog.csv,pdf
+korean_round2_b522033f41d4,sk_hynix,broker_report,https://www.hanaw.com/download/research/FileServer/WEB/industry/enterprise/2023/01/12/SKHynix_0113.pdf,2023-01-13,hana,Rok-ho Kim,data/source_catalog.csv,pdf
+korean_round2_ab82a6bd0339,sk_hynix,broker_report,https://www.hanaw.com/main/research/research/download.cmd?attachFileSeq=1&bbsCd=2224&bbsId=&bbsSeq=1275503&dbType=,2023-07-27,hana,Rok-ho Kim; 변운지,data/source_catalog.csv,pdf
+korean_round2_5168582676aa,samsung_electronics,broker_report,https://www.hanaw.com/download/research/FileServer/WEB/info/daily/2021/12/07/Daily_211208_.pdf,2021-12-08,hana,Kim Kyung-min; Rok-ho Kim; Hyun-soo Kim,data/source_catalog.csv,pdf
+korean_round2_6967efeebf6d,samsung_electronics;sk_hynix,broker_report,https://www.hmsec.com/documents/research/20211115181205523_ko.pdf,2021-11-16,hyundai,Roh Geun-chang,data/source_catalog.csv,pdf
+korean_round2_918496765b1e,samsung_electronics,broker_report,https://securities.miraeasset.com/bbs/download/2116359.pdf?attachmentId=2116359,,mirae,,data/source_catalog.csv,pdf
+korean_round2_782adf7f697e,samsung_electronics,broker_report,https://securities.miraeasset.com/bbs/download/2121600.pdf?attachmentId=2121600,,mirae,,data/source_catalog.csv,pdf
+korean_round2_dc1cc7c3f73c,sk_hynix,broker_report,https://stock.mk.co.kr/uploads/20260527/1779859669_e42736598c32d9eff905.pdf,2026-05-13,hyundai,Roh Geun-chang,data/source_catalog.csv,pdf
+us_asml_6e5f4fae79e9,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P000003RE_20241010_RT.pdf,2024-10-10,Morningstar,Brian Colello,data/source_catalog.csv,pdf
+us_asml_8e24b65cc47d,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P0000KU35_20251211_RT.pdf,2025-12-12,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+us_asml_59004b3be1cc,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P0000KU35_20250626_RT.pdf,2025-06-26,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+us_asml_7883e4a5afb3,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P000003MC_20251217_RT.pdf,2025-12-18,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+us_asml_a5f41301da2a,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P000003MC_20240903_RT.pdf,2024-09-03,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+us_asml_cba3c2a6760e,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P000003MC_20240925_RT.pdf,2024-09-26,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+us_asml_f5d798cfe70e,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P000003MC_20250403_RT.pdf,2025-04-03,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+us_asml_2d2275adc560,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P000003MC_20250923_RT.pdf,2025-09-24,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+us_asml_a2c8bb8f4e69,alphabet,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P00012BBI_20251125_RT.pdf,2025-11-25,Morningstar,Malik Ahmed Khan,data/source_catalog.csv,pdf
+us_asml_bedb4c7ff5fa,alphabet,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P000002HD_20250507_RT.pdf,2025-05-08,Morningstar,Malik Ahmed Khan,data/source_catalog.csv,pdf
+us_asml_0f4586e29660,broadcom,broker_report,https://files.bocomgroup.com/download/mexp-251118e.pdf,2025-11-18,BOCOM International,Dawei Wang,data/source_catalog.csv,pdf
+us_asml_b54073620a73,broadcom,broker_report,https://files.bocomgroup.com/download/mexp-251216e.pdf,2025-12-16,BOCOM International,Dawei Wang,data/source_catalog.csv,pdf
+us_asml_7639c0870a14,broadcom,broker_report,https://files.bocomgroup.com/download/mexp-260309e.pdf,2026-03-09,BOCOM International,Dawei Wang,data/source_catalog.csv,pdf
+us_asml_34847770b93d,nvidia,broker_report,https://files.bocomgroup.com/download/mexp-260302e.pdf,2026-03-02,BOCOM International,Dawei Wang,data/source_catalog.csv,pdf
+us_asml_12faf1370040,nvidia,broker_report,https://files.bocomgroup.com/download/mexp-260319e.pdf,2026-03-19,BOCOM International,Dawei Wang,data/source_catalog.csv,pdf
+us_asml_04ec7cc2e89a,nvidia,broker_report,https://files.bocomgroup.com/download/mexp-250829e.pdf,2025-08-29,BOCOM International,Dawei Wang,data/source_catalog.csv,pdf
+us_asml_34faf8b48ea8,nvidia,broker_report,https://files.bocomgroup.com/download/mexp-241220e.pdf,2024-12-20,BOCOM International,Dawei Wang,data/source_catalog.csv,pdf
+us_asml_9708805145e0,broadcom,broker_report,https://files.bocomgroup.com/download/mexp-260128e.pdf,2026-01-28,BOCOM International,,data/source_catalog.csv,pdf
+us_asml_4406528babd2,nvidia,broker_report,https://files.bocomgroup.com/download/mexp-250424e.pdf,2025-04-24,BOCOM International,Dawei Wang,data/source_catalog.csv,pdf
+us_asml_1dc922caaeb8,alphabet,broker_report,https://www.morningstar.com/content/cs-assets/v3/assets/blt9415ea4cc4157833/blt188f96c74018690a/69404aeeab94632a0607c109/Quantum_Computing_Observer.pdf,,Morningstar,Malik Ahmed Khan,data/source_catalog.csv,pdf
+us_asml_5cb582d70854,broadcom;nvidia,broker_report,https://marketing.morningstar.com/content/cs-assets/v3/assets/blt9415ea4cc4157833/blt93437e862a70ba34/680a4bc8282bd52b410a42a7/Semiconductor_Pulse_2025_Q1.pdf,,Morningstar,Brian Colello;Jivyaa Vaidya,data/source_catalog.csv,pdf
+us_asml_12a786ff59e9,asml,broker_report,https://www.evercore.com/wp-content/uploads/2024/07/Research-Insights-7-17-24.pdf,2024-07-17,Evercore ISI,Mark Lipacis;Vedvati Shrotre,data/source_catalog.csv,pdf
+us_asml_0b834553ed31,alphabet,broker_report,https://www.evercore.com/wp-content/uploads/2025/03/Research-Insights-2-27-25.pdf,,Evercore ISI,Mark Mahaney;Ian Peterson;David Yueh;Austin Riddick;Robert Coolbrith,data/source_catalog.csv,pdf
+us_asml_b76e74d48833,broadcom,broker_report,https://www.dbs.com/content/article/pdf/US_clover/Broadcom.pdf,2026-06-18,DBS,Amanda Tan,data/source_catalog.csv,pdf
+us_asml_66dc2d49787d,asml,broker_report,https://www.dbs.com/content/article/pdf/EU_clover/ASML.pdf,2026-02-09,DBS,Lee Keng Ling,data/source_catalog.csv,pdf
+us_asml_9e4a150facfa,alphabet,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P00012BBI_20250204_RT.pdf,2025-02-05,Morningstar,Malik Ahmed Khan,data/source_catalog.csv,pdf
+us_asml_c18cf9a4a3e3,nvidia,broker_report,https://files.bocomgroup.com/download/mexp-250228e.pdf,2025-02-28,BOCOM International,Dawei Wang,data/source_catalog.csv,pdf
+us_asml_c584a34d00f1,asml;broadcom;micron;nvidia,broker_report,https://marketing.morningstar.com/content/cs-assets/v3/assets/blt9415ea4cc4157833/blt4c36c6154fe6db9b/6719572196c636037db2e277/2024_Semiconductor_Industry_Outlook.pdf,,Morningstar,Eric Compton;Brian Colello;William Kerwin;Kazunori Ito;Javier Correonero;Phelix Lee,data/source_catalog.csv,pdf
+us_asml_317c209295b4,sandisk,broker_article,https://www.morningstar.com/stocks/sandisk-stock-can-you-say-bubble,2026-06-03,Morningstar,David Sekera;Susan Dziubinski,data/source_catalog.csv,html
+us_asml_d128d8045e51,sandisk,broker_article,https://www.morningstar.com/stocks/sandisk-we-retain-skepticism-longer-term-targets,,Morningstar,William Kerwin,data/source_catalog.csv,html
+us_asml_da27413dd27e,asml,broker_article,https://global.morningstar.com/en-gb/stocks/asml-reset-expectations-sends-shares-lower-fair-value-estimate-trimmed,2025-07-16,Morningstar,Javier Correonero,data/source_catalog.csv,html
+us_asml_558a637cc3c2,asml,broker_article,https://www.morningstar.com/stocks/asml-earnings-long-term-prospects-vastly-improved,,Morningstar,Javier Correonero,data/source_catalog.csv,html
+us_asml_ae3425f19408,asml;broadcom;micron;nvidia,broker_report,https://www.morningstar.com/content/cs-assets/v3/assets/blt9415ea4cc4157833/blt0f5b3829775b8ce3/Semiconductor_Industry_Outlook_2025.pdf,,Morningstar,Eric Compton;Brian Colello;William Kerwin;Kazunori Ito;Javier Correonero;Phelix Lee;Dhruv Kothari,data/source_catalog.csv,pdf
+us_asml_d77772ba83be,asml,broker_report,https://www.morningstar.com/content/cs-assets/v3/assets/blt9415ea4cc4157833/blte1f66c91c1ee6729/68f1167869003d43430d65fd/Technology_Observer_-_Wafer_Fabrication_Equipment.pdf,,Morningstar,,data/source_catalog.csv,pdf
+us_asml_a89893b28400,asml,broker_article,https://global.morningstar.com/fr/actions/rsultats-de-asml-les-perspectives-long-terme-se-sont-considrablement-amliores,2026-07-15,Morningstar,Javier Correonero,data/source_catalog.csv,html
+us_history_round2_768bf592b8a6,nvidia,broker_report,https://www.stocksbnb.com/wp-content/uploads/pdf/NVDA20230529.pdf,,Phillip Securities,,data/source_catalog.csv,pdf
+us_history_round2_d3c77c9038d7,nvidia,broker_report,https://mindassets.cloud.itau.com.br/attachments/1d4e2e1e-db49-4c23-9f1c-8bf779cb9800/NVDA_ER_20231121.pdf,2023-11-21,Itau BBA,Thiago Alves Kapulskis; Gabriela Moraes; Cristian Faria,data/source_catalog.csv,pdf
+us_history_round2_70429d34a5a1,alphabet,broker_article,https://www.stocksbnb.com/reports/alphabet-inc-advertising-rebound-but-cloud-lags/,2023-10-27,Phillip Securities,Jonathan Woo,data/source_catalog.csv,html
+us_history_round2_9f3c11be892d,nvidia,broker_article,https://www.stocksbnb.com/reports/nvidia-corporation-ai-is-the-future/,2023-03-21,Phillip Securities,Maximilian Koeswoyo,data/source_catalog.csv,html
+us_history_round2_8c78c42764c8,asml,broker_report,https://cdn.website-editor.net/s/80a466cb48d542f1a57371eeb500884a/files/uploaded/dec%2520asml%2520no%2520phone.pdf?Expires=1791308362&Key-Pair-Id=K2NXBXLF010TJW&Signature=NjcBn11I4hOvEjPoV-3Skne6tCfSq6ju9GEb2TFkxHlkvKL62R0Fmk6n9~jdyXUrzZzXYx5gt5X1QSGhnzNQ0lmTWxhNvwa~qbUJonXRKTBLA5gW5AbBCf5iV4rGyCJORBlHcXu9ulCtk2xtcVXUSxYsu1fUp0jx3KZI6b6RF6ULVmgRdP5UPwNZ5~i7OBAizME5UzfUv88046KJFX68XmU1HvT5ocjB5Ker2lndyLzPtIjri4I9cHvNz1~NPuxKugu11W1IPRID2T8hGfbDbEHmXWxJ6mmcvd1PcDNMiLz7WfPoZ0DsnE7~JTgrILO424uZ~1gXO2IitOLTuymeuA__,2023-04-26,x2 investors,Tim Green,data/source_catalog.csv,pdf
+catalog_613ec863ea31,asml,broker_report,https://www.hanaw.com/download/research/FileServer/WEB/global/company/2024/07/18/ASML_240718.pdf,2024-07-18,Hana Securities (Bloomberg consensus),,data/source_catalog.csv,pdf
+catalog_dc1e38afa66b,asml,broker_report,https://www.hanaw.com/download/research/FileServer/WEB/global/company/2024/10/17/ASML_241017.pdf,2024-10-17,Hana Securities (Bloomberg consensus),,data/source_catalog.csv,pdf
+catalog_f8282692a025,asml,broker_report,https://www.hanaw.com/download/research/FileServer/WEB/global/company/2021/09/30/Global_ASML_2021.09.30.pdf,2021-10-01,Hana Securities (Bloomberg consensus),,data/source_catalog.csv,pdf
+catalog_58dc0fb99a28,asml,broker_report,https://www.hanaw.com/download/research/FileServer/WEB/global/company/2025/10/16/ASML_251017.pdf,2025-10-17,Hana Securities (Bloomberg consensus),,data/source_catalog.csv,pdf
+catalog_0b6d9b7f6a72,asml,broker_report,https://file.hanaw.com/download/research/FileServer/WEB/global/company/2026/04/16/ASML_260416.pdf,2026-04-16,Hana Securities (Bloomberg consensus),,data/source_catalog.csv,pdf
+catalog_9e1aa7f66d91,alphabet;asml;broadcom;micron;nvidia;sandisk,broker_report,https://www.hanaw.com/download/research/FileServer/WEB/global/industry/2026/01/09/2026guide.pdf,2026-01-12,Hana Securities (Bloomberg consensus),,data/source_catalog.csv,pdf
+catalog_256d14c73911,asml,broker_report,https://www.hanaw.com/download/research/FileServer/WEB/global/company/2021/07/21/Global_ASML_2021.07.22.pdf,2021-07-22,Hana Securities (Bloomberg consensus),,data/source_catalog.csv,pdf
+catalog_ac67f04ce7e5,asml,broker_report,https://www.hanaw.com/download/research/FileServer/WEB/info/daily/2024/10/17/Daily_241018.pdf,2024-10-18,Hana Securities (Bloomberg consensus),,data/source_catalog.csv,pdf
+catalog_12df3147af7a,asml,broker_report,https://www.hanaw.com/download/research/FileServer/WEB/global/company/2022/01/19/Global_ASML_Hana.pdf,2022-01-20,Hana Securities (Bloomberg consensus),,data/source_catalog.csv,pdf
+catalog_e5cc4a2f2c81,asml,broker_report,https://www.hanaw.com/main/research/research/download.cmd?attachFileSeq=1&bbsCd=2206&bbsId=&bbsSeq=1274459&dbType=,2023-04-25,Hana Securities (Bloomberg consensus),,data/source_catalog.csv,pdf
+catalog_1d25a6e8029f,asml,broker_report,https://www.hanaw.com/download/research/FileServer/WEB/info/daily/2024/01/11/2024Global_100.pdf,,Hana Securities (Bloomberg consensus),,data/source_catalog.csv,pdf
+catalog_1d0f60122db4,asml,broker_report,https://securities.miraeasset.com/public/mw/blog/20220121080513/20220121_Daily.pdf,2022-01-21,Mirae Asset Securities,,data/source_catalog.csv,pdf
+catalog_32386a5c1aa0,sandisk,broker_report,https://advisortools.zacks.com/Research/Stocks/SNDK/Overview/PDF/2015-11-27/2025-12-02,2026-09-10,Zacks Investment Research,,data/source_catalog.csv,pdf
+catalog_cc80e92e747d,asml,broker_report,https://ebooks.williamoneil.com/pdfs/charts/comments/20240902/ASML.NL.pdf,,William O'Neil + Co.,,data/source_catalog.csv,pdf
+catalog_86a63f886deb,asml,broker_report,https://www.hanaw.com/download/research/FileServer/WEB/global/company/2026/01/29/ASML_260129.pdf,2026-01-30,Hana Securities (Bloomberg consensus),,data/source_catalog.csv,pdf
+catalog_151b4bd78b75,sandisk,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P0001U8JM_20250815_RT.pdf,2025-08-15,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_bb024bc06cb3,sandisk,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P0001U8JM_20251106_RT.pdf,2025-11-07,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_2dfa79c57158,sandisk,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P0001U8JM_20251107_RT.pdf,2025-11-08,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_77a4f48547e3,sandisk,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2026/0P0001U8JM_20260130_RT.pdf,2026-01-30,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_595e483a894c,sandisk,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2026/0P0001U8JM_20260430_RT.pdf,2026-05-01,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_5abab0f93876,sandisk,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2026/0P0001U8JM_20260819_RT.pdf,2026-08-19,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_1f05f6c6dbfd,samsung_electronics,broker_report,https://home.imeritz.com/include/resource/research/WorkFlow/20220728192634069K_02.pdf,2022-07-29,meritz,Sunwoo Kim,data/source_catalog.csv,pdf
+catalog_4916792f14db,samsung_electronics,broker_report,https://www.paxnet.co.kr/WWW/data/researchCenter/attach/20240102104338102.pdf,2024-01-02,meritz,Sunwoo Kim,data/source_catalog.csv,pdf
+catalog_ed658c9c8fb4,samsung_electronics,broker_report,https://www.hanaw.com/download/research/FileServer/WEB/industry/enterprise/2024/05/01/240502_SEC.pdf,2024-05-02,hana,Rok-ho Kim; Hyun-soo Kim,data/source_catalog.csv,pdf
+catalog_ddfa515d543d,sk_hynix,broker_report,https://home.imeritz.com/include/resource/research/WorkFlow/20240609204233312K_02.pdf,2024-06-10,meritz,Sunwoo Kim,data/source_catalog.csv,pdf
+catalog_1fe52d2c3bed,sk_hynix,broker_report,https://home.imeritz.com/include/resource/research/WorkFlow/20250425063811209K_02.pdf,2025-04-25,meritz,Sunwoo Kim,data/source_catalog.csv,pdf
+catalog_30846fca2a70,sk_hynix,broker_report,https://home.imeritz.com/include/resource/research/WorkFlow/20241024185749922K_02.pdf,2024-10-24,meritz,Sunwoo Kim,data/source_catalog.csv,pdf
+catalog_cfc735a588f6,sk_hynix,broker_report,https://home.imeritz.com/include/resource/research/WorkFlow/20240725210909855K_02.pdf,2024-07-26,meritz,Sunwoo Kim,data/source_catalog.csv,pdf
+catalog_1f47bf801dca,sk_hynix,broker_report,https://home.imeritz.com/include/resource/research/WorkFlow/20231026165054435K_02.pdf,2023-10-26,meritz,Sunwoo Kim,data/source_catalog.csv,pdf
+catalog_92e4ee56f064,samsung_electronics;sk_hynix,broker_report,https://home.imeritz.com/include/resource/research/WorkFlow/20220530190742393K_02.pdf,2022-05-31,meritz,Sunwoo Kim,data/source_catalog.csv,pdf
+catalog_a193c6a47325,samsung_electronics;sk_hynix,broker_report,https://home.imeritz.com/include/resource/research/WorkFlow/20230529224232774K_02.pdf,2023-05-30,meritz,Sunwoo Kim,data/source_catalog.csv,pdf
+catalog_c37de50c0800,sk_hynix,broker_report,https://home.imeritz.com/include/resource/research/WorkFlow/20240102061827993K_02.pdf,2024-01-02,meritz,Sunwoo Kim,data/source_catalog.csv,pdf
+catalog_fd1fa953f941,sk_hynix,broker_report,https://ssl.pstatic.net/imgstock/upload/research/company/1690498890846.pdf,2023-07-27,meritz,Sunwoo Kim,data/source_catalog.csv,pdf
+catalog_a49b207ae544,broadcom,broker_report,https://files.bocomgroup.com/download/mexp-260608e.pdf,2026-06-08,BOCOM International,Dawei Wang,data/source_catalog.csv,pdf
+catalog_fb3cde3b6342,broadcom,broker_report,https://tdt.bocomgroup.com/BOCOM_TD_TRACK/external/download?q=22fe460182e54d80bc2b29fca9d25175b05b52148DNHRmdxzQ8MdBiQ3YTrMCfEj6DqtKusVZlK5_q-CN4BfT7i7dui__eZEDJ7Ut7aPrf6Ej0JIsY8ktc1YMGBYFZaxvXcKfecqRtTOmMJPvcQ8tGPpK9IkCWSPIVk7pkZO9SfArXggsrhXdHCLLpFWij2RK5NuN-kkw68VhhV4N5-9lF8jE_O7lXn3vFj9eIh7DSarQUzB0AZhkb1d42T2Qg%2C%2C,2026-06-08,BOCOM International,,data/source_catalog.csv,pdf
+catalog_c4ac8480f8f9,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2026/0P000003MC_20260625_RT.pdf,2026-06-25,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_9682ff283738,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2026/0P000003MC_20260318_RT.pdf,2026-03-19,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_5d6f4f88b476,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2026/0P0000KU35_20260902_RT.pdf,2026-09-03,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_c37d77eb540c,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2026/0P0000KU35_20260603_RT.pdf,2026-06-04,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_8f8e54093e6e,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2026/0P0000KU35_20260304_RT.pdf,2026-03-05,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_7be4eed3b8b0,alphabet,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2026/0P000002HD_20260722_RT.pdf,2026-07-23,Morningstar,Malik Ahmed Khan,data/source_catalog.csv,pdf
+catalog_16c0ff925d10,alphabet,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2026/0P000002HD_20260429_RT.pdf,2026-04-30,Morningstar,Malik Ahmed Khan,data/source_catalog.csv,pdf
+catalog_8c8475319265,alphabet,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2026/0P000002HD_20260204_RT.pdf,2026-02-05,Morningstar,Malik Ahmed Khan,data/source_catalog.csv,pdf
+catalog_9970b961dd3c,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2026/0P000003RE_20260826_RT.pdf,2026-08-27,Morningstar,Brian Colello,data/source_catalog.csv,pdf
+catalog_64e6dde34024,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2026/0P000003RE_20260520_RT.pdf,2026-05-21,Morningstar,Brian Colello,data/source_catalog.csv,pdf
+catalog_e8a861b64d76,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2026/0P000003RE_20260225_RT.pdf,2026-02-26,Morningstar,Brian Colello,data/source_catalog.csv,pdf
+catalog_0a6a63c0171b,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P000003MC_20230927_RT.pdf,2023-09-28,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_5752e0609203,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P000003MC_20240626_RT.pdf,2024-06-27,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_4d6e4ba12f0d,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2021/0P0000KU35_20211209_RT.pdf,2021-12-10,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_eb6fd91c2302,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P0000KU35_20221208_RT.pdf,2022-12-09,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_7bec6b227e84,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P0000KU35_20240905_RT.pdf,2024-09-06,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_19ec121f5b71,alphabet,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P000002HD_20240723_RT.pdf,2024-07-24,Morningstar,Michael Hodel,data/source_catalog.csv,pdf
+catalog_7458a02ef265,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P000003RE_20221116_RT.pdf,2022-11-17,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_8a593b3be0b2,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P000003RE_20231121_RT.pdf,2023-11-22,Morningstar,Brian Colello,data/source_catalog.csv,pdf
+catalog_8cf5e3a5465b,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P000003RE_20240522_RT.pdf,2024-05-23,Morningstar,Brian Colello,data/source_catalog.csv,pdf
+catalog_7d5b67f691ee,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P000003MC_20220930_RT.pdf,2022-09-30,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_68ffd33a5f31,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P000003MC_20220630_RT.pdf,2022-07-01,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_03aa532637d5,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P000003MC_20231220_RT.pdf,2023-12-21,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_53bf607b6d48,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P000003MC_20240320_RT.pdf,2024-03-21,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_f81b7e791934,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P000003MC_20241218_RT.pdf,2024-12-19,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_3ec31e67f41f,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P000003MC_20250625_RT.pdf,2025-06-26,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_0dfb477403a6,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P0000KU35_20231208_RT.pdf,2023-12-08,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_6591c8d71ae2,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P0000KU35_20220303_RT.pdf,2022-03-04,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_62695345d04a,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P0000KU35_20220901_RT.pdf,2022-09-02,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_1be7fb5f0a44,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P0000KU35_20230302_RT.pdf,2023-03-03,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_5730e22d7fb6,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P0000KU35_20230907_RT.pdf,2023-09-07,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_7d50c8d7046a,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P0000KU35_20240307_RT.pdf,2024-03-08,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_c17cfe33f0a4,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P0000KU35_20240612_RT.pdf,2024-06-13,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_024e63821e81,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P0000KU35_20250306_RT.pdf,2025-03-07,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_86d74e7ff8f6,alphabet,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P000002HD_20221026_RT.pdf,2022-10-26,Morningstar,Ali Mogharabi,data/source_catalog.csv,pdf
+catalog_7bb38d16ebd7,alphabet,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P000002HD_20231025_RT.pdf,2023-10-25,Morningstar,Ali Mogharabi,data/source_catalog.csv,pdf
+catalog_54234ff8a2d6,alphabet,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P000002HD_20241029_RT.pdf,2024-10-30,Morningstar,Malik Ahmed Khan,data/source_catalog.csv,pdf
+catalog_e9218165ce98,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P000003RE_20230524_RT.pdf,2023-05-24,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_bebeefe1b893,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P000003RE_20230823_RT.pdf,2023-08-24,Morningstar,Brian Colello,data/source_catalog.csv,pdf
+catalog_57bb9f0de255,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P000003RE_20240221_RT.pdf,2024-02-22,Morningstar,Brian Colello,data/source_catalog.csv,pdf
+catalog_c31883bc13e4,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P000003RE_20240828_RT.pdf,2024-08-29,Morningstar,Brian Colello,data/source_catalog.csv,pdf
+catalog_26c884756cbb,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P000003RE_20241120_RT.pdf,2024-11-21,Morningstar,Brian Colello,data/source_catalog.csv,pdf
+catalog_b8590d7e2e9c,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P000003MC_20220329_RT.pdf,2022-03-30,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_1bff6a5d1e56,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P000003MC_20230328_RT.pdf,2023-03-29,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_bfad313db4b4,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P000003MC_20230628_RT.pdf,2023-06-29,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_6248033393ec,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P0000KU35_20230602_RT.pdf,2023-06-02,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_c809cafc1203,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P0000KU35_20241213_RT.pdf,2024-12-13,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_654ebd945b86,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P0000KU35_20250905_RT.pdf,2025-09-05,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_2e7e2341e901,alphabet,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P000002HD_20220201_RT.pdf,2022-02-02,Morningstar,Ali Mogharabi,data/source_catalog.csv,pdf
+catalog_daf587597338,alphabet,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P000002HD_20220426_RT.pdf,2022-04-27,Morningstar,Ali Mogharabi,data/source_catalog.csv,pdf
+catalog_2bde3c4ac5ea,alphabet,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P000002HD_20220727_RT.pdf,2022-07-27,Morningstar,Ali Mogharabi,data/source_catalog.csv,pdf
+catalog_256cfe3a58f0,alphabet,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P000002HD_20230202_RT.pdf,2023-02-03,Morningstar,Ali Mogharabi,data/source_catalog.csv,pdf
+catalog_9c64d259fabb,alphabet,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P000002HD_20230725_RT.pdf,2023-07-26,Morningstar,Ali Mogharabi,data/source_catalog.csv,pdf
+catalog_7b8ce2cf2f9c,alphabet,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P000002HD_20240426_RT.pdf,2024-04-26,Morningstar,Michael Hodel,data/source_catalog.csv,pdf
+catalog_f5fcd12a3c1c,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P000003RE_20220216_RT.pdf,2022-02-17,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_4f9bfac68d05,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P000003RE_20220525_RT.pdf,2022-05-26,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_9d7af304c930,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P000003RE_20220526_RT.pdf,2022-05-26,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_7745cba9fc62,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P000003RE_20220824_RT.pdf,2022-08-25,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_d1f3e07cb476,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P000003RE_20230223_RT.pdf,2023-02-24,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_b57b0ca23d28,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P000003RE_20250226_RT.pdf,2025-02-27,Morningstar,Brian Colello,data/source_catalog.csv,pdf
+catalog_02bf16ea6e9c,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P000003RE_20250528_RT.pdf,2025-05-29,Morningstar,Brian Colello,data/source_catalog.csv,pdf
+catalog_e70134ce6df7,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P000003RE_20250827_RT.pdf,2025-08-28,Morningstar,Brian Colello,data/source_catalog.csv,pdf
+catalog_30a4344c86e4,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P000003RE_20251119_RT.pdf,2025-11-20,Morningstar,Brian Colello,data/source_catalog.csv,pdf
+catalog_ab07eaec9b76,alphabet,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P000002HD_20250723_RT.pdf,2025-07-24,Morningstar,Malik Ahmed Khan,data/source_catalog.csv,pdf
+catalog_3b3181954d5c,alphabet,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P000002HD_20251029_RT.pdf,2025-10-30,Morningstar,Malik Ahmed Khan,data/source_catalog.csv,pdf
+catalog_9a28a4b45a53,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2021/0P000003RE_20211206_RT.pdf,2021-12-06,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_2c5227790c83,alphabet,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2021/0P000002HD_20211214_RT.pdf,2021-12-14,Morningstar,Ali Mogharabi,data/source_catalog.csv,pdf
+catalog_a455418f8e1b,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2021/0P000003MC_20211220_RT.pdf,2021-12-21,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_d22a019254aa,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P000000GY_20220428_RT.pdf,2022-04-29,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_93b4ae2104ff,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P000000GY_20220728_RT.pdf,2022-07-29,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_c85dd6b1845b,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P000000GY_20221027_RT.pdf,2022-10-28,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_86630a6c06ad,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P000000GY_20230202_RT.pdf,2023-02-03,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_ba591b140bcd,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P000000GY_20230504_RT.pdf,2023-05-05,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_09d06f4ed74c,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P000000GY_20230803_RT.pdf,2023-08-04,Morningstar,Brian Colello,data/source_catalog.csv,pdf
+catalog_521a2623f661,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P000000GY_20231102_RT.pdf,2023-11-03,Morningstar,Brian Colello,data/source_catalog.csv,pdf
+catalog_cf0dfbba00f7,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P000000GY_20240201_RT.pdf,2024-02-02,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_19f7e9080aea,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P000000GY_20240801_RT.pdf,2024-08-02,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_da92c3d8b345,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P000000GY_20241031_RT.pdf,2024-11-01,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_ddf527056c47,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P000000GY_20250130_RT.pdf,2025-01-31,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_66157a82d038,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P000000GY_20251030_RT.pdf,2025-10-31,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_9c019036bf38,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2026/0P000000GY_20260129_RT.pdf,2026-01-30,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_832f98d0e1b0,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2026/0P000000GY_20260430_RT.pdf,2026-05-01,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_e096a17e2ee1,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P000000GY_20220128_RT.pdf,2022-01-28,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_dd6593e2f6be,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P000000GY_20221028_RT.pdf,2022-10-29,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_a07d5ab7ff69,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P000000GY_20230804_RT.pdf,2023-08-04,Morningstar,Brian Colello,data/source_catalog.csv,pdf
+catalog_b60ef04c290c,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P000000GY_20231103_RT.pdf,2023-11-03,Morningstar,Brian Colello,data/source_catalog.csv,pdf
+catalog_eb8a2a641edc,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P000000GY_20250502_RT.pdf,2025-05-02,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_0dcc766186f5,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P000000GY_20250801_RT.pdf,2025-08-01,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_f46e0013b13b,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P000000GY_20221031_RT.pdf,2022-10-31,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_7db4dae909e0,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P000000GY_20221102_RT.pdf,2022-11-03,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_5382af66b81c,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P000000GY_20231130_RT.pdf,2023-11-30,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_579760fc9fe1,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P000000GY_20240610_RT.pdf,2024-06-10,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_fd11a6924038,apple,broker_report,https://advisor.morningstar.com/Enterprise/VTC/MorningstarEquityAnalystReport.pdf,2021-07-15,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_b957f4149932,apple,issuer_earnings_release,https://www.apple.com/newsroom/pdfs/FY21_Q4_Consolidated_Financial_Statements.pdf,2021-10-28,Apple Inc.,,data/source_catalog.csv,pdf
+catalog_4cc1456de96a,apple,issuer_earnings_release,https://www.apple.com/newsroom/pdfs/FY22_Q4_Consolidated_Financial_Statements.pdf,2022-10-27,Apple Inc.,,data/source_catalog.csv,pdf
+catalog_8955213a52fa,apple,issuer_earnings_release,https://www.apple.com/newsroom/pdfs/fy2023-q4/FY23_Q4_Consolidated_Financial_Statements.pdf,2023-11-02,Apple Inc.,,data/source_catalog.csv,pdf
+catalog_15c64bbf6304,apple,issuer_earnings_release,https://www.apple.com/newsroom/pdfs/fy2024-q4/FY24_Q4_Consolidated_Financial_Statements.pdf,2024-10-31,Apple Inc.,,data/source_catalog.csv,pdf
+catalog_bddb7684ae5b,apple,issuer_earnings_release,https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf,2025-10-30,Apple Inc.,,data/source_catalog.csv,pdf
+catalog_271478c832bd,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2026/0P000000GY_20260618_RT.pdf,2026-06-18,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_eb00a5f78f69,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2026/0P000000GY_20260708_RT.pdf,2026-07-08,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_882d95213bb0,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2026/0P000000GY_20260804_RT.pdf,2026-08-04,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_50acb74a36a8,apple,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2026/0P000000GY_20260909_RT.pdf,2026-09-09,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_e6f7b215afee,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P0000002X_20220420_RT.pdf,2022-04-20,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_79fa2fdffd90,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P0000002X_20220515_RT.pdf,2022-05-15,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_f47fa46984ce,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P0000002X_20220720_RT.pdf,2022-07-20,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_5b9f62db5826,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P0000002X_20220829_RT.pdf,2022-08-29,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_a40d0cc4428d,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P0000002X_20221019_RT.pdf,2022-10-19,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_3e4a2d97ab73,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P0000002X_20230125_RT.pdf,2023-01-25,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_5aeceb2a7b5d,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P0000002X_20230419_RT.pdf,2023-04-19,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+catalog_5b0005a67de5,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P0000002X_20230525_RT.pdf,2023-05-26,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_ec9f2547353a,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P0000002X_20230719_RT.pdf,2023-07-19,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_c8f4e2df8fa8,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P0000002X_20231120_RT.pdf,2023-11-20,Morningstar,Javier Correonero,data/source_catalog.csv,pdf
+catalog_f975484d7056,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P0000002X_20240124_RT.pdf,2024-01-24,Morningstar,Javier Correonero,data/source_catalog.csv,pdf
+catalog_f68062443e8c,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P0000002X_20240417_RT.pdf,2024-04-17,Morningstar,Javier Correonero,data/source_catalog.csv,pdf
+catalog_c5b21105ec6c,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P0000002X_20240605_RT.pdf,2024-06-05,Morningstar,Javier Correonero,data/source_catalog.csv,pdf
+catalog_1086be156eba,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P0000002X_20240717_RT.pdf,2024-07-17,Morningstar,Javier Correonero,data/source_catalog.csv,pdf
+catalog_99f016c947cc,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P0000002X_20241015_RT.pdf,2024-10-16,Morningstar,Javier Correonero,data/source_catalog.csv,pdf
+catalog_45dc0e299706,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P0000002X_20241016_RT.pdf,2024-10-16,Morningstar,Javier Correonero,data/source_catalog.csv,pdf
+catalog_6c4e61082cbf,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P0000002X_20241018_RT.pdf,2024-10-18,Morningstar,Javier Correonero,data/source_catalog.csv,pdf
+catalog_711c09ba4ec4,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P0000002X_20250103_RT.pdf,2025-01-03,Morningstar,Javier Correonero,data/source_catalog.csv,pdf
+catalog_5798a18d030e,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P0000002X_20250130_RT.pdf,2025-01-30,Morningstar,Javier Correonero,data/source_catalog.csv,pdf
+catalog_edcedff5a1c5,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P0000002X_20250416_RT.pdf,2025-04-16,Morningstar,Javier Correonero,data/source_catalog.csv,pdf
+catalog_d0597f6eefe5,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P0000002X_20250716_RT.pdf,2025-07-16,Morningstar,Javier Correonero,data/source_catalog.csv,pdf
+catalog_49172cbb6c22,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P0000002X_20251015_RT.pdf,2025-10-15,Morningstar,Javier Correonero,data/source_catalog.csv,pdf
+catalog_c05794df94ec,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2026/0P0000002X_20260107_RT.pdf,2026-01-07,Morningstar,Javier Correonero,data/source_catalog.csv,pdf
+catalog_5ca2d1cf6d9c,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2026/0P0000002X_20260128_RT.pdf,2026-01-28,Morningstar,Javier Correonero,data/source_catalog.csv,pdf
+catalog_c005a35a3b4a,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2026/0P0000002X_20260415_RT.pdf,2026-04-15,Morningstar,Javier Correonero,data/source_catalog.csv,pdf
+catalog_b185700f96b5,asml,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2026/0P0000002X_20260715_RT.pdf,2026-07-15,Morningstar,Javier Correonero,data/source_catalog.csv,pdf
+catalog_a348685f3e47,samsung_electronics,broker_report,http://home.imeritz.com/include/resource/research/WorkFlow/20260129193040830K_02.pdf,2026-01-29,meritz,Sunwoo Kim,data/source_catalog.csv,pdf
+catalog_08cc425d35fd,sk_hynix,broker_report,http://home.imeritz.com/include/resource/research/WorkFlow/20260129211553879K_02.pdf,2026-01-29,meritz,Sunwoo Kim,data/source_catalog.csv,pdf
+catalog_799ea4008a51,samsung_electronics,broker_report,https://rdata.kbsec.com/pdf_data/20260122215610647E.pdf,2026-01-23,kb,Jeff Kim,data/source_catalog.csv,pdf
+catalog_2ca2fcf1b6b5,sk_hynix,broker_report,https://rdata.kbsec.com/pdf_data/20260113194310367E.pdf,2026-01-14,kb,Jeff Kim,data/source_catalog.csv,pdf
+catalog_6284a6ad0d41,samsung_electronics,broker_report,https://rdata.kbsec.com/pdf_data/20260220140952410E.pdf,2026-02-23,kb,Jeff Kim,data/source_catalog.csv,pdf
+catalog_d5ddcbb00663,samsung_electronics,broker_report,https://home.imeritz.com/include/resource/research/WorkFlow/20260108094413584K_02.pdf,2026-01-08,meritz,Sunwoo Kim,data/source_catalog.csv,pdf
+catalog_3f5d344d5f19,broadcom,issuer_earnings_release,https://www.prnewswire.com/news-releases/broadcom-inc-announces-fourth-quarter-and-fiscal-year-2021-financial-results-and-quarterly-dividends-301441779.html,2021-12-09,,,data/source_catalog.csv,html
+catalog_088b7b66ecc2,nvidia,issuer_earnings_release,https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-fourth-quarter-and-fiscal-2021,2021-02-24,,,data/source_catalog.csv,html
+catalog_bc260aae2487,micron,issuer_earnings_release,https://investors.micron.com/news/press-release/2021/Micron-Technology-Inc--Reports-Results-for-the-Fourth-Quarter-and-Full-Year-of-Fiscal-2021-09-28-2021/default.aspx,2021-09-28,,,data/source_catalog.csv,html
+catalog_cd999519c218,broadcom,issuer_earnings_release,https://www.prnewswire.com/news-releases/broadcom-inc-announces-fourth-quarter-and-fiscal-year-2022-financial-results-and-quarterly-dividend-301698763.html,2022-12-08,,,data/source_catalog.csv,html
+catalog_438338e2158b,nvidia,issuer_earnings_release,https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-fourth-quarter-and-fiscal-2022,2022-02-16,,,data/source_catalog.csv,html
+catalog_b54b69122f5f,micron,issuer_earnings_release,https://investors.micron.com/news/press-release/2022/Micron-Technology-Inc--Reports-Results-for-the-Fourth-Quarter-and-Full-Year-of-Fiscal-2022-09-29-2022/default.aspx,2022-09-29,,,data/source_catalog.csv,html
+catalog_394a3d3ab0a5,broadcom,issuer_earnings_release,https://www.prnewswire.com/news-releases/broadcom-inc-announces-fourth-quarter-and-fiscal-year-2023-financial-results-and-quarterly-dividend-302009464.html,2023-12-07,,,data/source_catalog.csv,html
+catalog_75c591f7b390,nvidia,issuer_earnings_release,https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-fourth-quarter-and-fiscal-2023,2023-02-22,,,data/source_catalog.csv,html
+catalog_7959d0b2c998,micron,issuer_earnings_release,https://investors.micron.com/news/press-release/2023/Micron-Technology-Inc--Reports-Results-for-the-Fourth-Quarter-and-Full-Year-of-Fiscal-2023-09-27-2023/default.aspx,2023-09-27,,,data/source_catalog.csv,html
+catalog_4221bc3a2330,broadcom,issuer_earnings_release,https://www.prnewswire.com/news-releases/broadcom-inc-announces-fourth-quarter-and-fiscal-year-2024-financial-results-and-quarterly-dividend-302330736.html,2024-12-12,,,data/source_catalog.csv,html
+catalog_e196154832d9,nvidia,issuer_earnings_release,https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-fourth-quarter-and-fiscal-2024,2024-02-21,,,data/source_catalog.csv,html
+catalog_86cdf00be0df,micron,issuer_earnings_release,https://investors.micron.com/news/press-release/2024/Micron-Technology-Inc--Reports-Results-for-the-Fourth-Quarter-and-Full-Year-of-Fiscal-2024-09-25-2024/default.aspx,2024-09-25,,,data/source_catalog.csv,html
+catalog_c861c699c144,broadcom,issuer_earnings_release,https://www.prnewswire.com/news-releases/broadcom-inc-announces-fourth-quarter-and-fiscal-year-2025-financial-results-and-quarterly-dividend-302639606.html,2025-12-11,,,data/source_catalog.csv,html
+catalog_cab55768fcb7,nvidia,issuer_earnings_release,https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-fourth-quarter-and-fiscal-2025,2025-02-26,,,data/source_catalog.csv,html
+catalog_5d360cecdbb2,micron,issuer_earnings_release,https://investors.micron.com/news/press-release/2025/Micron-Technology-Inc--Reports-Results-for-the-Fourth-Quarter-and-Full-Year-of-Fiscal-2025-09-23-2025/default.aspx,2025-09-23,,,data/source_catalog.csv,html
+catalog_db55070d59aa,alphabet,issuer_earnings_release,https://storage.googleapis.com/cloud-samples-data/gen-app-builder/search/alphabet-investor-pdfs/2021Q4_alphabet_earnings_release.pdf,2022-02-01,,,data/source_catalog.csv,pdf
+catalog_f60aa937ed5b,alphabet,issuer_earnings_release,https://s206.q4cdn.com/479360582/files/doc_financials/2022/q4/2022q4-alphabet-earnings-release.pdf,2023-02-02,,,data/source_catalog.csv,pdf
+catalog_5e10958efeea,alphabet,issuer_earnings_release,https://s206.q4cdn.com/479360582/files/doc_financials/2023/q4/2023q4-alphabet-earnings-release.pdf,2024-01-30,,,data/source_catalog.csv,pdf
+catalog_e37aa4912fac,alphabet,issuer_earnings_release,https://s206.q4cdn.com/479360582/files/doc_financials/2024/q4/2024q4-alphabet-earnings-release.pdf,2025-02-04,,,data/source_catalog.csv,pdf
+catalog_9c05a72767fb,alphabet,issuer_earnings_release,https://s206.q4cdn.com/479360582/files/doc_financials/2025/q4/2025q4-alphabet-earnings-release.pdf,2026-02-04,,,data/source_catalog.csv,pdf
+catalog_953b24f4e790,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P0000KU35_20250403_RT.pdf,2025-04-03,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+catalog_c758b11ddd61,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P000003RE_20250403_RT.pdf,2025-04-03,Morningstar,Brian Colello,data/source_catalog.csv,pdf
+catalog_92fc6ac1d5c6,alphabet,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P000002HD_20250204_RT.pdf,2025-02-05,Morningstar,Malik Ahmed Khan,data/source_catalog.csv,pdf
+public_864feb294344,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P0000KU35_20220527_RT.pdf,2022-05-27,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+public_32dd9638c86c,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P0000KU35_20230706_RT.pdf,2023-07-06,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+public_061fc2d10ce6,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P0000KU35_20231122_RT.pdf,2023-11-22,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+public_71cdb40972bc,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P0000KU35_20240715_RT.pdf,2024-07-15,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+public_8182cb57f5e7,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P0000KU35_20250130_RT.pdf,2025-01-30,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+public_48cfb55841f4,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P0000KU35_20240531_RT.pdf,2024-05-31,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+public_6c54c0c80ee5,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P0000KU35_20240321_RT.pdf,2024-03-21,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+public_693b227f46cb,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P0000KU35_20250127_RT.pdf,2025-01-27,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+public_ddbd75dedaac,broadcom,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P0000KU35_20250128_RT.pdf,2025-01-28,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+public_c028b208b50f,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P000003MC_20220513_RT.pdf,2022-05-13,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+public_19267034cd1c,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P000003MC_20221222_RT.pdf,2022-12-22,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+public_8c47a26d2a7e,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P000003MC_20230329_RT.pdf,2023-03-30,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+public_4b37ba4121c1,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P000003MC_20230404_RT.pdf,2023-04-05,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+public_f64569618bb7,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P000003MC_20230525_RT.pdf,2023-05-25,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+public_9bbcfb42c414,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P000003MC_20231128_RT.pdf,2023-11-28,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+public_58bb12b9f23b,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2023/0P000003MC_20231221_RT.pdf,2023-12-22,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+public_f97aed9693ba,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P000003MC_20240926_RT.pdf,2024-09-26,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+public_c31c3618b466,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P000003MC_20250127_RT.pdf,2025-01-27,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+public_8787c4b7fc16,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P000003MC_20250321_RT.pdf,2025-03-21,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+public_cb91891cbf3d,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2025/0P000003MC_20250128_RT.pdf,2025-01-28,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+public_f4d37ca74861,micron,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P000003MC_20240815_RT.pdf,2024-08-15,Morningstar,William Kerwin,data/source_catalog.csv,pdf
+public_5d0dc3cdbadd,micron,issuer_earnings_release,https://s25.q4cdn.com/621799436/files/doc_financials/2024/ar/2024-10K.pdf,2024-10-04,Micron Technology (issuer),,data/source_catalog.csv,pdf
+public_fe74c5605dbd,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P000003RE_20220208_RT.pdf,2022-02-08,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+public_8a4f7cf406d1,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2022/0P000003RE_20220515_RT.pdf,2022-05-15,Morningstar,Abhinav Davuluri,data/source_catalog.csv,pdf
+public_56d477a9d82b,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P000003RE_20240112_RT.pdf,2024-01-12,Morningstar,Brian Colello,data/source_catalog.csv,pdf
+public_0dc14132d2cd,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P000003RE_20240318_RT.pdf,2024-03-19,Morningstar,Brian Colello,data/source_catalog.csv,pdf
+public_b3dbc75e5400,nvidia,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P000003RE_20240610_RT.pdf,2024-06-10,Morningstar,Brian Colello,data/source_catalog.csv,pdf
+public_cb434c70f674,,excluded,https://www.eurobench.com/Forum/Upload/2024/15284468.pdf,2024-05-04,Morningstar,,data/source_catalog.csv,pdf
+public_ddcf47ffefa6,,excluded,https://files.bocomgroup.com/download/mexp-260522e.pdf,,BOCOM International,,data/source_catalog.csv,pdf
+public_877fda9d8665,,excluded,https://files.bocomgroup.com/download/mexp-250529e.pdf,,BOCOM International,,data/source_catalog.csv,pdf
+public_553c90c239df,besi,web_extract,https://www.home.saxo/nl-nl/content/articles/iex-analysis/besi-kan-profiteren-van-deal-tussen-openai-en-amd-07102025,2025-10-06,IEX,Hildo Laman,data/source_catalog.csv,html
+public_4fbf83e1137e,besi,web_extract,https://www.home.saxo/nl-nl/content/articles/iex-analysis/de-grote-groeibeweging-is-begonnen-bij-besi-23102025,2025-10-23,IEX,Hildo Laman,data/source_catalog.csv,html
+public_aa253cd8ff53,besi,web_extract,https://www.home.saxo/nl-nl/content/articles/iex-analysis/iex-analyse---besi-23042026,2026-04-23,IEX,Hildo Laman,data/source_catalog.csv,html
+public_643466c8035a,besi,web_extract,https://www.home.saxo/nl-nl/content/articles/equities/stockwatch-besi-analyse-6-januari-2026-06012026,2026-01-06,StockWatch (LSEG consensus),,data/source_catalog.csv,html
+public_82f9b38096b3,besi,web_extract,https://www.home.saxo/nl-nl/content/articles/equities/stockwatch-besi-jaarcijfers-19022026,2026-02-19,StockWatch (LSEG consensus),,data/source_catalog.csv,html
+public_07858b6e56dd,besi,broker_article,https://www.home.saxo/nl-nl/content/articles/equities/besi-ziet-een-groeiversnelling-naderen-stockwatch-24072025,2025-07-24,StockWatch,,data/source_catalog.csv,html
+public_a773076c0810,besi,broker_report,https://www.eugenefn.com/common/files/amail/20231016_B45_sophie.yim_1.pdf,2023-10-16,Eugene Investment (Bloomberg consensus),,data/source_catalog.csv,pdf
+public_7f511ef28693,besi,broker_report,https://www.hanaw.com/download/research/FileServer/WEB/global/company/2024/06/20/BESI_240621_rev.pdf,2024-06-21,Hana Securities (Bloomberg consensus),,data/source_catalog.csv,pdf
+public_caccf8d33f52,besi,broker_report,https://www.hanaw.com/download/research/FileServer/WEB/global/company/2024/10/27/BESI_241028.pdf,2024-10-28,Hana Securities (Bloomberg consensus),,data/source_catalog.csv,pdf
+public_c63a8a1afb67,besi,broker_article,https://www.kasikornsecurities.com/medias/ksec/post/research-3/l/1780647362_Offshore_DC_BESI_19052026_1200x1200.jpg,2026-06-05,Kasikorn Securities,,data/source_catalog.csv,jpg
+public_bcdafed01221,besi,broker_article,https://www.kasikornsecurities.com/en/research/dr11/global-invest/research-20260605-194,2026-06-05,Kasikorn Securities,,data/source_catalog.csv,html
+public_a412a80f3bdb,besi,broker_article,https://www.besi.com/investor-relations/research-coverage/,,BE Semiconductor Industries,,data/source_catalog.csv,html
+public_314f09eb693e,besi,broker_report,https://www.hanaw.com/download/research/FileServer/WEB/industry/industry/2022/12/19/Packaging_221220.pdf,2022-12-20,Hana Securities,,data/source_catalog.csv,pdf
+public_e69bdfd5cdd7,besi,issuer_listing,https://www.besi.com/investor-relations/share-information/,,BE Semiconductor Industries,,data/source_catalog.csv,html
+public_adbaeaa7a35c,besi,issuer_annual_report,https://www.besi.com/fileadmin/data/Investor_Relations/_Semi__Annual_Reports/Annual_Report_2025.pdf,,BE Semiconductor Industries,,data/source_catalog.csv,pdf
+public_a8071215327f,besi,issuer_report_index,https://www.besi.com/investor-relations/financial-reports-and-publications/financial-reports/,,BE Semiconductor Industries,,data/source_catalog.csv,html
+public_cb06052c5ac1,besi,broker_report,https://invest.firstrade.com/ms/equity_reports/sr/2024/0P0000002X_20240805_RT.pdf,2024-08-05,Morningstar,Javier Correonero,data/source_catalog.csv,pdf
+public_6ba40e567f28,besi,broker_article,https://global.morningstar.com/en-gb/stocks/besi-earnings-quiet-quarter-loud-outlook-order-book-ramping-up,2025-07-24,Morningstar,Javier Correonero,data/source_catalog.csv,json
+public_50de5e24a09b,besi,broker_article,https://lt.morningstar.com/1c6qh1t6k9/stockreport/default.aspx?BaseCurrencyId=EUR&CurrencyId=EUR&SecurityToken=0P0000A65M%5D3%5D0%5DE0EXG%24XAMS&externalidmic=XAMS&source=HS,,Morningstar,,data/source_catalog.csv,html
+public_c40ef59aca25,besi,broker_article,https://www.morningstar.com/stocks/otcm/besiy/quote,,Morningstar,,data/source_catalog.csv,html
+public_badbc68a9391,besi,broker_article,https://www.morningstar.com/company-reports?listing=0P0000A65M,,Morningstar,,data/source_catalog.csv,html

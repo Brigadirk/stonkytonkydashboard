@@ -1,0 +1,5 @@
+file,source_url,report_date,retrieved_on,sha256
+data/source_reports/2026-09-07_mirae_sk_hynix.pdf,https://securities.miraeasset.com/bbs/download/2147118.pdf?attachmentId=2147118,2026-09-07,2026-09-10,175f1d0249e8b5fb1cea2930837789d94e571ef9387e65b841f1200ec443f52c
+data/source_reports/2026-09-07_mirae_samsung_electronics.pdf,https://securities.miraeasset.com/bbs/download/2147119.pdf?attachmentId=2147119,2026-09-07,2026-09-10,5adee6606318fd0fd843ef1866e664b2442d1077e8c8fa65fb92cf9c5e9fefe4
+data/source_reports/2021-10-27_mirae_sk_hynix.pdf,https://securities.miraeasset.com/bbs/download/2088623.pdf?attachmentId=2088623,2021-10-27,2026-09-10,ae9f8b7ef412257a4ad5bbbc34fabb57bf48eaf149e2c5b7db482e42b868218b
+data/source_reports/2021-10-27_meritz_sk_hynix.pdf,https://home.imeritz.com/include/resource/research/WorkFlow/20211026201826942K_02.pdf,2021-10-27,2026-09-10,688f08cf2a1dac60c82afb3f70a35deef3b2def89a07034c159a0048cb7b2ec8

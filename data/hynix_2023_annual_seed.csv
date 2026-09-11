@@ -1,0 +1,2 @@
+source_id,company_ids,source_kind,source_url,report_date,firm,analyst_name,discovered_from,expected_format
+hynix_2023_results_chinese,sk_hynix,issuer_results,https://news.skhynix.com/cn/sk-hynix-reports-fourth-quarter-2023-financial-results/,2024-01-25,,,Official issuer Chinese newsroom annual result,html

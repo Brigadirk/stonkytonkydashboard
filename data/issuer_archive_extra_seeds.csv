@@ -1,0 +1,6 @@
+source_id,company_ids,source_kind,source_url,report_date,firm,analyst_name,discovered_from,expected_format
+hynix_results_sk-hynix-reports-second-quarter-2023-financial-results,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-reports-second-quarter-2023-financial-results/,,,,https://news.skhynix.com/en/tag/earnings/page/2/,html
+hynix_results_2023-first-quarter-financial-results,sk_hynix,issuer_results,https://news.skhynix.com/en/2023-first-quarter-financial-results/,,,,https://news.skhynix.com/en/tag/earnings/page/2/,html
+hynix_results_sk-hynix-reports-2022-and-fourth-quarter-financial-results,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-reports-2022-and-fourth-quarter-financial-results/,,,,https://news.skhynix.com/en/tag/earnings/page/2/,html
+hynix_results_sk-hynix-inc-reports-fiscal-year-2021-and-fourth-quarter-results,sk_hynix,issuer_results,https://news.skhynix.com/en/sk-hynix-inc-reports-fiscal-year-2021-and-fourth-quarter-results/,,,,https://news.skhynix.com/en/tag/earnings/page/2/,html
+samsung_statements_archive_corrected,samsung_electronics,issuer_archive,https://www.samsung.com/global/ir/financial-information/audited-financial-statements/,,,,https://www.samsung.com/global/ir/financial-information/earnings-release/,html

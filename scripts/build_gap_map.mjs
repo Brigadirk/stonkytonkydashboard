@@ -1,0 +1,11 @@
+import { readFileSync, writeFileSync } from 'node:fs';
+import { buildGapMap, gapCsv } from '../web/src/coverage.ts';
+const root=new URL('../',import.meta.url);
+const data=JSON.parse(readFileSync(new URL('web/public/data/dashboard.json',root),'utf8'));
+const settings={asOf:data.cutoff,window:365,maxAge:180,strict:false};
+const rows=buildGapMap(data,settings);
+const targets=rows.flatMap(row=>row.months.filter(m=>m.sessions>m.eps_days).map(m=>({company:row.company_id,series:row.series_label,month:m.month,missing_sessions:m.sessions-m.eps_days,other_series_only_sessions:m.other_series_days,reasons:m.reasons,action:m.other_series_days===m.sessions-m.eps_days?'Inspect separate author or accounting series before collecting duplicates':'Collect dated consecutive-year EPS models'}))).sort((a,b)=>b.month.localeCompare(a.month)||b.missing_sessions-a.missing_sessions);
+writeFileSync(new URL('data/market/monthly_gap_map.json',root),JSON.stringify({settings,rows},null,2)+'\n');
+writeFileSync(new URL('data/market/monthly_gap_map.csv',root),gapCsv(rows)+'\n');
+writeFileSync(new URL('data/market/collection_targets.json',root),JSON.stringify({settings,interpretation:'Missing dates in the selected default series. Other-series coverage is recorded separately; no series are pooled.',targets},null,2)+'\n');
+console.log(JSON.stringify({companies:rows.length,company_months_with_gaps:targets.length,recent_targets:targets.filter(t=>t.month>='2026-01').length}));

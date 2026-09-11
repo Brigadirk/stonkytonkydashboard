@@ -1,0 +1,35 @@
+import { describe, it, expect } from 'vitest';
+import { bandValue, calculate, forwardEps, median, sampleStd, shiftDate } from '../src/engine';
+import type { Company, Snapshot, Series } from '../src/types';
+const ntm:Snapshot={id:'fixture',kind:'ntm',report_date:'2024-01-01',model_date:'2024-01-01',available_date:'2024-01-02',availability_basis:'printed_report_date_assumption',share_basis_date:'2024-01-01',source_url:'https://example.test/model',source_file:'',source_sha256:'test',estimates:[{observation_id:'test',fiscal_period:'NTM',fiscal_period_start:'',fiscal_period_end:'',eps:1,source_page:'1'}]};
+const company:Company={id:'test',name:'Test fixture',symbol:'TEST',exchange:'TEST',currency:'USD',prices:[],splits:[],series:[],gaps:[],forecast_count:0};
+const series:Series={id:'test',label:'Test model',analyst:'A',firm:'B',accounting_basis:'adjusted',currency:'USD',coverage_note:'Unit test only',snapshots:[ntm]};
+const options={window:365,maxAge:180,strict:false,asOf:'2024-12-31'};
+const daily=(count:number)=>Array.from({length:count},(_,i)=>({date:shiftDate('2024-01-02',i),close:10+i,currency:'USD',adjustment_basis:'split_adjusted_to_cutoff',source_url:'https://example.test',source_sha256:'test'}));
+const annual:Snapshot={...ntm,kind:'annual',estimates:[{observation_id:'fy24',fiscal_period:'FY2024',fiscal_period_start:'2024-01-01',fiscal_period_end:'2024-12-31',eps:366,source_page:'1'},{observation_id:'fy25',fiscal_period:'FY2025',fiscal_period_start:'2025-01-01',fiscal_period_end:'2025-12-31',eps:365,source_page:'1'}]};
+describe('historical valuation calculations',()=>{
+  it('calculates median and sample standard deviation independently',()=>{expect(median([1,2,3,100])).toBe(2.5);expect(sampleStd([2,4,6])).toBe(2)});
+  it('does not use forecasts before availability or claim report assumptions are verified',()=>{expect(forwardEps(company,ntm,'2024-01-01',180,false).eps).toBeNull();expect(forwardEps(company,ntm,'2024-01-02',180,true).eps).toBeNull();expect(forwardEps(company,{...ntm,availability_basis:'verified_available_at'},'2024-01-02',180,true).eps).toBe(1)});
+  it('excludes today from the reference distribution and converts multiples to prices',()=>{const prices=daily(21);prices[20].close=1000;const points=calculate({...company,prices},series,options),p=points[20];expect(p.count).toBe(20);expect(p.median).toBe(19.5);expect(p.std).toBeCloseTo(5.916079783);expect(p.percentile).toBe(100);expect(bandValue(p,1.5,'price')).toBeCloseTo(19.5+1.5*5.916079783)});
+  it('uses calendar windows and requires 20 valid prior observations',()=>{const prices=daily(30);const points=calculate({...company,prices},series,{...options,window:20});expect(points[19].median).toBeNull();expect(points[29].count).toBe(20);expect(points[29].median).toBe(28.5)});
+  it('does not refresh old models when reports are reprinted',()=>{const old={...ntm,report_date:'2024-05-01',available_date:'2024-05-02'};expect(forwardEps(company,old,'2024-05-03',90,false).eps).toBeNull()});
+  it('preserves losses for the earnings chart while suppressing P/E',()=>{const loss={...ntm,estimates:[{...ntm.estimates[0],eps:-2}]};const p=calculate({...company,prices:daily(1)},{...series,snapshots:[loss]},options)[0];expect(p.eps).toBe(-2);expect(p.multiple).toBeNull();expect(p.reason).toContain('negative')});
+  it('retains near-zero EPS but excludes unstable multiples',()=>{const tiny={...ntm,estimates:[{...ntm.estimates[0],eps:0.001}]};const p=calculate({...company,prices:daily(1)},{...series,snapshots:[tiny]},options)[0];expect(p.eps).toBe(0.001);expect(p.multiple).toBeNull();expect(p.reason).toContain('close to zero')});
+  it('normalizes old EPS to the same split basis as prices',()=>{const splitCompany={...company,splits:[{effective_date:'2024-06-10',ratio:10,source_url:'https://example.test/split'}]};expect(forwardEps(splitCompany,{...ntm,estimates:[{...ntm.estimates[0],eps:40}]},'2024-02-01',180,false).eps).toBe(4);expect(forwardEps(splitCompany,{...ntm,share_basis_date:'2024-06-10',model_date:'2024-06-10',estimates:[{...ntm.estimates[0],eps:4}]},'2024-06-11',180,false).eps).toBe(4)});
+  it('does not accept dividend-adjusted or currency-mismatched valuation inputs',()=>{expect(calculate({...company,prices:daily(1).map(p=>({...p,adjustment_basis:'total_return'}))},series,options)[0].multiple).toBeNull();expect(calculate({...company,prices:daily(1)},{...series,currency:'EUR'},options)[0].multiple).toBeNull()});
+  it('weights exact fiscal years and handles leap-day anniversaries',()=>{expect(forwardEps(company,annual,'2024-02-29',365,false).eps).toBe(365)});
+  it('handles a 53-week fiscal year by daily overlap instead of month-end shorthand',()=>{const s={...annual,estimates:[{...annual.estimates[0],fiscal_period_start:'2024-08-30',fiscal_period_end:'2025-08-28',eps:364},{...annual.estimates[1],fiscal_period_start:'2025-08-29',fiscal_period_end:'2026-09-03',eps:371}]};expect(forwardEps(company,{...s,model_date:'2025-01-01'},'2025-01-02',180,false).eps).toBe(365)});
+  it('leaves a fiscal rollover gap rather than mixing snapshot vintages',()=>{const incomplete={...annual,id:'new',available_date:'2024-06-01',report_date:'2024-05-31',model_date:'2024-05-31',estimates:annual.estimates.slice(0,1)};const p=calculate({...company,prices:[{...daily(1)[0],date:'2024-06-03'}]},{...series,snapshots:[annual,incomplete]},options)[0];expect(p.eps).toBeNull();expect(p.snapshot?.id).toBe('new')});
+  it('does not include any prices or estimates beyond the selected as-of date',()=>{const p=calculate({...company,prices:daily(30)},series,{...options,asOf:'2024-01-15'});expect(p.at(-1)?.date).toBe('2024-01-15')});
+  it('remains unchanged by an unrelated future forecast',()=>{const c={...company,prices:daily(30)};const future={...ntm,id:'later',available_date:'2024-12-01',estimates:[{...ntm.estimates[0],eps:100}]};expect(calculate(c,series,options)).toEqual(calculate(c,{...series,snapshots:[ntm,future]},options))});
+  it('uses exact archived availability only from its conservative bound and retains a still-valid verified model',()=>{
+    const archived={...ntm,verification_kind:'verified_available_by_archive',verified_available_date:'2024-01-15',availability_evidence_url:'https://web.archive.org/web/test'};
+    expect(forwardEps(company,archived,'2024-01-14',180,true).eps).toBeNull();
+    expect(forwardEps(company,archived,'2024-01-15',180,true).eps).toBe(1);
+    const unverified={...ntm,id:'newer-unverified',model_date:'2024-01-20',report_date:'2024-01-20',available_date:'2024-01-21',estimates:[{...ntm.estimates[0],eps:100}]};
+    const co={...company,prices:daily(30)},s={...series,snapshots:[archived,unverified]};
+    const strict=calculate(co,s,{...options,strict:true});
+    expect(strict[12].eps).toBeNull();expect(strict[13].eps).toBe(1);expect(strict[25].eps).toBe(1);
+    expect(calculate(co,s,options)[25].eps).toBe(100);
+  });
+});

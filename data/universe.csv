@@ -1,0 +1,11 @@
+company_id,company_name,listing_symbol,exchange,share_class,price_currency,forecast_currency,selected_on,notes
+broadcom,Broadcom,AVGO,NASDAQ,common,USD,USD,2026-09-10,
+alphabet,Alphabet,GOOGL,NASDAQ,Class A,USD,USD,2026-09-10,Google; GOOG Class C is a separate listing
+nvidia,NVIDIA,NVDA,NASDAQ,common,USD,USD,2026-09-10,
+sk_hynix,SK hynix,000660,KRX,common,KRW,KRW,2026-09-10,Preserve leading zeros in symbol
+samsung_electronics,Samsung Electronics,005930,KRX,common,KRW,KRW,2026-09-10,Common shares; not preferred 005935
+micron,Micron Technology,MU,NASDAQ,common,USD,USD,2026-09-10,User spelling Micon interpreted as Micron
+sandisk,Sandisk,SNDK,NASDAQ,common,USD,USD,2026-09-10,Current standalone company; check 2025 separation before linking older history
+asml,ASML,ASML,Euronext Amsterdam,ordinary,EUR,EUR,2026-09-10,US listing is separate; do not divide USD share price by EUR EPS
+apple,Apple,AAPL,NASDAQ,common,USD,USD,2026-09-10,Added at user request; fiscal year ends the last Saturday in September
+besi,BE Semiconductor Industries,BESI,Euronext Amsterdam,ordinary,EUR,EUR,2026-09-10,Amsterdam ordinary shares; ISIN NL0012866412; calendar fiscal year; OTC ADR is separate
