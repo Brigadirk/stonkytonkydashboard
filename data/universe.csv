@@ -9,3 +9,16 @@ sandisk,Sandisk,SNDK,NASDAQ,common,USD,USD,2026-09-10,Current standalone company
 asml,ASML,ASML,Euronext Amsterdam,ordinary,EUR,EUR,2026-09-10,US listing is separate; do not divide USD share price by EUR EPS
 apple,Apple,AAPL,NASDAQ,common,USD,USD,2026-09-10,Added at user request; fiscal year ends the last Saturday in September
 besi,BE Semiconductor Industries,BESI,Euronext Amsterdam,ordinary,EUR,EUR,2026-09-10,Amsterdam ordinary shares; ISIN NL0012866412; calendar fiscal year; OTC ADR is separate
+amd,AMD,AMD,NASDAQ,common,USD,USD,2026-09-12,Selected by Edwin on 2026-09-12; prices and earnings collected on 2026-09-14; annual forecast history is partial
+cerebras,Cerebras,CBRS,NASDAQ,Class A,USD,USD,2026-09-12,Selected by Edwin on 2026-09-12; prices and earnings collected on 2026-09-14; no usable dated annual forecast history retained; listed in May 2026; do not invent pre-listing price history
+marvell,Marvell Technology,MRVL,NASDAQ,common,USD,USD,2026-09-12,Selected by Edwin on 2026-09-12; prices and earnings collected on 2026-09-14; annual forecast history is partial
+tsmc,TSMC,TSM,NYSE,ADS,USD,USD,2026-09-12,"Selected by Edwin on 2026-09-12; prices and earnings collected on 2026-09-14; annual forecast history is partial; US depositary listing; forecasts must use USD per ADS, not TWD per ordinary share"
+arista,Arista Networks,ANET,NYSE,common,USD,USD,2026-09-12,Selected by Edwin on 2026-09-12; prices and earnings collected on 2026-09-14; annual forecast history is partial
+vertiv,Vertiv,VRT,NYSE,Class A,USD,USD,2026-09-12,Selected by Edwin on 2026-09-12; prices and earnings collected on 2026-09-14; annual forecast history is partial
+nebius,Nebius,NBIS,NASDAQ,Class A,USD,USD,2026-09-12,Selected by Edwin on 2026-09-12; prices and earnings collected on 2026-09-14; annual forecast history is partial
+oracle,Oracle,ORCL,NYSE,common,USD,USD,2026-09-12,Selected by Edwin on 2026-09-12; prices and earnings collected on 2026-09-14; annual forecast history is partial
+microsoft,Microsoft,MSFT,NASDAQ,common,USD,USD,2026-09-12,Selected by Edwin on 2026-09-12; prices and earnings collected on 2026-09-14; annual forecast history is partial
+amazon,Amazon,AMZN,NASDAQ,common,USD,USD,2026-09-12,Selected by Edwin on 2026-09-12; prices and earnings collected on 2026-09-14; annual forecast history is partial
+meta,Meta Platforms,META,NASDAQ,Class A,USD,USD,2026-09-12,Selected by Edwin on 2026-09-12; prices and earnings collected on 2026-09-14; annual forecast history is partial
+spacex,SpaceX,SPCX,NASDAQ,Class A,USD,USD,2026-09-12,"Selected by Edwin on 2026-09-12; prices and earnings collected on 2026-09-14; annual forecast history is partial; listed parent includes xAI, space and connectivity; listed in June 2026"
+palantir,Palantir Technologies,PLTR,NASDAQ,Class A,USD,USD,2026-09-14,Selected by Edwin; price and dated EPS collection; listed 2020-09-30 and later moved from NYSE to Nasdaq

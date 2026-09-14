@@ -18,7 +18,7 @@ export default function Overview({data,settings,onOpen,onChange,onExport,advance
   const ranks=scenarioRanks(rows,0,sigma);
   const sorted=[...rows].sort((a,b)=>sort==='name'?a.company.name.localeCompare(b.company.name):sort==='upside'?(ranks.get(a.company.id)??Infinity)-(ranks.get(b.company.id)??Infinity):0);
   const exportOverview=()=>{
-    const files=rows.map(row=>projectionCsv(row.company,row.views[0].projection?[row.views[0].projection]:[]));
+    const files=rows.filter(row=>row.views[0].projection).map(row=>projectionCsv(row.company,row.views[0].projection?[row.views[0].projection]:[]));
     onExport(`one-year-scenarios-${settings.asOf}.csv`,files.map((file,i)=>i?file.split('\n').slice(1).join('\n'):file).join('\n'));
   };
   return <section className="card tab-card overview-panel simple-overview">

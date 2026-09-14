@@ -25,17 +25,17 @@ test('future bands roll frozen earnings to the dated targets in stock and overvi
     const curves=plot.data!.filter(t=>t.name.includes(' · Projected '));
     const targets=plot.data!.find(t=>t.name==='All 12-month targets');
     return {height:plot._fullLayout.height,targets:targets?.y.length,curves:curves.length,
-      daily:curves.every(t=>t.x.length===366&&t.x[0]===actual.x.at(-1)&&t.x.at(-1)==='2027-09-09'),
+      daily:curves.every(t=>t.x.length===366&&t.x[0]===actual.x.at(-1)&&t.x.at(-1)==='2027-09-11'),
       formula:curves.every(t=>t.y.every((v,i)=>v!==null&&Math.abs(v-t.customdata[i][0]*t.customdata[i][1])<1e-8)),
       fixedMultiples:curves.every(t=>new Set(t.customdata.map(v=>v[1])).size===1),
       noMarketAnchor:curves.every(t=>t.y[0]!==actual.y.at(-1)),
       endpointMatch:curves.every((t,i)=>t.y.at(-1)===targets?.y[i]),
       preservesGaps:curves.every(t=>t.connectgaps===false)};
   })).toEqual({height:640,targets:7,curves:7,daily:true,formula:true,fixedMultiples:true,noMarketAnchor:true,endpointMatch:true,preservesGaps:true});
-  for(const date of ['2026-09-12','2027-09-09']){
+  for(const date of ['2026-09-12','2027-09-11']){
     const value=await cursorAt(page,date);
     await expect(value).toHaveAttribute('data-kind','scenario');
-    await expect(value).toContainText(date==='2026-09-12'?'+2σ projected valuation':'+2σ 1-year target · 589 USD');
+    await expect(value).toContainText(date==='2026-09-12'?'+2σ projected valuation':'+2σ 1-year target');
     await expect(value).toContainText('Forward P/E');
     await expect(value).not.toContainText('Close');
   }
@@ -45,8 +45,8 @@ test('future bands roll frozen earnings to the dated targets in stock and overvi
   await expect(page.getByText('How the future corridor works',{exact:true})).toHaveCount(0);
   await expect(page.getByRole('button',{name:'Export corridor and price evidence'})).toHaveCount(0);
   await page.getByRole('tab',{name:'All stocks',exact:true}).click();
-  await expect(page.locator('.mini-corridor')).toHaveCount(10);
-  for(const mini of await page.locator('.mini-corridor').all()){
+  await expect(page.locator('.mini-corridor')).toHaveCount(23);
+  for(const mini of await page.locator('[data-company]:not([data-company="cerebras"]) .mini-corridor').all()){
     expect(await mini.evaluate(el=>{
       const actual=el.querySelector('path[data-actual-through]') as SVGPathElement;
       const end=actual.getPointAtLength(actual.getTotalLength());

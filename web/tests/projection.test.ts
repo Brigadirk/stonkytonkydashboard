@@ -136,15 +136,22 @@ describe('one-year-ahead valuation scenarios',()=>{
   it('keeps all real stock targets and exported target references fixed across entry windows',()=>{
     const data:DashboardData=JSON.parse(readFileSync(new URL('../public/data/dashboard.json',import.meta.url),'utf8'));
     const rows=overviewRows(data,{...settings,company:'',series:'',asOf:data.cutoff},[90,180,365]);
-    expect(rows).toHaveLength(10);
-    for(const row of rows){
+    expect(rows).toHaveLength(23);
+    const pricedRows=rows.filter(row=>row.company.prices.length);
+    expect(pricedRows).toHaveLength(23);
+    expect(rows.filter(row=>projectedPrice(row.views[0].projection,0)!==null)).toHaveLength(22);
+    for(const row of pricedRows){
       for(const view of row.views){
         expect(view.projection).toEqual(row.views[0].projection);
         expect(view.projection!.window).toBe(365);
-        expect(projectedPrice(view.projection,0)).not.toBeNull();
+        if(row.company.id==='cerebras') {
+          expect(projectedPrice(view.projection,0)).toBeNull();
+          expect(view.projection!.reason).toBe('No usable earnings series collected');
+          expect(view.projection!.currentPrice).toBeGreaterThan(0);
+        } else expect(projectedPrice(view.projection,0)).not.toBeNull();
       }
       expect(projectionCsv(row.company,[row.views[0].projection!])).toBe(projectionCsv(row.company,[row.views[2].projection!]));
     }
-    expect(rows.filter(row=>row.views[0].history.at(-1)!.median!==row.views[2].history.at(-1)!.median).length).toBeGreaterThan(0);
+    expect(pricedRows.filter(row=>row.views[0].history.at(-1)!.median!==row.views[2].history.at(-1)!.median).length).toBeGreaterThan(0);
   });
 });
