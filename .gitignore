@@ -15,6 +15,7 @@ __pycache__/
 # Keep the runnable snapshot, source code and small research inputs in Git.
 # Original downloads, databases, collection outputs and local archives stay local.
 /data/*
+!/data/reviewed/
 !/data/universe.csv
 !/data/analyst_candidates.csv
 !/data/forecast_samples.csv

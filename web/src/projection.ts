@@ -89,6 +89,7 @@ export function projectValuation(company: Company, reference: ValuationPoint | u
   const price=company.prices.find(p=>p.date===origin);
   const priceValid=price?.currency===company.currency&&price.adjustment_basis==='split_adjusted_to_cutoff';
   const reason=!priceValid?'Price split adjustment or currency is unverified'
+    :!ensemble&&!series?'No usable earnings series collected'
     :!ensemble&&series?.currency!==company.currency?'Price and forecast currencies differ'
     :!members.length?reference.reason||'No eligible forecast at the projection origin'
     :!complete?ensemble?'Projection unavailable: every origin contributor must cover the future earnings interval. Missing members have not been dropped.':members[0].reason

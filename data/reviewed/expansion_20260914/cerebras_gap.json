@@ -1,0 +1,97 @@
+{
+  "company_id": "cerebras",
+  "checked_id": "0P0001TTTC",
+  "firstrade_404_count_total": 18,
+  "additional_checked_dates": [
+    "2026-06-23",
+    "2026-06-24",
+    "2026-09-10"
+  ],
+  "status": "current_consensus_observed_no_pre_cutoff_annual_vintage",
+  "annual_consensus_observations": [
+    {
+      "company_id": "cerebras",
+      "firm": "Zacks Investment Research",
+      "analyst": "Compiled consensus; individual analysts not named",
+      "source_url": "https://stage.zacks.com/stock/quote/CBRS/detailed-earning-estimates",
+      "retained_file": "data/collection/expansion_20260914_hardware/cbrs_extra/zacks_web_extract.json",
+      "retained_file_sha256": "5fcda653821f8b2e8a559926b368dc3134fb5c9e8200c5dfdacb8db1bfada687",
+      "retained_artifact_type": "web_tool_text_extract_not_original_html",
+      "original_html_retained": false,
+      "first_observed_at": "2026-09-13 22:14:36 UTC",
+      "local_capture_date": "2026-09-14",
+      "report_date": null,
+      "model_date": null,
+      "availability_basis": "current_page_observed_at_capture_only",
+      "source_locator": "Detailed Estimates > Earnings Estimates > Current Year (12/2026), Next Year (12/2027) > Zacks Consensus Estimate",
+      "accounting_basis": "zacks_consensus_eps_adjustment_and_dilution_unresolved",
+      "currency": "USD",
+      "unit": "USD_per_share",
+      "eligible_for_2026_09_11_dashboard": false,
+      "fiscal_period": "FY2026",
+      "fiscal_period_start": "2026-01-01",
+      "fiscal_period_end": "2026-12-31",
+      "eps": -0.52,
+      "estimate_count": 4,
+      "high_estimate": -0.16,
+      "low_estimate": -1.0,
+      "source_period_label": "12/2026"
+    },
+    {
+      "company_id": "cerebras",
+      "firm": "Zacks Investment Research",
+      "analyst": "Compiled consensus; individual analysts not named",
+      "source_url": "https://stage.zacks.com/stock/quote/CBRS/detailed-earning-estimates",
+      "retained_file": "data/collection/expansion_20260914_hardware/cbrs_extra/zacks_web_extract.json",
+      "retained_file_sha256": "5fcda653821f8b2e8a559926b368dc3134fb5c9e8200c5dfdacb8db1bfada687",
+      "retained_artifact_type": "web_tool_text_extract_not_original_html",
+      "original_html_retained": false,
+      "first_observed_at": "2026-09-13 22:14:36 UTC",
+      "local_capture_date": "2026-09-14",
+      "report_date": null,
+      "model_date": null,
+      "availability_basis": "current_page_observed_at_capture_only",
+      "source_locator": "Detailed Estimates > Earnings Estimates > Current Year (12/2026), Next Year (12/2027) > Zacks Consensus Estimate",
+      "accounting_basis": "zacks_consensus_eps_adjustment_and_dilution_unresolved",
+      "currency": "USD",
+      "unit": "USD_per_share",
+      "eligible_for_2026_09_11_dashboard": false,
+      "fiscal_period": "FY2027",
+      "fiscal_period_start": "2027-01-01",
+      "fiscal_period_end": "2027-12-31",
+      "eps": 1.24,
+      "estimate_count": 4,
+      "high_estimate": 1.5,
+      "low_estimate": 1.0,
+      "source_period_label": "12/2027"
+    }
+  ],
+  "original_pdf_source": {
+    "source_url": "https://advisortools.zacks.com/Research/Stocks/CBRS/Overview/PDF/2026-05-14/2026-09-13",
+    "retrieved_at": "2026-09-13T22:14:27.186123+00:00",
+    "http_status": 200,
+    "source_file": "apps/ai-valuation/data/collection/expansion_20260914_hardware/cbrs_extra/zacks_advisor_current.pdf",
+    "source_sha256": "892a8872f67375a9d30ce4fe16f241cd196ebad3d22a228675e93ebd1efdede3",
+    "bytes": 86551
+  },
+  "original_pdf_note": "Original Zacks overview PDF was retained. Annual EPS cells are blank. The chart visually shows a Dec2026 to Dec2027 EPS line; no exact annual values were read from chart pixels. Printed quarterly consensus EPS is -0.13 for Q3 2026 and -0.20 for Q4 2026. The URL dates do not date the generated document.",
+  "quarterly_eps_in_original_pdf": [
+    {
+      "period": "Q3 2026",
+      "eps": -0.13,
+      "source_page": "1"
+    },
+    {
+      "period": "Q4 2026",
+      "eps": -0.2,
+      "source_page": "1"
+    }
+  ],
+  "gaps": [
+    "No FY2028 annual EPS forecast found.",
+    "No independently dated pre-September-11 annual forecast found.",
+    "Exact EPS adjustment and dilution definitions are not stated on the captured page.",
+    "Direct www.zacks.com returns HTTP403. Direct stage page returns a security script, not earnings table HTML. Annual numbers are retained in a clearly labelled web-tool text extract."
+  ],
+  "six_company_evidence_changed": false
+}

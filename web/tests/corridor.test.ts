@@ -67,6 +67,8 @@ describe('anchored future price corridor',()=>{
     for(const c of data.companies){
       const s=bestSeries(c,data.cutoff),options={window:365,maxAge:180,strict:false,asOf:data.cutoff};
       const p=projectValuation(c,targetReference(c,s,options),s,options)!,path=priceCorridor(c,p);
+      if(!c.prices.length){expect(p).toBeNull();expect(path.reason).toBe('No projection origin');continue;}
+      if(!c.series.length){expect(p.reason).toBe('No usable earnings series collected');expect(projectedPrice(p,0)).toBeNull();expect(path.reason).not.toBeNull();continue;}
       expect(path.reason).toBeNull();
       for(const k of CORRIDOR_LEVELS)expect(corridorPrice(path,p.target,k)).toBe(projectedPrice(p,k));
       if(c.id==='nvidia'){

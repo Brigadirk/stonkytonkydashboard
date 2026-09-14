@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
-test('ten-stock workspace, bands, date controls, strict gaps and exports',async({page})=>{
+test('expanded company workspace, bands, date controls, strict gaps and exports',async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto('/');
   await page.getByRole('button',{name:'Advanced',exact:true}).click();
   await expect(page.getByRole('heading',{name:'SK hynix.'})).toBeVisible();
-  await expect(page.locator('nav[aria-label="Company selection"] button')).toHaveCount(10);
+  await expect(page.locator('nav[aria-label="Company selection"] button')).toHaveCount(23);
   await expect(page.locator('[data-testid="chart-price"] .main-svg').first()).toBeVisible();
   const bandBox=page.getByLabel('±1.5σ',{exact:true});
   await bandBox.uncheck();await expect(bandBox).not.toBeChecked();await bandBox.check();
@@ -26,7 +26,7 @@ test('ten-stock workspace, bands, date controls, strict gaps and exports',async(
   await page.getByRole('tab',{name:'Forecast vs. actual'}).click();
   await expect(page.getByRole('heading',{name:'Forecasts compared with results',exact:true})).toBeVisible();
   await page.getByRole('tab',{name:'Data coverage'}).click();
-  await expect(page.locator('.gap-table tbody tr')).toHaveCount(10);
+  await expect(page.locator('.gap-table tbody tr')).toHaveCount(23);
   await expect(page.getByRole('heading',{name:'Backtest readiness'})).toBeVisible();
   const readinessDownload=page.waitForEvent('download');
   await page.getByRole('button',{name:'Export every series'}).click();
@@ -35,7 +35,7 @@ test('ten-stock workspace, bands, date controls, strict gaps and exports',async(
     await page.locator('nav button').filter({has:page.locator('.stock-symbol',{hasText:new RegExp(`^${symbol}$`)})}).click();
     await expect(page.locator('[data-testid="chart-price"] .main-svg').first()).toBeVisible();
   }
-  await page.getByLabel('As of date').fill('2026-09-10');
+  await page.getByLabel('As of date').fill('2026-09-11');
   await page.getByText('Calculation settings', {exact:true}).click();
   await page.getByLabel('Require verified availability').uncheck();
   for(const symbol of ['ASML','SNDK','AAPL']) {
@@ -52,7 +52,7 @@ test('ten-stock workspace, bands, date controls, strict gaps and exports',async(
   await page.getByRole('button',{name:'Export gap map'}).click();
   expect((await gapDownload).suggestedFilename()).toBe('monthly-forecast-gaps.csv');
   await page.getByRole('tab',{name:'All stocks'}).click();
-  await expect(page.locator('.overview-table tbody tr')).toHaveCount(10);
+  await expect(page.locator('.overview-table tbody tr')).toHaveCount(23);
   await page.locator('.overview-table tbody tr').filter({hasText:'AAPL'}).locator('button').first().click();
   await expect(page.getByRole('heading',{name:'Apple.'})).toBeVisible();
   await expect(page.getByLabel('Window in days')).toHaveValue('270');
@@ -76,7 +76,7 @@ test('mobile layout stays inside viewport and settings survive reload',async({pa
 });
 
 test('BESI opens its EUR valuation bands and exports dated forecasts',async({page})=>{
-  await page.goto('/?company=besi&window=365&asOf=2026-09-10');
+  await page.goto('/?company=besi&window=365&asOf=2026-09-11');
   await page.getByRole('button',{name:'Advanced',exact:true}).click();
   await expect(page.getByRole('heading',{name:'BE Semiconductor Industries.'})).toBeVisible();
   await expect(page.locator('.price-heading')).toContainText('EUR');
@@ -90,4 +90,32 @@ test('BESI opens its EUR valuation bands and exports dated forecasts',async({pag
   await page.getByRole('tab',{name:'Forecast archive'}).click();
   await expect(page.locator('.archive-summary')).not.toContainText('No eligible series');
   await expect(page.locator('.tab-card tbody tr').first()).toContainText('EUR');
+});
+
+
+test('new companies show prices and forecasts, with Cerebras and source limits kept visible',async({page})=>{
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.goto('/');
+  for(const symbol of ['AMD','CBRS','MRVL','TSM','ANET','VRT','NBIS','ORCL','MSFT','AMZN','META','SPCX','PLTR']) {
+    await page.locator('nav button').filter({has:page.locator('.stock-symbol',{hasText:new RegExp(`^${symbol}$`)})}).click();
+    await expect(page.getByTestId('simple-current')).not.toContainText('—');
+    if(symbol==='CBRS') {
+      await expect(page.getByTestId('simple-target')).toHaveText('— USD');
+      await expect(page.getByRole('note')).toContainText('No usable dated annual forecast history');
+    } else await expect(page.getByTestId('simple-target')).not.toContainText('—');
+    await expect(page.locator('[data-testid="chart-price"] .main-svg').first()).toBeVisible();
+    if(symbol==='NBIS')await expect(page.getByRole('note')).toContainText('conflicting model date');
+    if(symbol==='PLTR')await expect(page.getByRole('note')).toContainText('130 days old');
+  }
+  await page.getByRole('button',{name:'Advanced',exact:true}).click();
+  await page.getByRole('tab',{name:'Forecast vs. actual'}).click();
+  await expect(page.getByTestId('reported-earnings')).toContainText('Reported annual earnings');
+  await expect(page.getByTestId('reported-earnings').locator('tbody tr').first()).toContainText('0.63');
+  await expect(page.getByTestId('reported-earnings').locator('a').first()).toHaveAttribute('href',/^https:\/\/data.sec.gov\//);
+  await page.getByRole('tab',{name:'All stocks'}).click();
+  await expect(page.locator('.overview-eyebrow')).toContainText('23 COMPANIES');
+  await expect(page.locator('.mini-empty')).toHaveCount(0);
+  await expect(page.locator('.mini-corridor')).toHaveCount(23);
+  await expect(page.locator('[data-company="cerebras"] .target-price')).toHaveText('—');
+  expect(errors).toEqual([]);
 });

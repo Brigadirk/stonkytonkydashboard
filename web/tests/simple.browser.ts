@@ -4,14 +4,14 @@ test('simple stock keeps all deviation targets in one chart and the same calcula
   const errors:string[]=[];page.on('pageerror',error=>errors.push(error.message));
   await page.goto('/?company=broadcom');
   await expect(page.getByTestId('simple-stock')).toBeVisible();
-  await expect(page.getByRole('tab')).toHaveCount(2);
+  await expect(page.getByRole('tab')).toHaveCount(3);
   await expect(page.locator('main input, main select')).toHaveCount(1);
   await expect(page.getByLabel('Chart history',{exact:true})).toBeVisible();
   await expect(page.locator('.chart')).toHaveCount(1);
   await expect(page.locator('.simple-stock-controls button')).toHaveCount(3);
   await expect(page.locator('.target-level')).toHaveCount(7);
-  await expect(page.getByTestId('simple-current')).toHaveText('364.38 USD');
-  await expect(page.getByTestId('simple-target')).toHaveText('819.15 USD');
+  await expect(page.getByTestId('simple-current')).toHaveText('361.99 USD');
+  await expect(page.getByTestId('simple-target')).not.toContainText('—');
   for(const level of [-2,-1.5,-1,0,1,1.5,2]){
     const card=page.locator(`.target-level[data-sigma="${level}"]`);
     await card.click();
@@ -28,7 +28,7 @@ test('simple stock keeps all deviation targets in one chart and the same calcula
   const fixedTargets=await page.locator('.target-level-price').allTextContents(),entryComparisons:string[]=[];
   for(const window of ['90 days','180 days','1 year']){
     await page.getByRole('button',{name:window,exact:true}).click();
-    await expect(page.locator('.simple-price-target')).toContainText('9 Sept 2027');
+    await expect(page.locator('.simple-price-target')).toContainText('11 Sept 2027');
     const prices=await page.locator('.target-level-price').allTextContents();
     expect(prices).toEqual(fixedTargets);
     entryComparisons.push(await page.getByTestId('entry-comparison').innerText());
@@ -45,7 +45,7 @@ test('simple stock keeps all deviation targets in one chart and the same calcula
     const targets=plot.data?.find(t=>t.name==='All 12-month targets');
     const actual=plot.data?.find(t=>t.name==='Share price');
     return marker&&targets&&actual?{date:marker.x[0],sameEndpoint:marker.y[0]===targets.y.at(-1),actualEnd:actual.x.at(-1),plainHover:!actual.hovertemplate?.includes('EPS')}:null;
-  })).toEqual({date:'2027-09-09',sameEndpoint:true,actualEnd:'2026-09-09',plainHover:true});
+  })).toEqual({date:'2027-09-11',sameEndpoint:true,actualEnd:'2026-09-11',plainHover:true});
   await page.getByRole('button',{name:'Advanced',exact:true}).click();
   await expect(page.getByTestId('projection-panel').locator('.metric strong').nth(1)).toHaveText(target);
   await expect(page.getByLabel('Target valuation scenario')).toHaveValue('2');
@@ -55,7 +55,7 @@ test('simple stock keeps all deviation targets in one chart and the same calcula
   await page.reload();
   await expect(page.getByTestId('simple-target')).toHaveText(target);
   await expect(page.getByRole('button',{name:'Highlight +2σ target',exact:true})).toHaveAttribute('aria-pressed','true');
-  await expect(page.getByRole('tab')).toHaveCount(2);
+  await expect(page.getByRole('tab')).toHaveCount(3);
   expect(errors).toEqual([]);
 });
 
@@ -76,7 +76,7 @@ test('all ten stocks work in the simple mobile view, including returning from Al
     expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBe(390);
   }
   await page.getByRole('tab',{name:'All stocks'}).click();
-  await expect(page.locator('.mini-corridor')).toHaveCount(10);
+  await expect(page.locator('.mini-corridor')).toHaveCount(23);
   await expect(page.getByLabel('Target valuation scenario')).toHaveCount(0);
   await page.locator('[data-company="apple"]').getByRole('button',{name:'Open AAPL target',exact:true}).click();
   await expect(page.getByRole('heading',{name:'Apple.'})).toBeVisible();

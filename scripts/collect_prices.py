@@ -32,6 +32,28 @@ SYMBOLS = {
     "asml": ("ASML.AS", "EUR"),
     "apple": ("AAPL", "USD"),
     "besi": ("BESI.AS", "EUR"),
+    "amd": ("AMD", "USD"),
+    "cerebras": ("CBRS", "USD"),
+    "marvell": ("MRVL", "USD"),
+    "tsmc": ("TSM", "USD"),
+    "arista": ("ANET", "USD"),
+    "vertiv": ("VRT", "USD"),
+    "nebius": ("NBIS", "USD"),
+    "oracle": ("ORCL", "USD"),
+    "microsoft": ("MSFT", "USD"),
+    "amazon": ("AMZN", "USD"),
+    "meta": ("META", "USD"),
+    "spacex": ("SPCX", "USD"),
+    "palantir": ("PLTR", "USD"),
+}
+# Identity boundaries: do not join earlier issuers or pre-listing observations.
+# Sources are recorded in docs/research/EXPANSION_20260914.md.
+FIRST_ALLOWED = {
+    "sandisk": date(2025, 2, 24),
+    "nebius": date(2024, 10, 21),
+    "cerebras": date(2026, 5, 14),
+    "spacex": date(2026, 6, 12),
+    "palantir": date(2020, 9, 30),
 }
 KNOWN_SPLITS = [
     ("apple", "2020-08-31", 4,
@@ -114,7 +136,7 @@ def parse_chart(company: str, payload: dict, record: dict, start: date, cutoff: 
         raise ValueError(f"Unexpected listing or currency for {company}")
     zone = ZoneInfo(meta["exchangeTimezoneName"])
     downloaded_at = datetime.fromisoformat(record["downloaded_at"])
-    first_allowed = max(start, date(2025, 2, 24)) if company == "sandisk" else start
+    first_allowed = max(start, FIRST_ALLOWED.get(company, start))
     splits = []
     later_split_factor = 1.0
     for event in result.get("events", {}).get("splits", {}).values():
@@ -174,12 +196,18 @@ def parse_chart(company: str, payload: dict, record: dict, start: date, cutoff: 
 
 
 def main() -> None:
+    global MARKET
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--start", default="2020-09-10")
     parser.add_argument("--cutoff", default="2026-09-10")
     parser.add_argument("--offline", action="store_true", help="Rebuild retained collection without network")
+    parser.add_argument("--output-directory", type=Path,
+                        help="Stage a collection under the app directory before importing it")
     parser.add_argument("--companies", nargs="+", choices=sorted(SYMBOLS), help="Collect selected companies, preserving the others at the same cutoff")
     args = parser.parse_args()
+    if args.output_directory:
+        MARKET = (ROOT / args.output_directory).resolve()
+        MARKET.relative_to(ROOT)
     start, cutoff = date.fromisoformat(args.start), date.fromisoformat(args.cutoff)
     if start > cutoff or cutoff > datetime.now(UTC).date():
         parser.error("Require start <= cutoff <= today's UTC date")
@@ -211,10 +239,22 @@ def main() -> None:
         return body, record
 
     # Yahoo labels Close as split adjusted and Adj Close as split + distributions.
-    definition_url = "https://ca.finance.yahoo.com/quote/NVDA/history/"
-    definition, definition_record = get(definition_url, "adjustment_definition")
-    basis_verified = bool(definition and b"Close price adjusted for splits" in definition
-                          and b"dividend and/or capital gain distributions" in definition)
+    basis_verified = False
+    for definition_url in ["https://ca.finance.yahoo.com/quote/NVDA/history/",
+                           "https://finance.yahoo.com/quote/PLTR/history/",
+                           "https://uk.finance.yahoo.com/quote/NVDA/history/"]:
+        try:
+            definition, definition_record = get(definition_url, "adjustment_definition")
+        except ValueError:
+            if not args.offline:
+                raise
+            continue
+        basis_verified = bool(definition and
+                              (b"Close price adjusted for splits" in definition or
+                               b"Closing price adjusted for splits" in definition) and
+                              b"dividend and/or capital gain distributions" in definition)
+        if basis_verified:
+            break
     prices, all_splits, coverage = [], [], []
     if args.companies:
         for filename, target in [("prices.csv", prices), ("splits.csv", all_splits)]:
