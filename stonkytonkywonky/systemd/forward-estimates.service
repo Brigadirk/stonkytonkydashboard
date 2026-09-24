@@ -1,0 +1,13 @@
+[Unit]
+Description=Record forward EPS, re-screen, refresh the cheap-to-self app
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/TheLab/Documents/Trading/ForwardEstimates
+Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=%h/TheLab/Documents/Trading/ForwardEstimates/nightly.sh
+TimeoutStartSec=45min
+StandardOutput=append:%h/TheLab/Documents/Trading/ForwardEstimates/data/record.log
+StandardError=inherit

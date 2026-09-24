@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily consensus forward EPS snapshot, weekdays after the US close
+
+[Timer]
+OnCalendar=Mon..Fri 23:30
+Persistent=true
+RandomizedDelaySec=5min
+
+[Install]
+WantedBy=timers.target
