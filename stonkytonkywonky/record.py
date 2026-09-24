@@ -43,13 +43,13 @@ FIELDS = [
     "fy1_eps_30d_ago", "fy1_eps_90d_ago", "fy1_up_30d", "fy1_down_30d",
     "yahoo_forward_eps", "yahoo_forward_pe",
     "nasdaq_ntm_eps", "nasdaq_ntm_pe", "error", "ntm_method",
-    "trailing_eps", "trailing_pe",
+    "trailing_eps", "trailing_pe", "sector", "industry",
 ]
 INFO_KEYS = [
     "currency", "financialCurrency", "regularMarketPrice", "currentPrice",
     "regularMarketTime", "forwardEps", "forwardPE", "trailingEps", "trailingPE",
     "lastFiscalYearEnd", "nextFiscalYearEnd", "mostRecentQuarter",
-    "sharesOutstanding", "numberOfAnalystOpinions", "longName", "quoteType",
+    "sharesOutstanding", "numberOfAnalystOpinions", "longName", "quoteType", "sector", "industry",
 ]
 
 
@@ -207,6 +207,9 @@ def record_one(ticker: str, name: str, today: date, estimates_from: str = "") ->
         # Yahoo's own trailing figures; trailingPE is absent when TTM EPS is negative.
         "trailing_eps": num(info.get("trailingEps")),
         "trailing_pe": num(info.get("trailingPE")),
+        # Share classes take the main line's classification with its estimates.
+        "sector": src_info.get("sector") or info.get("sector"),
+        "industry": src_info.get("industry") or info.get("industry"),
     }
     return row, raw
 

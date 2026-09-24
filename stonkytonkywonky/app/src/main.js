@@ -48,7 +48,7 @@ const REVS = {
 // Combined ranking: each criterion is the stock's position among all stocks (100 = best),
 // so outliers like +400% growth can't dominate; the score is the plain average.
 const CRITERIA = [
-  { key: "pe", better: "low", label: "Low price vs expected profit", explain: (r) => `forward P/E ${fmt(r.pe)}×` },
+  { key: "rel", better: "high", label: "Cheap compared with other stocks", explain: (r) => `${r.rel.toFixed(0)}/100 on the "vs others" score` },
   { key: "growth", better: "high", label: "Expected profit growth", explain: (r) => `${pct(r.growth, 0)} next 12 months vs last 12` },
   { key: "rev90", better: "high", label: "Forecasts being raised", explain: (r) => `next-year forecast ${pct(r.rev90)} in 90 days` },
   { key: "r_mid", better: "high", label: "Upside if valued at its typical level", explain: (r) => `${pct(r.r_mid, 0)} in a year` },
@@ -142,9 +142,77 @@ async function load() {
 
 // ---------- list ----------
 
+// ---------- cheap compared with other stocks ----------
+
+const PEG_GROWTH_CAP = 0.5; // one-year rebounds from near-zero profit would otherwise look endlessly cheap
+const PEG_GROWTH_MIN = 0.03;
+const MIN_PEERS = 5;
+
+/** Percentile position (0–100) of each row's value among `pool`; `low` means lower is better. */
+function positions(pool, key, low) {
+  const sorted = [...pool].sort((a, b) => a[key] - b[key]);
+  const out = new Map();
+  sorted.forEach((r, i) => {
+    const up = sorted.length > 1 ? (i / (sorted.length - 1)) * 100 : 50;
+    out.set(r.ticker, low ? 100 - up : up);
+  });
+  return out;
+}
+
+/**
+ * "Cheap vs others", 0–100 (100 = cheapest): the average of forward P/E against all stocks,
+ * forward P/E against industry peers (sector when the industry is too small), and
+ * P/E relative to growth (PEG). Share classes after the first don't count as extra peers.
+ */
+function addRelative(rows) {
+  const priced = rows.filter((r) => r.pe > 0);
+  const firstOfCompany = new Map();
+  for (const r of priced) if (!firstOfCompany.has(r.company || r.ticker)) firstOfCompany.set(r.company || r.ticker, r);
+  const pool = [...firstOfCompany.values()];
+  const vsAll = positions(priced, "pe", true);
+
+  for (const r of priced) {
+    const g = r.growth;
+    r.peg = g != null && g >= PEG_GROWTH_MIN ? r.pe / (Math.min(g, PEG_GROWTH_CAP) * 100) : null;
+  }
+  const vsPeg = positions(priced.filter((r) => r.peg != null), "peg", true);
+
+  const groups = new Map();
+  for (const r of pool) {
+    for (const [level, name] of [["industry", r.industry], ["sector", r.sector]]) {
+      if (!name) continue;
+      const k = `${level}:${name}`;
+      if (!groups.has(k)) groups.set(k, []);
+      groups.get(k).push(r);
+    }
+  }
+  for (const r of priced) {
+    const ind = groups.get(`industry:${r.industry}`) || [];
+    const sec = groups.get(`sector:${r.sector}`) || [];
+    const [level, peers] = ind.length >= MIN_PEERS ? ["industry", ind] : sec.length >= MIN_PEERS ? ["sector", sec] : [null, []];
+    let vsPeers = null;
+    if (level) {
+      const withSelf = peers.some((p) => p.ticker === r.ticker) ? peers : [...peers, r];
+      vsPeers = positions(withSelf, "pe", true).get(r.ticker);
+      r.peerGroup = { level, name: level === "industry" ? r.industry : r.sector, size: peers.length,
+        cheaper: withSelf.filter((p) => p.pe > r.pe).length, median: median(peers.map((p) => p.pe)) };
+    }
+    r.relParts = { all: vsAll.get(r.ticker), peers: vsPeers, peg: vsPeg.get(r.ticker) ?? null };
+    const have = Object.values(r.relParts).filter((v) => v != null);
+    r.rel = have.reduce((a, b) => a + b, 0) / have.length;
+  }
+}
+
+function median(xs) {
+  const s = [...xs].sort((a, b) => a - b);
+  const m = s.length >> 1;
+  return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+}
+
 function scoreRows(rows) {
+  addRelative(rows);
   const valid = {
-    pe: (r) => r.pe > 0,
+    rel: (r) => r.rel != null,
     growth: (r) => r.growth != null,
     rev90: (r) => r.rev90 != null,
     r_mid: (r) => r.r_mid != null,
@@ -219,6 +287,8 @@ function renderTable() {
     tick.append(el("strong", {}, r.ticker), el("span", { class: "name" }, r.name || ""));
     const scoreTd = el("td", { class: "num score", title: r.rankedVia ? `Ranked via ${r.rankedVia}` : "" },
       r.rankedVia ? `→ ${r.rankedVia}` : r.score == null ? "n/a" : r.score.toFixed(0));
+    const relTd = el("td", { class: "num", title: "Cheap compared with other stocks, 0–100 (100 = cheapest)" },
+      r.rel == null ? "n/a" : r.rel.toFixed(0));
     const val = el("td");
     val.append(zoneBadge(zoneOf(r.sig3)));
     if (r.mainKey && r.mainKey !== MAIN_WINDOW) {
@@ -227,9 +297,10 @@ function renderTable() {
     tr.append(
       tick,
       scoreTd,
+      relTd,
       val,
       el("td", { class: "num" }, r.pe == null || r.pe <= 0 ? "n/m" : fmt(r.pe)),
-      el("td", { class: "num" }, r.trailing_pe == null ? "n/m" : fmt(r.trailing_pe)),
+      el("td", { class: "num xcol" }, r.trailing_pe == null ? "n/m" : fmt(r.trailing_pe)),
       el("td", { class: "num" }, pct(r.growth, 0)),
       (() => { const td = el("td"); td.append(revBadge(r.revisions, true)); return td; })(),
       el("td", { class: "num xcol" }, r.pctMain == null ? "n/a" : ordinal(Math.round(r.pctMain))),
@@ -282,7 +353,7 @@ function renderDetail(row, series) {
   box.replaceChildren();
   const head = el("div", { class: "d-head" });
   head.append(el("h2", {}, `${row.name || row.ticker}`), el("div", { class: "d-sub" }, `${row.ticker} · ${money(row.price, row.currency)} · data as of ${row.as_of}`));
-  box.append(head, verdictCard(row), scoreCard(row));
+  box.append(head, verdictCard(row), scoreCard(row), relativeCard(row));
 
   if (row.pe == null || row.pe <= 0) {
     box.append(el("p", { class: "plain" }, "This company is expected to lose money over the next 12 months, so its price can't be compared with its earnings. There is nothing to rank."));
@@ -396,6 +467,38 @@ function scoreCard(row) {
   }
   if (row.b_grade === "biased") {
     sec.append(el("p", { class: "help" }, "⚠ This stock's history is unreliable, so its 'typical level' (and the upside measure) is distorted."));
+  }
+  return sec;
+}
+
+function relativeCard(row) {
+  const sec = el("section", { class: "scorecard" });
+  sec.append(el("h3", {}, "Cheap compared with other stocks"));
+  if (row.rel == null) {
+    sec.append(el("p", { class: "help" }, "No comparison: the company is expected to make a loss, so it has no P/E."));
+    return sec;
+  }
+  const top = el("div", { class: "sc-top" });
+  top.append(el("span", { class: "sc-rank" }, `${row.rel.toFixed(0)}`), el("span", { class: "sc-of" }, "/100 (100 = cheapest in the list)"));
+  sec.append(top);
+  sec.append(el("p", { class: "help" }, "The section above compares the stock with its own past. This one compares it with other companies today."));
+  const pg = row.peerGroup;
+  const lines = [
+    ["Against all stocks", row.relParts.all, `forward P/E ${fmt(row.pe)}× vs a list median of ${fmt(median(state.rows.filter((r) => r.pe > 0).map((r) => r.pe)))}×`],
+    ["Against its peers", row.relParts.peers, pg
+      ? `cheaper than ${pg.cheaper} of ${pg.size} ${pg.name} ${pg.level === "sector" ? "sector " : ""}stocks (their median ${fmt(pg.median)}×)`
+      : "too few similar companies in the list to compare"],
+    ["For its growth (PEG)", row.relParts.peg, row.peg != null
+      ? `P/E ÷ growth = ${fmt(row.peg, 2)} (growth ${pct(row.growth, 0)}, counted up to +50%)`
+      : "expected growth below +3%, so growth doesn't justify the price"],
+  ];
+  for (const [label, v, why] of lines) {
+    const line = el("div", { class: "sc-row" });
+    line.append(el("span", { class: "sc-label" }, label));
+    const bar = el("span", { class: "sc-bar" });
+    if (v != null) bar.append(el("span", { class: "sc-fill", style: `width:${Math.max(v, 2)}%` }));
+    line.append(bar, el("span", { class: "sc-val" }, v == null ? why : `${v.toFixed(0)} · ${why}`));
+    sec.append(line);
   }
   return sec;
 }

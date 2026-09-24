@@ -205,6 +205,8 @@ def main() -> int:
         rows.append({
             "ticker": t,
             "company": company.get(t, t),
+            "sector": snap.get("sector") or None,
+            "industry": snap.get("industry") or None,
             "name": s.get("name"),
             "currency": s.get("currency"),
             "as_of": s["as_of"],

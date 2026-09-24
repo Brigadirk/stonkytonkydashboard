@@ -8,7 +8,8 @@ For each stock, the app shows:
 - a price chart with those valuation bands, projected one year ahead on next fiscal year's consensus;
 - whether analysts are raising or cutting next year's forecast (90-day path);
 - trailing P/E and expected growth on the same adjusted basis as the forecasts;
-- a combined score ranking every stock on low forward P/E, growth, forecast revisions and return to its typical valuation.
+- how cheap it is compared with other stocks today: forward P/E against all 164, against industry peers (sector when the industry has fewer than 5), and against growth (PEG, growth capped at +50%), averaged into a 0–100 "vs others" score;
+- a combined score ranking every stock on cheapness vs others, growth, forecast revisions and return to its typical valuation.
 
 ## Pipeline
 
