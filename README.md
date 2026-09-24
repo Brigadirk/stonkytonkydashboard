@@ -1,5 +1,7 @@
 # AI valuation dashboard
 
+See also [StonkyTonkyWonky](stonkytonkywonky/README.md): a separate cheap-to-self screen for 164 stocks on consensus estimates, recorded nightly.
+
 Forward earnings valuation screener for ten stocks. Requires Node.js 22.18 or newer and npm.
 
 ```sh
