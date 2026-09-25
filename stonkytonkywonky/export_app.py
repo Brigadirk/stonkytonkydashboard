@@ -14,6 +14,7 @@ from __future__ import annotations
 import csv
 import gzip
 import json
+import re
 import shutil
 from statistics import NormalDist
 import sys
@@ -106,6 +107,91 @@ def corridors(series: dict) -> dict:
 
 
 TREND_STEPS = ("90daysAgo", "60daysAgo", "30daysAgo", "7daysAgo", "current")
+ANALYST_MAX_AGE_DAYS = 730  # older reports say little about today's forecasts
+
+
+# One name per broker, whichever way a source spelled it (the earlier project used short keys).
+FIRMS = {
+    "meritz": "Meritz Securities", "메리츠": "Meritz Securities", "hana": "Hana Securities",
+    "kb": "KB Securities", "mirae": "Mirae Asset", "nh": "NH Investment",
+    "hyundai": "Hyundai Motor Securities", "samsung": "Samsung Securities", "kiwoom": "Kiwoom",
+    "daishin": "Daishin", "shinhan": "Shinhan Investment",
+}
+
+
+def firm_name(raw: str) -> str:
+    key = (raw or "").strip().lower()
+    for k, v in FIRMS.items():
+        if key == k or key.startswith(k + " ") or k in raw:
+            return v
+    return raw.strip()
+
+
+def basis_rank(basis: str) -> int:
+    """Consensus is on an adjusted (non-GAAP) basis, so prefer that when a report prints both."""
+    b = (basis or "").lower()
+    return 0 if "adjust" in b or "non-gaap" in b or "non_gaap" in b else 1
+
+
+def load_analysts() -> dict[str, list[dict]]:
+    path = ROOT / "analysts" / "observations.csv"
+    out: dict[str, list[dict]] = {}
+    if path.exists():
+        with open(path, newline="", encoding="utf-8") as fh:
+            for r in csv.DictReader(fh):
+                out.setdefault(r["ticker"], []).append(r)
+    return out
+
+
+def analyst_view(rows: list[dict], snap: dict, as_of: date) -> dict | None:
+    """Each analyst's latest report: next two fiscal years' EPS in the quote currency, vs consensus."""
+    fy0_end = snap.get("fy0_end")
+    if not rows or not fy0_end:
+        return None
+    y0 = int(fy0_end[:4])
+    labels = (f"FY{y0}", f"FY{y0 + 1}")
+    quote_ccy, eps_ccy, fx = snap.get("currency"), snap.get("eps_currency"), num(snap.get("fx")) or 1.0
+
+    def to_quote(value: float, ccy: str) -> float | None:
+        if not ccy or ccy == quote_ccy:
+            return value
+        if ccy == eps_ccy:
+            return value * fx
+        return None  # a currency we have no rate for
+
+    latest: dict[tuple, dict] = {}
+    for r in rows:
+        if not r["report_date"] or r["fiscal_period"] not in labels:
+            continue
+        age = (as_of - date.fromisoformat(r["report_date"][:10])).days
+        if age > ANALYST_MAX_AGE_DAYS or age < 0:
+            continue
+        # Group by broker, not by how its analyst's name was written (Korean or romanised).
+        key = (firm_name(r["firm"]), r["kind"])
+        cur = latest.get(key)
+        if cur is None or r["report_date"][:10] > cur["date"]:
+            latest[key] = cur = {"firm": key[0], "analyst": r["analyst"], "kind": r["kind"],
+                                 "date": r["report_date"][:10], "age_days": age, "status": r["status"],
+                                 "basis": r["basis"], "source_url": r["source_url"], "eps": {}, "_rank": {}}
+        if cur["date"] == r["report_date"][:10]:
+            v = to_quote(float(r["eps"]), r["currency"])
+            rank = basis_rank(r["basis"])
+            if v is not None and rank <= cur["_rank"].get(r["fiscal_period"], 9):
+                cur["eps"][r["fiscal_period"]] = v
+                cur["_rank"][r["fiscal_period"]] = rank
+                cur["basis"] = r["basis"]  # describe the figures actually shown
+    consensus = {labels[0]: num(snap.get("fy0_eps")), labels[1]: num(snap.get("fy1_eps"))}
+    for x in latest.values():
+        # Flag GAAP/reported figures: consensus is adjusted, so the gap overstates the difference.
+        x["gaap"] = any(v == 1 for v in x.pop("_rank", {}).values()) and bool(
+            re.search(r"reported|gaap", x["basis"], re.I)) and not re.search(r"non.?gaap", x["basis"], re.I)
+    reports = sorted((x for x in latest.values() if x["eps"]), key=lambda x: x["date"], reverse=True)
+    for x in reports:
+        c = consensus.get(labels[1])
+        v = x["eps"].get(labels[1])
+        x["vs_consensus"] = v / c - 1 if v is not None and c else None
+    return {"years": list(labels), "consensus": consensus,
+            "consensus_analysts": num(snap.get("fy1_analysts")), "reports": reports} if reports else None
 
 
 def latest_raw() -> dict[str, dict]:
@@ -181,6 +267,7 @@ def main() -> int:
                 latest[r["ticker"]] = r  # later dates overwrite earlier ones
 
     raws = latest_raw()
+    analysts = load_analysts()
     data = APP / "public" / "data"
     (data / "series").mkdir(parents=True, exist_ok=True)
     rows, as_of = [], None
@@ -234,6 +321,7 @@ def main() -> int:
             "warnings": s["coverage"].get("warnings") or [],
             "past": s.get("past_screen"),
             "revisions": revision_trend(raws.get(t)),
+            "analysts": analyst_view(analysts.get(t, []), snap, date.fromisoformat(s["as_of"])),
         })
         if series_path.exists():
             series = json.loads(series_path.read_text(encoding="utf-8"))

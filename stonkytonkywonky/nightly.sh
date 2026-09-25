@@ -7,5 +7,9 @@ cd "$(dirname "$0")"
 if [ "$(date +%u)" = 5 ]; then
     ./backfill.py > data/history/backfill.log 2>&1 || echo "backfill.py failed; keeping last week's history"
 fi
+# Analyst reports: fetch new ones (Morningstar via Firstrade, Korean brokers via
+# Telegram), then extract anything dropped into analysts/inbox/.
+(cd analysts && ./collect.py) || echo "collect.py failed; keeping earlier analyst data"
+(cd analysts && ./extract.py) || echo "extract.py: some inbox PDFs failed; see analysts/failed/"
 python3 "$HOME/.codex/skills/stock-research/scripts/forward_screen.py" --all --allow-biased --out "$PWD/data/screen" || true
 ./export_app.py

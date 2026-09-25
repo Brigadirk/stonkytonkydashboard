@@ -8,6 +8,6 @@ Type=oneshot
 WorkingDirectory=%h/TheLab/Documents/Trading/ForwardEstimates
 Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin:/bin
 ExecStart=%h/TheLab/Documents/Trading/ForwardEstimates/nightly.sh
-TimeoutStartSec=45min
+TimeoutStartSec=4h
 StandardOutput=append:%h/TheLab/Documents/Trading/ForwardEstimates/data/record.log
 StandardError=inherit

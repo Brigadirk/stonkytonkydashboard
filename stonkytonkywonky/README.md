@@ -22,6 +22,18 @@ For each stock, the app shows:
 
 `tickers.csv` lists the universe. The `estimates_from` column points one share class at another's consensus (Samsung preferred uses the common's).
 
+## Analyst reports
+
+`analysts/` keeps individual broker EPS forecasts next to the consensus, one row per report and fiscal year in `observations.csv`:
+
+- `import_dashboard.py` imports the reviewed series from this repo's `web/public/data/dashboard.json` (1,173 forecasts for the ten dashboard names), dividing by later stock splits so every row is on today's share count.
+- `collect.py` fetches new reports every night. Morningstar reports come from the public PDFs Firstrade hosts, found by probing dates, since there is no index. Korean broker reports come from public Telegram channels listed in `telegram_channels.csv`. Naver Finance and the Hana, Hyundai and Mirae sites disallow crawlers in robots.txt, so their reports only arrive through the inbox.
+- `extract.py` reads each PDF. `parsers.py` handles Morningstar reports and Korean broker financial tables without a model. Only a report with EPS figures in an unknown layout goes to the Claude CLI, at most five per run. Every figure must appear verbatim in the report text; otherwise the rows are kept as `needs_review`.
+- PDFs sent with Taildrop to the server land in `analysts/inbox/` (`systemd/analyst-inbox.service`). `analyst-extract.path` extracts them within a minute or two and refreshes the app.
+- `morningstar_ids.py` maps US tickers to Morningstar IDs from public quote pages, slowly: the site answers 202 to bursts.
+
+The app shows each broker's latest report for the next fiscal year against consensus, flagged when only GAAP figures exist. Broker PDFs, their text and the extracted observations stay local.
+
 ## Running the app
 
 ```sh

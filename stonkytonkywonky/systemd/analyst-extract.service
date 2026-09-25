@@ -1,0 +1,14 @@
+[Unit]
+Description=Extract analyst forecasts from new inbox PDFs and refresh the app
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/TheLab/Documents/Trading/ForwardEstimates/analysts
+Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin:/bin
+# Let a batch of files finish arriving before reading them.
+ExecStartPre=/bin/sleep 20
+ExecStart=%h/TheLab/Documents/Trading/ForwardEstimates/analysts/extract.py
+ExecStartPost=%h/TheLab/Documents/Trading/ForwardEstimates/export_app.py
+StandardOutput=append:%h/TheLab/Documents/Trading/ForwardEstimates/analysts/extract.log
+StandardError=inherit
+TimeoutStartSec=2h

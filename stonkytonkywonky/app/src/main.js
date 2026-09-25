@@ -174,6 +174,8 @@ function addRelative(rows) {
   for (const r of priced) {
     const g = r.growth;
     r.peg = g != null && g >= PEG_GROWTH_MIN ? r.pe / (Math.min(g, PEG_GROWTH_CAP) * 100) : null;
+    // The usual PEG, shown in the list; only the ranking uses the capped version above.
+    r.pegRaw = g != null && g > 0 ? r.pe / (g * 100) : null;
   }
   const vsPeg = positions(priced.filter((r) => r.peg != null), "peg", true);
 
@@ -289,7 +291,7 @@ function renderTable() {
       r.rankedVia ? `→ ${r.rankedVia}` : r.score == null ? "n/a" : r.score.toFixed(0));
     const relTd = el("td", { class: "num", title: "Cheap compared with other stocks, 0–100 (100 = cheapest)" },
       r.rel == null ? "n/a" : r.rel.toFixed(0));
-    const val = el("td");
+    const val = el("td", { class: "val" });
     val.append(zoneBadge(zoneOf(r.sig3)));
     if (r.mainKey && r.mainKey !== MAIN_WINDOW) {
       val.append(el("span", { class: "short-hist", title: `Only ${spanOf(r.mainKey)} of usable history` }, ` (${r.mainKey})`));
@@ -302,6 +304,8 @@ function renderTable() {
       el("td", { class: "num" }, r.pe == null || r.pe <= 0 ? "n/m" : fmt(r.pe)),
       el("td", { class: "num xcol" }, r.trailing_pe == null ? "n/m" : fmt(r.trailing_pe)),
       el("td", { class: "num" }, pct(r.growth, 0)),
+      el("td", { class: "num", title: r.pegRaw == null ? "Growth is zero or negative, so PEG has no meaning" : "" },
+        r.pegRaw == null ? "n/m" : fmt(r.pegRaw, 2)),
       (() => { const td = el("td"); td.append(revBadge(r.revisions, true)); return td; })(),
       el("td", { class: "num xcol" }, r.pctMain == null ? "n/a" : ordinal(Math.round(r.pctMain))),
       el("td", { class: "num xcol" }, money(r.price, r.currency)),
@@ -363,6 +367,7 @@ function renderDetail(row, series) {
   if (!row.corridors?.[state.window] && row.mainKey) state.window = row.mainKey;
   box.append(gaugeSection(row));
   if (row.revisions) box.append(revisionSection(row));
+  if (row.analysts) box.append(analystSection(row));
   if (series && series.dates.length > 1 && row.corridors?.[state.window]) {
     box.append(priceSection(row, series));
   }
@@ -489,7 +494,7 @@ function relativeCard(row) {
       ? `cheaper than ${pg.cheaper} of ${pg.size} ${pg.name} ${pg.level === "sector" ? "sector " : ""}stocks (their median ${fmt(pg.median)}×)`
       : "too few similar companies in the list to compare"],
     ["For its growth (PEG)", row.relParts.peg, row.peg != null
-      ? `P/E ÷ growth = ${fmt(row.peg, 2)} (growth ${pct(row.growth, 0)}, counted up to +50%)`
+      ? `PEG ${fmt(row.pegRaw, 2)}${row.growth > PEG_GROWTH_CAP ? `; ranked on ${fmt(row.peg, 2)}, with growth counted up to +50%` : ""}`
       : "expected growth below +3%, so growth doesn't justify the price"],
   ];
   for (const [label, v, why] of lines) {
@@ -598,6 +603,62 @@ function revisionSection(row) {
   if (rv.up_30d != null && rv.down_30d != null) {
     sec.append(el("p", { class: "help" }, `Last 30 days, roughly: ${rv.up_30d} analyst revisions up, ${rv.down_30d} down (Yahoo's counts are approximate).`));
   }
+  return sec;
+}
+
+// The earlier project stored some firms by short lowercase keys.
+const FIRM_NAMES = { mirae: "Mirae Asset", hana: "Hana Securities", meritz: "Meritz Securities", kb: "KB Securities",
+  nh: "NH Investment", hyundai: "Hyundai Motor Securities", samsung: "Samsung Securities", kiwoom: "Kiwoom", daishin: "Daishin" };
+const firmName = (f) => FIRM_NAMES[(f || "").toLowerCase()] || f || "?";
+
+function analystSection(row) {
+  const a = row.analysts;
+  const [y0, y1] = a.years;
+  const sec = el("section", { class: "analysts" });
+  sec.append(el("h3", {}, "What individual analysts forecast"));
+  const named = a.reports.filter((r) => r.kind === "analyst" && r.eps[y1] != null);
+  const c1 = a.consensus[y1];
+  if (named.length && c1) {
+    const vals = named.map((r) => r.eps[y1]);
+    const avg = vals.reduce((x, y) => x + y, 0) / vals.length;
+    sec.append(el("p", { class: "help" },
+      `${named.length} analyst report${named.length > 1 ? "s" : ""} from the last two years. For ${y1}, they average ` +
+      `${money(avg, "")} per share (${pct(avg / c1 - 1)} vs the consensus of ${money(c1, "")}` +
+      `${a.consensus_analysts ? `, ${a.consensus_analysts} analysts` : ""}), ranging from ${money(Math.min(...vals), "")} to ${money(Math.max(...vals), "")}.`));
+  }
+  const wrap = el("div", { class: "ladder" });
+  const t = el("table");
+  const head = el("tr");
+  ["Analyst", "Report", `${y1} EPS`, "vs consensus"].forEach((h, i) => head.append(el("th", i >= 2 ? { class: "num" } : {}, h)));
+  t.append(head);
+  const cons = el("tr", { class: "lvl-mid" });
+  cons.append(el("td", {}, `Consensus${a.consensus_analysts ? ` · ${a.consensus_analysts} analysts` : ""}`), el("td", {}, "today"),
+    el("td", { class: "num" }, money(c1, "")), el("td", { class: "num" }, "—"));
+  t.append(cons);
+  for (const r of a.reports) {
+    const tr = el("tr");
+    const who = el("td");
+    const firm = /^https?:/.test(r.source_url)
+      ? el("a", { href: r.source_url, target: "_blank", rel: "noopener", title: "Open the report (PDF)" }, firmName(r.firm))
+      : el("strong", {}, firmName(r.firm));
+    who.append(firm, el("span", { class: "name" }, r.kind === "consensus" ? "published consensus" : r.analyst));
+    if (r.status === "needs_review") who.append(el("span", { class: "review", title: "A figure could not be matched in the report text" }, " ⚠"));
+    const age = r.age_days < 60 ? `${r.age_days}d ago` : `${Math.round(r.age_days / 30)}mo ago`;
+    const when = el("td", {}, r.date);
+    when.append(el("span", { class: `name${r.age_days > 180 ? " stale" : ""}` }, age));
+    const vs = r.vs_consensus;
+    tr.append(who, when,
+      (() => {
+        const td = el("td", { class: "num" }, money(r.eps[y1], ""));
+        if (r.gaap) td.append(el("span", { class: "gaap", title: "GAAP/reported EPS; the consensus is adjusted, so the gap is not like for like" }, " GAAP"));
+        return td;
+      })(),
+      el("td", { class: `num ret ${vs == null ? "" : vs >= 0 ? "pos" : "neg"}` }, vs == null ? "" : pct(vs)));
+    t.append(tr);
+  }
+  wrap.append(t);
+  sec.append(wrap);
+  sec.append(el("p", { class: "help" }, "From broker reports: imported from the earlier dashboard project, collected nightly (Morningstar via Firstrade, Korean brokers via Telegram) or dropped into the inbox. Per share on today's share count, in the price currency."));
   return sec;
 }
 

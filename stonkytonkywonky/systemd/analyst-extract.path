@@ -1,0 +1,9 @@
+[Unit]
+Description=Watch the analyst inbox for new PDFs
+
+[Path]
+DirectoryNotEmpty=%h/TheLab/Documents/Trading/ForwardEstimates/analysts/inbox
+Unit=analyst-extract.service
+
+[Install]
+WantedBy=default.target

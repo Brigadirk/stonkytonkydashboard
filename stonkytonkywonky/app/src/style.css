@@ -77,7 +77,8 @@ h1 { margin: 0; font-size: 22px; }
 .ranges { display: flex; gap: 6px; margin: 8px 0; flex-wrap: wrap; }
 
 .layout {
-  display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  --list-min: 0;
   gap: 16px; padding: 0 24px 16px; align-items: start;
 }
 .list {
@@ -85,7 +86,12 @@ h1 { margin: 0; font-size: 22px; }
   max-height: calc(100vh - 120px); overflow: auto; position: sticky; top: 12px;
 }
 table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
-th, td { padding: 6px 7px; text-align: left; white-space: nowrap; }
+.list table { width: max-content; min-width: 100%; }
+/* Long zone names ("Extremely expensive (180d)") wrap instead of widening the column. */
+.list td.val { white-space: normal; min-width: 92px; max-width: 118px; line-height: 1.25; }
+.list td.val .zone { align-items: flex-start; }
+.list td.val .zone .dot { margin-top: 4px; }
+th, td { padding: 6px 6px; text-align: left; white-space: nowrap; }
 .list th {
   position: sticky; top: 0; background: var(--surface); color: var(--ink-2); font-weight: 600;
   border-bottom: 1px solid var(--axis); cursor: pointer; user-select: none;
@@ -107,7 +113,7 @@ th[aria-sort="descending"]::after { content: " ▼"; font-size: 10px; }
 .list tbody tr { border-bottom: 1px solid var(--grid); cursor: pointer; }
 .list tbody tr:hover { background: var(--row-hover); }
 .list tbody tr[aria-selected="true"] { background: var(--row-active); }
-td .name { display: block; color: var(--muted); font-size: 12px; max-width: 120px; overflow: hidden; text-overflow: ellipsis; }
+td .name { display: block; color: var(--muted); font-size: 12px; max-width: 100px; overflow: hidden; text-overflow: ellipsis; }
 
 /* zone badge and swatches */
 .zone { display: inline-flex; align-items: center; gap: 6px; }
@@ -192,6 +198,15 @@ h4 { margin: 12px 0 4px; font-size: 13px; color: var(--ink-2); }
 
 .price-sec { margin: 0 0 12px; }
 .revs { margin: 0 0 18px; }
+.analysts { margin: 0 0 18px; }
+.analysts td .name { max-width: 180px; }
+.analysts td, .analysts th { white-space: normal; }
+.analysts table { table-layout: auto; }
+.analysts .stale { color: var(--warn-text); }
+.analysts a { color: var(--line); font-weight: 700; text-decoration: none; }
+.analysts a:hover { text-decoration: underline; }
+.review { color: var(--warn-text); cursor: help; }
+.gaap { color: var(--muted); font-size: 11px; cursor: help; }
 .rev-top { display: flex; align-items: baseline; gap: 10px; margin: 4px 0; }
 .rev { display: inline-flex; align-items: center; gap: 5px; }
 .rev-icon { font-weight: 700; min-width: 1.4em; }
@@ -267,4 +282,14 @@ h4 { margin: 12px 0 4px; font-size: 13px; color: var(--ink-2); }
   .g-scale { grid-template-columns: 1fr 1fr 1fr; }
   .g-scale span:nth-child(1) { grid-column: auto; }
   .detail { padding: 14px; }
+}
+
+/* Medium screens: the list needs ~780px for all columns; the panel copes with less. */
+@media (min-width: 901px) and (max-width: 1440px) {
+  .layout { grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr); padding: 0 16px 16px; gap: 12px; }
+  .top { padding-left: 16px; padding-right: 16px; }
+  .detail { padding: 14px 16px; }
+  .sc-row { grid-template-columns: 160px 1fr 190px; }
+  .g-row { grid-template-columns: 96px 1fr 170px; }
+  .g-scale { grid-template-columns: 96px 1fr 1fr 1fr 170px; }
 }
