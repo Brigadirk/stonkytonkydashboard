@@ -12,11 +12,17 @@
         <h1>StonkyTonkyWonky</h1>
         <p class="sub" id="asof">Forward P/E against each stock's own history</p>
       </div>
-      <div class="controls">
+      <div class="controls" id="valuation-controls">
         <button id="expand" class="chip" aria-pressed="false">⤢ Expand list: 1-year price targets</button>
         <input id="search" type="search" placeholder="Filter ticker or name" aria-label="Filter ticker or name" />
       </div>
     </header>
+    <nav class="tabs" aria-label="Sections">
+      <button class="tab" data-page="valuation" aria-current="page">Valuation</button>
+      <button class="tab" data-page="breadth" title="NYSE McClellan Summation Index with its RSI and MACD">Market breadth</button>
+      <button class="tab" data-page="positioning" title="Futures positioning by trader type, volatility and hedging, margin debt, and long and short crowding per stock">Positioning</button>
+      <button class="tab" data-page="horizon" title="What the market is waiting for, how likely it is, and how far prices have run ahead">Horizon</button>
+    </nav>
 
     <main class="layout">
       <section class="list" aria-label="Ranking">
@@ -56,7 +62,11 @@
       </section>
     </main>
 
-    <footer class="foot">
+    <main class="page" id="page" hidden>
+      <section class="detail" id="pagebody" aria-live="polite"></section>
+    </main>
+
+    <footer class="foot" id="foot">
       Valuation compares each stock's price-to-expected-profit with its own last 3 years. Past values before
       2026-09-24 are reconstructed from analysts' forecasts at the time and can be off; each stock says how reliable
       its history is. Not investment advice.

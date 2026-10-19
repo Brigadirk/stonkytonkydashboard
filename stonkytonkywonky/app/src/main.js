@@ -131,14 +131,54 @@ async function load() {
       rev90: r.revisions?.change_90d ?? null,
     }));
   state.rows = scoreRows(rows);
-  $("#asof").textContent = `Each stock's price-to-earnings compared with its own past · data as of ${data.as_of} · ${state.rows.length} stocks`;
+  state.asof = `Each stock's price-to-earnings compared with its own past · data as of ${data.as_of} · ${state.rows.length} stocks`;
+  $("#asof").textContent = state.asof;
   renderTable();
   const params = new URLSearchParams(location.search);
   const wanted = params.get("t");
   const first = state.rows.find((r) => r.ticker === wanted) || visibleRows()[0];
-  if (first) await select(first.ticker);
+  const page = wanted === BREADTH ? "breadth" : params.get("page"); // old links used t=$NYSI
+  if (first) await select(first.ticker, { keepPage: PAGES[page] });
   if (params.get("view") === "list") setExpanded(true);
+  if (PAGES[page]) await showPage(page);
 }
+
+// ---------- sections: valuation is the list and detail; the others get the full width ----------
+
+const PAGES = {
+  valuation: null,
+  breadth: () => showBreadth(),
+  positioning: () => showPositioning(),
+  horizon: () => showHorizon(),
+};
+
+async function showPage(name) {
+  if (!(name in PAGES)) name = "valuation";
+  const onValuation = name === "valuation";
+  document.querySelectorAll(".tab").forEach((t) => {
+    if (t.dataset.page === name) t.setAttribute("aria-current", "page");
+    else t.removeAttribute("aria-current");
+  });
+  $("main.layout").hidden = !onValuation;
+  $("#valuation-controls").hidden = !onValuation;
+  $("#foot").hidden = !onValuation;
+  $("#page").hidden = onValuation;
+  $("#asof").textContent = PAGE_SUBS[name] ?? state.asof ?? "";
+  const url = new URL(location.href);
+  if (onValuation) url.searchParams.delete("page");
+  else {
+    url.searchParams.set("page", name);
+    url.searchParams.delete("t");
+  }
+  history.replaceState(null, "", url);
+  if (!onValuation) await PAGES[name]();
+}
+const pageBox = () => $("#pagebody");
+const PAGE_SUBS = {
+  breadth: "How many NYSE stocks take part in the move",
+  positioning: "Who is already leaning which way",
+  horizon: "What the market is waiting for, and how far it has run ahead",
+};
 
 // ---------- list ----------
 
@@ -165,7 +205,8 @@ function positions(pool, key, low) {
  * P/E relative to growth (PEG). Share classes after the first don't count as extra peers.
  */
 function addRelative(rows) {
-  const priced = rows.filter((r) => r.pe > 0);
+  // Sales-valued loss-makers carry P/S in `pe`; comparing that with other stocks' P/E would be nonsense.
+  const priced = rows.filter((r) => r.pe > 0 && r.metric !== "ps");
   const firstOfCompany = new Map();
   for (const r of priced) if (!firstOfCompany.has(r.company || r.ticker)) firstOfCompany.set(r.company || r.ticker, r);
   const pool = [...firstOfCompany.values()];
@@ -301,7 +342,9 @@ function renderTable() {
       scoreTd,
       relTd,
       val,
-      el("td", { class: "num" }, r.pe == null || r.pe <= 0 ? "n/m" : fmt(r.pe)),
+      r.metric === "ps"
+        ? el("td", { class: "num ps", title: "Loss-making: valued on sales. Trailing price ÷ sales; forward P/S in the panel" }, `P/S ${fmt(r.pe, 2)}`)
+        : el("td", { class: "num" }, r.pe == null || r.pe <= 0 ? "n/m" : fmt(r.pe)),
       el("td", { class: "num xcol" }, r.trailing_pe == null ? "n/m" : fmt(r.trailing_pe)),
       el("td", { class: "num" }, pct(r.growth, 0)),
       el("td", { class: "num", title: r.pegRaw == null ? "Growth is zero or negative, so PEG has no meaning" : "" },
@@ -333,11 +376,13 @@ function renderTable() {
   });
 }
 
-async function select(ticker) {
+async function select(ticker, { keepPage = false } = {}) {
   state.selected = ticker;
-  const url = new URL(location.href);
-  url.searchParams.set("t", ticker);
-  history.replaceState(null, "", url);
+  if (!keepPage) {
+    const url = new URL(location.href);
+    url.searchParams.set("t", ticker);
+    history.replaceState(null, "", url);
+  }
   renderTable();
   const row = state.rows.find((r) => r.ticker === ticker);
   let series = null;
@@ -398,7 +443,13 @@ function verdictCard(row) {
         : p <= 50
           ? `That's cheaper than on ${100 - p}% of trading days in ${span}.`
           : `That's more expensive than on ${p}% of trading days in ${span}.`;
-    say(`You pay ${fmt(row.pe)}× the profit analysts expect over the next 12 months. ${vs}`);
+    if (row.metric === "ps") {
+      say(`${name} is loss-making, so it's valued on sales instead of profit. You pay ${fmt(row.pe, 2)}× its sales over the last 12 months` +
+        `${row.ps_forward ? ` (${fmt(row.ps_forward, 2)}× the sales ${row.rev_analysts || "the"} analysts expect over the next 12)` : ""}. ${vs}`);
+      say("Sales multiples fall naturally as a young company grows, so a low reading against its own past is weaker evidence than a low P/E would be.", "note-line");
+    } else {
+      say(`You pay ${fmt(row.pe)}× the profit analysts expect over the next 12 months. ${vs}`);
+    }
     if (row.mainKey !== MAIN_WINDOW) {
       say(`Note: there's only ${span} of usable history (recent listing, or profits only recently turned positive), so this compares with a shorter past than usual.`, "note-line");
     }
@@ -421,7 +472,9 @@ function verdictCard(row) {
     good: ["Reliable history.", "The past valuations used here were checked against real data and match closely."],
     caution: ["Roughly reliable history.", "The past valuations used here are reconstructed and can be 15–35% off. Treat the verdict as approximate."],
     biased: ["Unreliable history for this stock.", "Profit forecasts jumped after the fact, so the past looks cheaper than it really was and today looks more expensive than it is."],
-  }[row.b_grade] || ["Recorded history only.", "Real data has been recorded since 2026-09-24; the picture sharpens as it builds up."];
+  }[row.b_grade] || (row.metric === "ps"
+    ? ["History from reported sales.", "Past multiples use revenue as actually reported at the time, so there is no look-ahead."]
+    : ["Recorded history only.", "Real data has been recorded since 2026-09-24; the picture sharpens as it builds up."]);
   const t = el("p", { class: "trust" });
   t.append(el("strong", {}, trust[0] + " "), document.createTextNode(trust[1]));
   lines.append(t);
@@ -829,7 +882,7 @@ function ladder(row, c) {
   wrap.append(el("h4", {}, "What price would each level mean?"));
   const t = el("table");
   const head = el("tr");
-  ["Level", "× profit", "Price now", "In a year"].forEach((h, i) => head.append(el("th", i ? { class: "num" } : {}, h)));
+  ["Level", row.metric === "ps" ? "× sales" : "× profit", "Price now", "In a year"].forEach((h, i) => head.append(el("th", i ? { class: "num" } : {}, h)));
   t.append(head);
   const eps1 = epsAhead(row, 365);
   let placed = false;
@@ -859,7 +912,9 @@ function ladder(row, c) {
   if (!placed) youAreHere();
   wrap.append(t);
   wrap.append(el("p", { class: "help" },
-    `"In a year" assumes profit per share grows from today's forecast (${fmt(row.eps, 2)}) to analysts' forecast for next financial year (${fmt(row.fy1_eps ?? row.eps, 2)}) and the stock is valued the same way.`));
+    row.metric === "ps"
+      ? `"In a year" assumes sales per share grow from the last 12 months (${fmt(row.eps, 2)}) to what analysts expect over the next 12 (${fmt(row.fy1_eps ?? row.eps, 2)}) and the stock is valued at the same multiple of sales.`
+      : `"In a year" assumes profit per share grows from today's forecast (${fmt(row.eps, 2)}) to analysts' forecast for next financial year (${fmt(row.fy1_eps ?? row.eps, 2)}) and the stock is valued the same way.`));
   return wrap;
 }
 
@@ -873,8 +928,16 @@ function detailsSection(row, series) {
     s.append(el("div", { class: "k" }, k), el("div", { class: "v" }, v));
     stats.append(s);
   };
-  stat("Expected profit per share, next 12 months", fmt(row.eps, 2), "Analysts' average forecast (consensus NTM EPS)");
-  stat("Price ÷ expected profit", row.pe == null || row.pe <= 0 ? "n/m" : `${fmt(row.pe)}×`, "Forward P/E");
+  if (row.metric === "ps") {
+    stat("Sales per share, last 12 months", fmt(row.eps, 2), "Reported revenue per share, in the price currency");
+    stat("Price ÷ sales, last 12 months", `${fmt(row.pe, 2)}×`, "Trailing P/S");
+    stat("Price ÷ expected sales, next 12 months", row.ps_forward ? `${fmt(row.ps_forward, 2)}×` : "n/a",
+      `Forward P/S on ${row.rev_analysts || "?"} analysts' revenue consensus`);
+    if (row.shares_source && !row.shares_source.startsWith("yahoo")) stat("Share count", "override", row.shares_source);
+  } else {
+    stat("Expected profit per share, next 12 months", fmt(row.eps, 2), "Analysts' average forecast (consensus NTM EPS)");
+    stat("Price ÷ expected profit", row.pe == null || row.pe <= 0 ? "n/m" : `${fmt(row.pe)}×`, "Forward P/E");
+  }
   stat("Price ÷ last 12 months' profit", row.trailing_pe == null ? "n/m" : `${fmt(row.trailing_pe)}×`, "Trailing P/E on the same (adjusted) basis as the forecasts");
   stat("Expected profit growth", pct(row.growth, 0), "Next 12 months' forecast against the last 12 months' reported profit");
   stat("Forecast change, next year, 90 days", pct(row.fy1_revision_90d), "How analysts' forecast for next financial year moved in 90 days");
@@ -936,8 +999,11 @@ function smallCharts(box, row, full) {
   const s = sliceRange(full);
   const c = row.corridors?.[row.mainKey];
   const charts = [
-    { title: "Expected profit per share, next 12 months (analyst consensus)", values: s.eps, digits: 2 },
-    { title: `Price ÷ expected profit, with its normal range over ${row.mainKey ? spanOf(row.mainKey) : "the last 3 years"}`, values: s.pe, digits: 1, band: c ? [c.levels["-1"], c.levels["0"], c.levels["1"]] : null },
+    row.metric === "ps"
+      ? { title: "Sales per share, last 12 months (as reported at the time)", values: s.eps, digits: 2 }
+      : { title: "Expected profit per share, next 12 months (analyst consensus)", values: s.eps, digits: 2 },
+    { title: `Price ÷ ${row.metric === "ps" ? "sales" : "expected profit"}, with its normal range over ${row.mainKey ? spanOf(row.mainKey) : "the last 3 years"}`,
+      values: s.pe, digits: row.metric === "ps" ? 2 : 1, band: c ? [c.levels["-1"], c.levels["0"], c.levels["1"]] : null },
   ].map((spec) => lineChart(box, s, spec));
   const holder = charts[1].wrap;
   const tip = el("div", { class: "tip", hidden: "" });
@@ -962,7 +1028,7 @@ function smallCharts(box, row, full) {
   charts.forEach((ch) => ch.onMove(move));
 }
 
-function lineChart(box, s, { title, values, digits, band }) {
+function lineChart(box, s, { title, values, digits, band, extra }) {
   const W = 800, H = 180, L = 52, R = 12, T = 8, B = 24;
   const wrap = el("div", { class: "chart" });
   wrap.append(el("h4", {}, title));
@@ -971,7 +1037,7 @@ function lineChart(box, s, { title, values, digits, band }) {
   box.append(wrap);
 
   const t0 = dayNum(s.dates[0]), t1 = dayNum(s.dates[s.dates.length - 1]) || t0 + 1;
-  const nums = values.filter((v) => v != null && Number.isFinite(v));
+  const nums = values.concat(extra || []).filter((v) => v != null && Number.isFinite(v));
   if (band) nums.push(band[0], band[2]);
   let lo = nums.length ? Math.min(...nums) : 0, hi = nums.length ? Math.max(...nums) : 1;
   if (lo === hi) { lo -= 1; hi += 1; }
@@ -999,13 +1065,17 @@ function lineChart(box, s, { title, values, digits, band }) {
     root.append(svg("rect", { class: "band", x: L, width: W - L - R, y: yOf(band[2]), height: yOf(band[0]) - yOf(band[2]) }));
     root.append(svg("line", { class: "mean", x1: L, x2: W - R, y1: yOf(band[1]), y2: yOf(band[1]) }));
   }
-  let d = "", pen = false;
-  values.forEach((v, i) => {
-    if (v == null || !Number.isFinite(v)) { pen = false; return; }
-    d += `${pen ? "L" : "M"}${xOf(i).toFixed(1)},${yOf(v).toFixed(1)}`;
-    pen = true;
-  });
-  root.append(svg("path", { class: "series", d }));
+  const path = (vals) => {
+    let d = "", pen = false;
+    vals.forEach((v, i) => {
+      if (v == null || !Number.isFinite(v)) { pen = false; return; }
+      d += `${pen ? "L" : "M"}${xOf(i).toFixed(1)},${yOf(v).toFixed(1)}`;
+      pen = true;
+    });
+    return d;
+  };
+  if (extra) root.append(svg("path", { class: "series extra", d: path(extra) }));
+  root.append(svg("path", { class: "series", d: path(values) }));
   const cross = svg("line", { class: "cross", y1: T, y2: H - B, visibility: "hidden" });
   root.append(cross);
   const hit = svg("rect", { class: "hit", x: L, y: T, width: W - L - R, height: H - T - B });
@@ -1037,6 +1107,529 @@ function lineChart(box, s, { title, values, digits, band }) {
     },
   };
 }
+
+// ---------- market breadth (NYSE McClellan Summation Index) ----------
+
+const BREADTH = "$NYSI";
+const BREADTH_RANGES = [
+  { label: "6M", days: 183 },
+  { label: "1Y", days: 365 },
+  { label: "All", days: null },
+];
+let breadthRange = 365;
+
+async function showBreadth() {
+  const box = pageBox();
+  try {
+    const res = await fetch("data/breadth.json", { cache: "no-store" });
+    if (!res.ok) throw new Error(res.status);
+    renderBreadth(await res.json());
+  } catch {
+    box.replaceChildren(el("p", { class: "empty" }, "No breadth data yet. It is computed each weekday night after the US close."));
+  }
+}
+
+// Consecutive sessions the last value kept moving the same way.
+function streak(xs) {
+  const n = xs.length;
+  if (n < 2) return { dir: 0, days: 0 };
+  const dir = Math.sign(xs[n - 1] - xs[n - 2]);
+  let days = 0;
+  for (let i = n - 1; i > 0 && Math.sign(xs[i] - xs[i - 1]) === dir && dir !== 0; i--) days++;
+  return { dir, days };
+}
+
+function breadthCard(b) {
+  const n = b.dates.length - 1;
+  const v = b.nysi[n], rsi = b.rsi[n], rsiPrev = b.rsi[n - 1];
+  const bull = b.macd[n] > b.signal[n];
+  const rising = b.osc[n] > 0;
+  const run = streak(b.nysi);
+  const side = rising && bull ? "cheap" : !rising && !bull ? "rich" : "na";
+  const card = el("section", { class: `verdict side-${side}` });
+  const head = rising && bull
+    ? v < 0 ? "Breadth turning up from a washout" : "Breadth broad and improving"
+    : !rising && !bull
+      ? v > 0 ? "Breadth rolling over from strength" : "Breadth weak and still falling"
+      : "Breadth turning, not confirmed";
+  card.append(el("h3", {}, head));
+  const lines = el("div", { class: "v-lines" });
+  const say = (text, cls = "") => lines.append(el("p", { class: cls }, text));
+
+  say(`The summation index is at ${fmt(v, 0)} and has ${run.dir > 0 ? "risen" : "fallen"} ${run.days} session${run.days === 1 ? "" : "s"} in a row. ` +
+    (rising ? "More NYSE stocks are rising than its recent average, so breadth is improving." : "Fewer NYSE stocks are rising than its recent average, so breadth is weakening.") +
+    ` ${v < 0 ? "Below zero: over the last couple of months most stocks have lagged." : "Above zero: most stocks have been taking part."}`);
+  if (rsi != null) {
+    const zone = rsi < 30 ? "oversold" : rsi > 70 ? "overbought" : "neutral";
+    say(`RSI of the index ${fmt(rsi, 0)} (${zone}), ${rsi > rsiPrev ? "turning higher" : "still falling"}.`);
+  }
+  const lc = b.last_cross;
+  say(`MACD is ${bull ? "above" : "below"} its signal line` +
+    (lc ? `; the last cross was ${lc.dir === "bull" ? "bullish" : "bearish"} on ${lc.date}.` : ".") +
+    (Math.abs(b.macd[n] - b.signal[n]) < 2 ? " The two lines are nearly touching, so a cross is close." : ""));
+  if (rising && bull && v < 0) {
+    say("This is the classic early buy signal for the broad market. It fails often on the first hook; trust it after a few weeks of follow-through.", "note-line");
+  }
+  if (b.official) {
+    say(`StockCharts' official $NYSI: ${fmt(b.official.nysi, 1)} on ${b.official.date}` +
+      `${b.official.rsi != null ? `, RSI ${fmt(b.official.rsi, 1)}` : ""}. Our line is counted from ${b.advances[n] + b.declines[n] + (b.unchanged?.[n] ?? 0)} NYSE issues and set to the official level, so day-to-day moves can differ slightly.`, "note-line");
+  }
+  card.append(lines);
+  return card;
+}
+
+function renderBreadth(b) {
+  const box = pageBox();
+  box.replaceChildren();
+  const head = el("div", { class: "d-head" });
+  head.append(el("h2", {}, "Market breadth"), el("div", { class: "d-sub" }, `NYSE McClellan Summation Index (ratio-adjusted) · data as of ${b.as_of}`));
+  box.append(head, breadthCard(b));
+
+  const sec = el("section");
+  sec.append(el("h3", {}, "History"));
+  sec.append(el("p", { class: "help" }, "Advances minus declines per 1000 NYSE issues, smoothed (19- and 39-day) and summed. Rising: breadth improving. The RSI and MACD below are taken of the index itself."));
+  const ranges = el("div", { class: "ranges" });
+  for (const r of BREADTH_RANGES) {
+    const b2 = el("button", { class: "chip", "aria-pressed": String(breadthRange === r.days) }, r.label);
+    b2.addEventListener("click", () => { breadthRange = r.days; renderBreadth(b); });
+    ranges.append(b2);
+  }
+  sec.append(ranges);
+  box.append(sec);
+
+  let from = 0;
+  if (breadthRange) {
+    const last = dayNum(b.dates[b.dates.length - 1]);
+    from = Math.max(0, b.dates.findIndex((d) => dayNum(d) >= last - breadthRange));
+  }
+  const s = Object.fromEntries(Object.entries(b).map(([k, v]) => [k, Array.isArray(v) ? v.slice(from) : v]));
+  const charts = [
+    lineChart(sec, s, { title: "Summation index (zero line dashed)", values: s.nysi, digits: 0, band: [0, 0, 0] }),
+    lineChart(sec, s, { title: "MACD of the index (solid) and its signal line (dashed)", values: s.macd, extra: s.signal, digits: 0, band: [0, 0, 0] }),
+    lineChart(sec, s, { title: "RSI of the index, 14 days (shaded 30–70)", values: s.rsi, digits: 0, band: [30, 50, 70] }),
+  ];
+  const holder = charts[0].wrap;
+  const tip = el("div", { class: "tip", hidden: "" });
+  holder.append(tip);
+  const move = (idx) => {
+    for (const ch of charts) ch.cross(idx);
+    if (idx == null) { tip.hidden = true; return; }
+    tip.hidden = false;
+    tip.replaceChildren(
+      el("div", { class: "tip-date" }, s.dates[idx]),
+      el("div", {}, `NYSI ${fmt(s.nysi[idx], 0)}`),
+      el("div", {}, `RSI ${fmt(s.rsi[idx], 0)} · MACD ${fmt(s.macd[idx] - s.signal[idx], 1)} vs signal`),
+      el("div", {}, `${s.advances[idx]} up · ${s.declines[idx]} down`),
+    );
+    const x = charts[0].xOf(idx) * (holder.clientWidth / 800);
+    tip.style.left = `${Math.min(Math.max(x + 12, 0), holder.clientWidth - 170)}px`;
+    tip.style.top = "28px";
+  };
+  charts.forEach((ch) => ch.onMove(move));
+}
+
+// ---------- horizon: what the market is waiting for ----------
+
+const HZ_RANGES = [
+  { label: "2 weeks", days: 14 },
+  { label: "1 month", days: 31 },
+  { label: "All", days: null },
+];
+const HZ_THEMES = { rates: "Rates", oil: "Oil and the Gulf", geopolitics: "Geopolitics", growth: "Growth", politics: "Politics" };
+const HZ_WEEKDAY = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const HZ_MONTH = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const hz = { range: 31, all: false };
+
+async function showHorizon() {
+  const box = pageBox();
+  try {
+    const res = await fetch("data/horizon.json", { cache: "no-store" });
+    if (!res.ok) throw new Error(res.status);
+    renderHorizon(await res.json());
+  } catch {
+    box.replaceChildren(el("p", { class: "empty" }, "No horizon data yet. It is collected each weekday night after the US close."));
+  }
+}
+
+const hzDate = (iso) => {
+  const d = new Date(`${iso}T12:00:00Z`);
+  return `${HZ_WEEKDAY[d.getUTCDay()]} ${d.getUTCDate()} ${HZ_MONTH[d.getUTCMonth()]}`;
+};
+const hzIn = (iso, asOf) => {
+  const n = dayNum(iso) - dayNum(asOf);
+  return n === 0 ? "today" : n === 1 ? "tomorrow" : `in ${n} days`;
+};
+const hzPct = (p) => `${Math.round(p * 100)}%`;
+const hzPts = (now, past) => (past == null ? null : Math.round((now - past) * 100));
+const hzSigned = (v, d = 0) => `${v >= 0 ? "+" : "−"}${Math.abs(v).toFixed(d)}`;
+
+function hzImpact(n) {
+  return el("span", { class: "hz-impact", title: `Impact on an AI and memory book: ${n} of 3`, "aria-label": `impact ${n} of 3` }, "●".repeat(n) + "○".repeat(3 - n));
+}
+
+function hzExpect(x) {
+  if (x.median != null) {
+    const v = x.unit === "k" ? `${Math.round(x.median)}k`
+      : x.unit === "%" ? `${x.signed === false ? x.median.toFixed(2) : hzSigned(x.median, 2)}%` : fmt(x.median, 2);
+    return `${x.name}: market median ${v}`;
+  }
+  if (x.outcomes) return `${x.outcomes.map(([t, p]) => `${t} ${hzPct(p)}`).join(" · ")}`;
+  if (x.text) return `${x.name} ${x.text}`;
+  return null;
+}
+
+function hzTags(tags) {
+  const box = el("div", { class: "hz-tags" });
+  for (const t of tags || []) box.append(el("p", { class: `hz-tag tag-${t.key}` }, t.text));
+  return box;
+}
+
+function hzEvent(ev, asOf) {
+  const li = el("li", { class: "hz-ev" });
+  const when = el("div", { class: "hz-when" });
+  when.append(el("div", { class: "hz-day" }, hzDate(ev.date)), el("div", { class: "muted" }, hzIn(ev.date, asOf)));
+  const body = el("div", { class: "hz-body" });
+  const title = el("div", { class: "hz-title" });
+  title.append(el("strong", {}, ev.name), hzImpact(ev.impact));
+  const meta = [ev.time, ev.period, ev.company && ev.company !== ev.name ? ev.company : null].filter(Boolean).join(" · ");
+  if (meta) title.append(el("span", { class: "muted" }, meta));
+  body.append(title);
+  for (const x of ev.expect || []) {
+    const t = hzExpect(x);
+    if (t) body.append(el("div", { class: "hz-expect" }, t));
+  }
+  if (ev.note) body.append(el("div", { class: "hz-note" }, ev.note));
+  body.append(hzTags(ev.tags));
+  const nums = el("div", { class: "hz-nums" });
+  const via = ev.asset && ev.ticker !== ev.asset ? ` (${ev.asset})` : "";
+  if (ev.implied) nums.append(el("div", {}, `Options: ±${(ev.implied.move * 100).toFixed(1)}%${via} by ${ev.implied.expiry.slice(5)}`));
+  if (ev.runup) {
+    const r = ev.runup;
+    nums.append(el("div", { class: r.r20 >= 0 ? "ret pos" : "ret neg" }, `20d ${pct(r.r20, 0)}${r.z20 != null ? ` (${hzSigned(r.z20, 1)}σ)` : ""}${via && !ev.implied ? via : ""}`));
+  }
+  li.append(when, body, nums);
+  return li;
+}
+
+// One probability as a 90-day line on a fixed 0–100% scale, so a move looks as big as it is.
+function hzSpark(hist) {
+  const w = 120, h = 30;
+  const s = svg("svg", { viewBox: `0 0 ${w} ${h}`, class: "hz-spark", "aria-hidden": "true" });
+  s.append(svg("line", { x1: 0, x2: w, y1: h / 2, y2: h / 2, class: "hz-mid" }));
+  if (hist && hist.length > 1) {
+    const d = hist.map(([, p], i) => `${i ? "L" : "M"}${((i / (hist.length - 1)) * w).toFixed(1)},${((1 - p) * (h - 2) + 1).toFixed(1)}`).join("");
+    s.append(svg("path", { d, class: "hz-line" }));
+  }
+  return s;
+}
+
+function hzChange(o, past, label) {
+  const v = hzPts(o.p, past);
+  if (v == null) return el("span", { class: "hz-chg muted" }, `${label} n/a`);
+  const helps = o.good_if === "yes" ? v > 0 : o.good_if === "no" ? v < 0 : null;
+  const cls = v === 0 || helps == null ? "muted" : helps ? "ret pos" : "ret neg";
+  return el("span", { class: `hz-chg ${cls}` }, `${label} ${hzSigned(v)}`);
+}
+
+function hzMarket(m) {
+  const card = el("article", { class: "hz-mkt" });
+  const head = el("div", { class: "hz-title" });
+  head.append(el("strong", {}, m.title), hzImpact(m.impact));
+  const link = el("a", { href: m.url, target: "_blank", rel: "noopener", class: "muted" }, "Polymarket ↗");
+  head.append(link);
+  card.append(head);
+  if (m.note) card.append(el("div", { class: "hz-note" }, m.note));
+  for (const o of m.outcomes) {
+    const row = el("div", { class: "hz-out" });
+    const lone = m.outcomes.length === 1;
+    const name = el("div", { class: "hz-oname" }, lone ? "" : o.label);
+    if (o.good_if === "yes" || o.good_if === "no") {
+      name.append(el("span", { class: "muted" }, `${lone ? "" : " · "}good for the book if ${o.good_if}`));
+    }
+    const chg = el("div", { class: "hz-chgs" });
+    chg.append(hzChange(o, o.p1, "1d"), hzChange(o, o.p7, "7d"), hzChange(o, o.p30, "30d"));
+    row.append(name, el("div", { class: "hz-p" }, hzPct(o.p)), hzSpark(o.hist), chg);
+    card.append(row);
+    if (o.tags?.length) card.append(hzTags(o.tags));
+  }
+  return card;
+}
+
+function hzSummary(d, events) {
+  const card = el("section", { class: "verdict" });
+  card.append(el("h3", {}, "What the market is waiting for"));
+  const lines = el("div", { class: "v-lines" });
+  const say = (text, cls = "") => lines.append(el("p", { class: cls }, text));
+  const soon = events.filter((e) => e.impact >= 3 && dayNum(e.date) - dayNum(d.as_of) <= 14);
+  if (soon.length) say(`Next two weeks: ${soon.length} high-impact date${soon.length === 1 ? "" : "s"}: ${soon.map((e) => `${e.name.replace(" results", "")} (${hzDate(e.date)})`).join(", ")}.`);
+
+  const moves = [];
+  for (const m of d.markets) for (const o of m.outcomes) {
+    const v = hzPts(o.p, o.p7);
+    if (v != null && Math.abs(v) >= 5) moves.push({ m, o, v });
+  }
+  moves.sort((a, b) => Math.abs(b.v) - Math.abs(a.v));
+  if (moves.length) {
+    say(`Biggest shifts this week: ${moves.slice(0, 3).map(({ m, o, v }) => `${m.title}${m.outcomes.length > 1 ? ` (${o.label})` : ""} ${hzSigned(v)} points to ${hzPct(o.p)}`).join("; ")}.`);
+  }
+  const tails = [], upside = [];
+  for (const m of d.markets) for (const o of m.outcomes) for (const t of o.tags || []) {
+    const name = `${m.title}${m.outcomes.length > 1 ? ` (${o.label})` : ""} ${hzPct(o.p)}`;
+    if (t.key === "tail-bad" && m.impact >= 2) tails.push(name);
+    if (t.key === "tail-good" && m.impact >= 2) upside.push(name);
+  }
+  if (upside.length) say(`Cheap upside the market doubts: ${upside.slice(0, 4).join("; ")}.`);
+  if (tails.length) say(`Tail risks it dismisses: ${tails.slice(0, 4).join("; ")}.`);
+  const a = d.assets || {};
+  const tone = ["SPY", "QQQ", "SMH"].filter((k) => a[k]).map((k) => `${k} ${pct(a[k].r20, 0)} in 20 days, ${pct(a[k].from_high, 0)} from its high`);
+  if (tone.length) say(`So far: ${tone.join(" · ")}.`, "note-line");
+  say("Read the tags as questions, not calls: a priced-in outcome moves prices most when it fails to happen, and a date the market has front-run often reverses on the day.", "note-line");
+  card.append(lines);
+  return card;
+}
+
+function renderHorizon(d) {
+  const box = pageBox();
+  box.replaceChildren();
+  const head = el("div", { class: "d-head" });
+  head.append(el("h2", {}, "Horizon"), el("div", { class: "d-sub" }, `What the market is waiting for, how likely it is, and how far it has run ahead · data as of ${d.as_of}`));
+
+  const shown = d.scheduled.filter((e) => (hz.all || e.impact >= 2) && (!hz.range || dayNum(e.date) - dayNum(d.as_of) <= hz.range));
+  box.append(head, hzSummary(d, d.scheduled.filter((e) => e.impact >= 2)));
+
+  const sec = el("section", { class: "hz-sec" });
+  sec.append(el("h3", {}, "Dated events"));
+  sec.append(el("p", { class: "help" }, "These will happen; the question is the outcome. Macro expectations come from Kalshi's traded ranges, the options figure is the at-the-money straddle to the first expiry after the date (the move the options market prices in), and 20d is how far the exposed asset has run into it, in its own volatility units."));
+  const ctl = el("div", { class: "ranges" });
+  for (const r of HZ_RANGES) {
+    const b = el("button", { class: "chip", "aria-pressed": String(hz.range === r.days) }, r.label);
+    b.addEventListener("click", () => { hz.range = r.days; renderHorizon(d); });
+    ctl.append(b);
+  }
+  const allBtn = el("button", { class: "chip", "aria-pressed": String(hz.all) }, "Every stock I track");
+  allBtn.addEventListener("click", () => { hz.all = !hz.all; renderHorizon(d); });
+  ctl.append(allBtn);
+  sec.append(ctl);
+  const list = el("ol", { class: "hz-list" });
+  for (const ev of shown) list.append(hzEvent(ev, d.as_of));
+  if (!shown.length) list.append(el("li", { class: "muted" }, "Nothing in this window."));
+  sec.append(list);
+  box.append(sec);
+
+  const sec2 = el("section", { class: "hz-sec" });
+  sec2.append(el("h3", {}, "Could happen"));
+  sec2.append(el("p", { class: "help" }, "Prices on Polymarket read as probabilities. The changes are in percentage points; green means the move helps a long AI and memory book. The line is the last 90 days on a 0–100% scale, with 50% marked."));
+  const order = Object.keys(HZ_THEMES);
+  const themes = [...new Set(d.markets.map((m) => m.theme))].sort((a, b) => (order.indexOf(a) + 99) % 99 - (order.indexOf(b) + 99) % 99);
+  for (const th of themes) {
+    sec2.append(el("h4", {}, HZ_THEMES[th] || th));
+    const grid = el("div", { class: "hz-grid" });
+    for (const m of d.markets.filter((x) => x.theme === th)) grid.append(hzMarket(m));
+    sec2.append(grid);
+  }
+  box.append(sec2);
+  box.append(el("p", { class: "help" }, "Coming: positioning (who is already leaning which way) and sentiment, so each catalyst shows how crowded the bet on it is."));
+}
+
+// ---------- positioning: who is already leaning which way ----------
+
+const PS_GROUPS = { memory: "Memory", "ai-infra": "AI infrastructure", neocloud: "Neoclouds", megacap: "Megacaps", crowding: "Old crowding watchlist", market: "Index and macro ETFs" };
+const PS_SIDES = { leveraged: "Hedge funds (leveraged funds)", asset_managers: "Asset managers", dealers: "Dealers" };
+const ps = { contract: "20974+", group: "all" };
+
+async function showPositioning() {
+  const box = pageBox();
+  try {
+    const res = await fetch("data/positioning.json", { cache: "no-store" });
+    if (!res.ok) throw new Error(res.status);
+    renderPositioning(await res.json());
+  } catch {
+    box.replaceChildren(el("p", { class: "empty" }, "No positioning data yet. It is collected each weekday night after the US close."));
+  }
+}
+
+const psOrd = (p) => (p == null ? "n/a" : ordinal(Math.round(p)));
+
+// A chart with a one-line readout under its title that follows the pointer.
+function psChart(box, s, opts, readout) {
+  const ch = lineChart(box, s, opts);
+  const line = el("div", { class: "help ps-readout" }, readout(s.dates.length - 1));
+  ch.wrap.querySelector("h4").after(line);
+  ch.onMove((i) => {
+    ch.cross(i);
+    line.textContent = readout(i ?? s.dates.length - 1);
+  });
+  return ch;
+}
+
+function psSummary(d) {
+  const card = el("section", { class: "verdict" });
+  card.append(el("h3", {}, "How the market is positioned"));
+  const lines = el("div", { class: "v-lines" });
+  const say = (text, cls = "") => lines.append(el("p", { class: cls }, text));
+  const md = d.margin_debt;
+  if (md) say(`Leverage: margin debt ${fmt(md.debit_billions / 1000, 2)} trillion dollars in ${md.month}, ${pct(md.yoy, 0)} on a year earlier, at the ${psOrd(md.pct_all)} percentile of its history${md.pct_all >= 99 ? " (a record or close to it)" : ""}.`);
+  const sp = d.cftc["13874+"], nq = d.cftc["20974+"];
+  if (sp && nq) {
+    say(`Futures (${sp.report_date}): hedge funds are net ${sp.latest.leveraged < 0 ? "short" : "long"} S&P futures, ${psOrd(sp.pct_2y.leveraged)} percentile of two years, while asset managers sit at the ${psOrd(sp.pct_2y.asset_managers)}. ` +
+      `In Nasdaq futures hedge funds are at the ${psOrd(nq.pct_2y.leveraged)} and asset managers at the ${psOrd(nq.pct_2y.asset_managers)}.` +
+      (sp.pct_2y.asset_managers > 50 && sp.pct_2y.leveraged < 30 ? " Fast money is already light; real money still has length it could sell." : ""));
+  }
+  const v = d.volatility;
+  const vix = v.indices.VIX, vxn = v.indices.VXN, skew = v.indices.SKEW;
+  if (vix && vxn) say(`Fear: VIX ${fmt(vix.value, 1)} (${hzSigned(vix.change_5d, 1)} in 5 days, ${psOrd(vix.pct_1y)} percentile of the year), Nasdaq volatility ${fmt(vxn.value, 1)} (${hzSigned(vxn.change_5d, 1)}).`);
+  const vn = v.vxn_vs_nasdaq;
+  if (vn) {
+    const fading = vn.qqq_down_days >= 3 && vn.qqq_down_vxn_down / vn.qqq_down_days >= 0.5;
+    say(`Panic check: the Nasdaq fell on ${vn.qqq_down_days} of the last ${vn.sessions} sessions and its volatility fell on ${vn.qqq_down_vxn_down} of those days. ` +
+      (fading ? "Volatility falling with prices: the selling is getting orderly, a classic sign a selloff is tiring."
+        : vn.qqq_down_days >= 3 ? "Volatility still rises on down days: fear is building, no sign of exhaustion yet." : "Too few down days to read."),
+      fading ? "pattern yes" : "");
+  }
+  if (skew && skew.pct_1y >= 90) say(`Tail hedging: SKEW at ${fmt(skew.value, 0)}, ${psOrd(skew.pct_1y)} percentile of the year. Investors are paying up for crash protection.`);
+  if (v.term_ratio) say(`Short-term against 3-month VIX: ${fmt(v.term_ratio.value, 2)}${v.term_ratio.value >= 1 ? ", inverted: near-term stress is priced above later stress." : v.term_ratio.value >= 0.95 ? ", close to inverting." : ", normal upward slope."}`);
+  const m = d.market?.scores;
+  if (m) say(`Model scores (0–100): leverage ${fmt(m.gross_leverage, 0)}, systematic selling pressure ${fmt(m.systematic_selling, 0)}, liquidity fragility ${fmt(m.liquidity_fragility, 0)}, direction ${hzSigned(m.directional_exposure, 0)} (−100 short to +100 long).`, "note-line");
+  say("Light positioning is fuel, not a trigger: it says how hard prices can move once selling stops, not when.", "note-line");
+  card.append(lines);
+  return card;
+}
+
+function psCell(v, { digits = 1, pctFmt = false, hi = null, lo = null } = {}) {
+  const td = el("td", { class: "num" }, v == null ? "n/a" : pctFmt ? pct(v, 0) : fmt(v, digits));
+  if (v != null && hi != null && v >= hi) td.classList.add("ps-hot");
+  if (v != null && lo != null && v <= lo) td.classList.add("ps-cold");
+  return td;
+}
+
+function renderPositioning(d) {
+  const box = pageBox();
+  box.replaceChildren();
+  const head = el("div", { class: "d-head" });
+  head.append(el("h2", {}, "Positioning"), el("div", { class: "d-sub" }, `Who is already leaning which way · prices as of ${d.as_of}`));
+  box.append(head, psSummary(d));
+
+  // Futures by trader type
+  const fut = el("section", { class: "hz-sec" });
+  fut.append(el("h3", {}, "Index futures by trader type"));
+  fut.append(el("p", { class: "help" }, "CFTC Traders in Financial Futures, weekly (Tuesday positions, published Friday). Net long minus short as a share of open interest; the percentile compares it with the last two years."));
+  const t = el("table", { class: "ps-table" });
+  const hr = el("tr");
+  ["Index", ...Object.values(PS_SIDES)].forEach((h, i) => hr.append(el("th", { class: i ? "num" : "" }, h)));
+  t.append(el("thead"), el("tbody"));
+  t.tHead.append(hr);
+  for (const [code, c] of Object.entries(d.cftc)) {
+    const tr = el("tr", { class: code === ps.contract ? "ps-sel" : "" });
+    tr.append(el("td", {}, c.name));
+    for (const k of Object.keys(PS_SIDES)) {
+      tr.append(el("td", { class: "num" }, `${hzSigned(c.latest[k], 1)}% · ${psOrd(c.pct_2y[k])}`));
+    }
+    tr.addEventListener("click", () => { ps.contract = code; renderPositioning(d); });
+    t.tBodies[0].append(tr);
+  }
+  const fs = el("div", { class: "ps-scroll" });
+  fs.append(t);
+  fut.append(fs);
+  const c = d.cftc[ps.contract];
+  if (c) {
+    const s = { dates: c.history.dates };
+    psChart(fut, s, { title: `${c.name}: hedge funds (solid) and asset managers (dashed), % of open interest`, values: c.history.leveraged, extra: c.history.asset_managers, digits: 0, band: [0, 0, 0] },
+      (i) => `${s.dates[i]}: hedge funds ${hzSigned(c.history.leveraged[i], 1)}%, asset managers ${hzSigned(c.history.asset_managers[i], 1)}%, dealers ${hzSigned(c.history.dealers[i], 1)}%`);
+  }
+  box.append(fut);
+
+  // Volatility complex
+  const vol = el("section", { class: "hz-sec" });
+  vol.append(el("h3", {}, "Volatility and hedging"));
+  vol.append(el("p", { class: "help" }, "Cboe indices. The percentile compares today with the last year; high means more fear or more hedging than usual."));
+  const vt = el("table", { class: "ps-table" });
+  vt.append(el("thead"), el("tbody"));
+  const vh = el("tr");
+  ["Index", "Level", "1 day", "5 days", "Year pct"].forEach((h, i) => vh.append(el("th", { class: i ? "num" : "" }, h)));
+  vt.tHead.append(vh);
+  for (const k of ["VIX", "VXN", "VIX9D", "VIX3M", "VVIX", "SKEW", "OVX"]) {
+    const x = d.volatility.indices[k];
+    if (!x) continue;
+    const tr = el("tr");
+    tr.append(el("td", {}, x.name), psCell(x.value), psCell(x.change_1d, { hi: 2, lo: -2 }), psCell(x.change_5d, { hi: 3, lo: -3 }), psCell(x.pct_1y, { digits: 0, hi: 80, lo: 20 }));
+    vt.tBodies[0].append(tr);
+  }
+  const vs = el("div", { class: "ps-scroll" });
+  vs.append(vt);
+  vol.append(vs);
+  const vxn = d.volatility.indices.VXN;
+  if (vxn) {
+    const s = { dates: vxn.history.dates };
+    psChart(vol, s, { title: "Nasdaq-100 volatility (VXN), last year", values: vxn.history.values, digits: 0 }, (i) => `${s.dates[i]}: VXN ${fmt(vxn.history.values[i], 1)}`);
+  }
+  box.append(vol);
+
+  // Margin debt
+  const md = d.margin_debt;
+  if (md) {
+    const sec = el("section", { class: "hz-sec" });
+    sec.append(el("h3", {}, "Margin debt"));
+    sec.append(el("p", { class: "help" }, "FINRA customer debit balances, monthly, in billions of dollars. Borrowed money in the market; it turns into forced selling when prices fall far enough."));
+    const s = { dates: md.history.months.map((m) => `${m}-01`) };
+    psChart(sec, s, { title: "Margin debt, last five years (billions of dollars)", values: md.history.values, digits: 0 }, (i) => `${md.history.months[i]}: ${fmt(md.history.values[i], 0)} billion`);
+    box.append(sec);
+  }
+
+  // Stocks
+  const st = el("section", { class: "hz-sec" });
+  st.append(el("h3", {}, "Stocks: long and short crowding"));
+  st.append(el("p", { class: "help" }, "Long side: the model's long-crowding score leans on momentum ranks, so read it next to the moves measured in each stock's own volatility (σ), its distance above the 200-day average in σ, and how closely it trades with GVIP, Goldman's basket of hedge funds' favourite longs. Short side: days to cover, borrow fee and the change in short interest. Orange marks a stretched reading, blue a washed-out one."));
+  const chips = el("div", { class: "ranges" });
+  for (const [k, label] of [["all", "All"], ...Object.entries(PS_GROUPS)]) {
+    const b = el("button", { class: "chip", "aria-pressed": String(ps.group === k) }, label);
+    b.addEventListener("click", () => { ps.group = k; renderPositioning(d); });
+    chips.append(b);
+  }
+  st.append(chips);
+  const tbl = el("table", { class: "ps-table ps-stocks" });
+  tbl.append(el("thead"), el("tbody"));
+  const sh = el("tr");
+  [["Stock", ""], ["Long crowd", "Model long-crowding score, 0–100"], ["20d σ", "Last 20 sessions in units of the stock's own volatility"], ["6m σ", "Last 120 sessions in volatility units"],
+    ["Above 200d", "Distance above the 200-day average, in volatility units"], ["From high", "Below the 1-year high"], ["Trades with crowd", "Correlation with GVIP over 60 sessions"],
+    ["Short crowd", "Model short-crowding score, 0–100"], ["Days to cover", "Short interest ÷ average daily volume"], ["Borrow fee", "Annual % to borrow the shares (IBKR)"], ["SI change", "Change in short interest since the last report"]]
+    .forEach(([h, tip], i) => sh.append(el("th", { class: i ? "num" : "", title: tip }, h)));
+  tbl.tHead.append(sh);
+  const order = Object.keys(PS_GROUPS);
+  const rank = (g) => (order.includes(g) ? order.indexOf(g) : order.length);
+  const rows = d.stocks.filter((r) => ps.group === "all" || r.group === ps.group)
+    .sort((a, b) => rank(a.group) - rank(b.group) || a.symbol.localeCompare(b.symbol));
+  let lastGroup = null;
+  for (const r of rows) {
+    if (ps.group === "all" && r.group !== lastGroup) {
+      lastGroup = r.group;
+      const gh = el("tr", { class: "ps-group" });
+      gh.append(el("td", { colspan: "11" }, PS_GROUPS[r.group] || r.group || "Other"));
+      tbl.tBodies[0].append(gh);
+    }
+    const p = r.price || {}, s = r.short_side || {};
+    const tr = el("tr");
+    const name = el("td");
+    name.append(el("strong", {}, r.symbol), el("span", { class: "name" }, r.name || ""));
+    tr.append(name,
+      psCell(r.scores.long_crowding, { digits: 0, hi: 75, lo: 25 }),
+      psCell(p.z_20d, { digits: 1, hi: 1.5, lo: -1.5 }),
+      psCell(p.z_120d, { digits: 1, hi: 1.5, lo: -1.5 }),
+      psCell(p.above_200d_sigma, { digits: 1, hi: 1.5, lo: -1.5 }),
+      psCell(p.from_high, { pctFmt: true, lo: -0.3 }),
+      psCell(p.corr_crowd_60d, { digits: 2, hi: 0.8 }),
+      psCell(r.scores.short_crowding, { digits: 0, hi: 50 }),
+      psCell(s.days_to_cover, { digits: 1, hi: 5 }),
+      psCell(s.borrow_fee, { digits: 2, hi: 3 }),
+      el("td", { class: "num" }, s.short_interest_change == null ? "n/a" : `${hzSigned(s.short_interest_change, 0)}%`));
+    tbl.tBodies[0].append(tr);
+  }
+  st.append(el("div", { class: "ps-scroll" }, ""));
+  st.lastChild.append(tbl);
+  box.append(st);
+  box.append(el("p", { class: "help" }, "Sources: CFTC, Cboe, FINRA (short interest twice a month, margin debt monthly), OCC stock loans, IBKR borrow file, Yahoo prices. Every figure is a proxy for positioning; nobody publishes the real books."));
+}
+
+document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => showPage(t.dataset.page)));
 
 // The grouped header row wraps, so pin the sub-header just below its real height.
 function pinSubHeader() {

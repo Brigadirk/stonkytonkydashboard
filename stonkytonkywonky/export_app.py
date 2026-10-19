@@ -237,6 +237,47 @@ def revision_trend(raw: dict | None) -> dict | None:
     }
 
 
+def sales_mode(row: dict, ticker: str, snap: dict, data: Path) -> None:
+    """Value a loss-maker on sales: without profits there is no P/E to compare.
+
+    The app's valuation fields are reused, with `metric` = "ps": `pe` holds trailing
+    P/S (compared with its own trailing history from sales_history.py), `eps` holds
+    trailing revenue per share and `fy1_eps` next-twelve-month revenue per share,
+    so corridors project to the price that the same multiple of NTM sales implies.
+    """
+    ntm_eps = num(snap.get("ntm_eps"))
+    path = ROOT / "data" / "history" / "ps" / f"{ticker}.csv"
+    if (ntm_eps is not None and ntm_eps > 0) or not path.exists() or snap.get("ntm_eps") in (None, ""):
+        return
+    with open(path, newline="", encoding="utf-8") as fh:
+        hist = list(csv.DictReader(fh))
+    if len(hist) < 60:
+        return
+    series = {
+        "dates": [h["date"] for h in hist],
+        "price": [num(h["close"]) for h in hist],
+        "eps": [num(h["ttm_rev_ps"]) for h in hist],
+        "pe": [num(h["ttm_ps"]) for h in hist],
+    }
+    shares, ntm_rev = num(snap.get("shares")), num(snap.get("ntm_rev"))
+    row.update({
+        "metric": "ps",
+        "pe": series["pe"][-1],
+        "eps": series["eps"][-1],
+        "fy1_eps": ntm_rev / shares if ntm_rev and shares else None,
+        "ps_forward": num(snap.get("ntm_ps")),
+        "rev_analysts": num(snap.get("rev_analysts")),
+        "shares_source": snap.get("shares_source") or "",
+        "trailing_pe": None,
+        "growth": None,
+        "corridors": corridors(series),
+        "b_grade": None,  # the P/S history rests on reported revenue, not reconstructed estimates
+    })
+    main = row["corridors"].get("3Y") or {}
+    row["pe_pct"] = main.get("pct")
+    (data / "series" / f"{ticker}.json").write_text(json.dumps(thin(series)), encoding="utf-8")
+
+
 def thin(series: dict) -> dict:
     """Keep daily points recently and every fifth trading day further back."""
     dates = series["dates"]
@@ -327,6 +368,7 @@ def main() -> int:
             series = json.loads(series_path.read_text(encoding="utf-8"))
             rows[-1]["corridors"] = corridors(series)
             (data / "series" / f"{t}.json").write_text(json.dumps(thin(series)), encoding="utf-8")
+        sales_mode(rows[-1], t, snap, data)
 
     (data / "ranking.json").write_text(
         json.dumps({"as_of": as_of, "rows": rows}, default=str), encoding="utf-8"

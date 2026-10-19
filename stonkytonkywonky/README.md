@@ -11,6 +11,14 @@ For each stock, the app shows:
 - how cheap it is compared with other stocks today: forward P/E against all 164, against industry peers (sector when the industry has fewer than 5), and against growth (PEG, growth capped at +50%), averaged into a 0–100 "vs others" score;
 - a combined score ranking every stock on cheapness vs others, growth, forecast revisions and return to its typical valuation.
 
+Companies without profits are valued on sales instead: price-to-sales against its own history, from revenue consensus.
+
+Besides the valuation list, the app has three tabs (`?page=`):
+
+- **Market breadth**: the NYSE McClellan Summation Index with its RSI and MACD.
+- **Positioning**: CFTC futures positioning by trader type, volatility and hedging indices (VIX term structure, VXN against the Nasdaq, SKEW), FINRA margin debt, and long and short crowding per stock. It comes from the separate PositioningLab project.
+- **Horizon**: dated catalysts in the next 75 days (Fed, CPI, payrolls and other Kalshi macro releases, key earnings with their options-implied moves, manual dates in `horizon.json`), Polymarket probabilities for the events in `horizon.json` with their 1-, 7- and 30-day changes, and how far each stock has run ahead of its event.
+
 ## Pipeline
 
 `nightly.sh` runs on weekdays at 23:30 through the systemd user timer in `systemd/`:
@@ -18,7 +26,9 @@ For each stock, the app shows:
 1. `record.py` records each ticker's consensus (yfinance, plus Nasdaq for US names) as point-in-time history. This is the only genuine estimate history; it starts on 2026-09-24.
 2. On Fridays, `backfill.py` reconstructs older history ("method B"): each future quarter valued at its pre-report consensus. This carries look-ahead. Each ticker is graded good, caution or biased against Yahoo's sparse genuine forward P/E points, and the app says how far to trust it.
 3. `screen/forward_screen.py --all --allow-biased` computes the percentile signals and walk-forward tests. This is a copy of the `stock-research` skill's script, and the skill's copy is the source of truth.
-4. `export_app.py` writes the app's JSON, including per-window percentile levels from the full daily series.
+4. `sales_history.py` rebuilds trailing price-to-sales history for loss-makers from SEC filings. Set your own contact in its `SEC_UA`; SEC requires one.
+5. `breadth.py` and `horizon.py` write the breadth and horizon views. PositioningLab, checked out next to this folder, collects its public sources and exports `positioning.json`; without it that step is skipped.
+6. `export_app.py` writes the app's JSON, including per-window percentile levels from the full daily series.
 
 `tickers.csv` lists the universe. The `estimates_from` column points one share class at another's consensus (Samsung preferred uses the common's).
 
