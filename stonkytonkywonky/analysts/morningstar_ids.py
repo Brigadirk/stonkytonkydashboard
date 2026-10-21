@@ -15,6 +15,7 @@ import csv
 import re
 import sys
 import time
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -41,10 +42,15 @@ def lookup(ticker: str) -> tuple[str, str] | None:
                 page = r.read().decode("utf-8", "replace")
         except Blocked:
             raise
+        except urllib.error.HTTPError as e:
+            if e.code in (403, 429):  # throttled, not missing
+                raise Blocked() from e
+            time.sleep(PAUSE)
+            continue
         except Exception:  # noqa: BLE001 — a missing page just means "not on this exchange"
             time.sleep(PAUSE)
             continue
-        counts = collections.Counter(re.findall(r"0P0000[A-Z0-9]{4}", page))
+        counts = collections.Counter(re.findall(r"0P[0-9A-Z]{8}", page))
         if counts:
             best, n = counts.most_common(1)[0]
             if n >= 3:

@@ -39,7 +39,7 @@ ROOT = Path(__file__).resolve().parent
 OUT = ROOT / "data" / "history" / "ps"
 START = "2019-01-01"
 REPORT_LAG = timedelta(days=75)
-SEC_UA = "StonkyTonkyWonky personal research you@example.com"
+SEC_UA = "StonkyTonkyWonky research tool"
 SEC_CONCEPTS = ("Revenues", "RevenueFromContractWithCustomerExcludingAssessedTax", "SalesRevenueNet")
 
 

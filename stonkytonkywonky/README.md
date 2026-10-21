@@ -1,23 +1,29 @@
 # StonkyTonkyWonky
 
-A cheap-to-self screen for 164 stocks: the 89 names from the Protocol v2 research library plus the Nasdaq-100. It runs separately from the ten-stock dashboard in `web/` and uses consensus estimates instead of individual broker reports.
+A cheap-to-self screen for 190 stocks: the names from the Protocol v2 research library, the Nasdaq-100 and later additions in `tickers.csv`. It runs separately from the ten-stock dashboard in `web/` and uses consensus estimates instead of individual broker reports.
 
 For each stock, the app shows:
 
-- forward P/E against the stock's own history over windows from 90 days to 5 years, as seven zones from extremely cheap to extremely expensive (levels at −2, −1.5, −1, median, +1, +1.5 and +2σ, read off each window's percentiles);
+- forward P/E against the stock's own history over windows from 90 days to 5 years, as seven zones from extremely cheap to extremely expensive (levels at −2, −1.5, −1, median, +1, +1.5 and +2σ, read off each window's percentiles). The list's cheap/expensive flag blends three windows: 60% the last 90 days, 20% 180 days, 20% one year;
 - a price chart with those valuation bands, projected one year ahead on next fiscal year's consensus;
 - whether analysts are raising or cutting next year's forecast (90-day path);
-- trailing P/E and expected growth on the same adjusted basis as the forecasts;
+- trailing P/E and expected growth on the same adjusted basis as the forecasts, over 12 and 24 months, and consensus EPS for FY2027 and FY2028. A fiscal year Yahoo does not cover is chained from Nasdaq/Zacks, Eastmoney or named analysts' growth (marked ~), or else extrapolated at half the previous year's growth (marked ≈);
+- hand-entered context where it matters (`analysts/notes.json`) and named analysts' price targets from press reports (`analysts/targets.csv`);
 - how cheap it is compared with other stocks today: forward P/E against all 164, against industry peers (sector when the industry has fewer than 5), and against growth (PEG, growth capped at +50%), averaged into a 0–100 "vs others" score;
 - a combined score ranking every stock on cheapness vs others, growth, forecast revisions and return to its typical valuation.
 
 Companies without profits are valued on sales instead: price-to-sales against its own history, from revenue consensus.
 
-Besides the valuation list, the app has three tabs (`?page=`):
+Besides the valuation list, the app has these tabs (`?page=`):
 
 - **Market breadth**: the NYSE McClellan Summation Index with its RSI and MACD.
+- **Highs & lows**: new 52-week highs and lows across the S&P 1500 with a since-1991 study of what followed, and research-based dip-buying scores for the market and each sector (`highlow.py`, `dipscore.py`).
 - **Positioning**: CFTC futures positioning by trader type, volatility and hedging indices (VIX term structure, VXN against the Nasdaq, SKEW), FINRA margin debt, and long and short crowding per stock. It comes from the separate PositioningLab project.
 - **Horizon**: dated catalysts in the next 75 days (Fed, CPI, payrolls and other Kalshi macro releases, key earnings with their options-implied moves, manual dates in `horizon.json`), Polymarket probabilities for the events in `horizon.json` with their 1-, 7- and 30-day changes, and how far each stock has run ahead of its event.
+- **Markets**: indexes, rates, credit, currencies, commodities and crypto (`markets.py`, `markets.json`).
+- **Discounts**: stocks that are mostly a claim on another stock, over time: SK Square against its SK hynix stake, Samsung preferred against common (`discounts.py`; pairs in its `PAIRS`).
+- **AI demand**: OpenRouter tokens by model maker, hyperscaler capex and contracted backlog from SEC filings, and disclosed usage and revenue figures (`compute.py`, `compute_disclosed.json`), in one log-scale chart.
+- **Industry**: oil shipping through the chokepoints, memory spot prices and GPU rental prices (`industry.py`).
 
 ## Pipeline
 
@@ -26,8 +32,8 @@ Besides the valuation list, the app has three tabs (`?page=`):
 1. `record.py` records each ticker's consensus (yfinance, plus Nasdaq for US names) as point-in-time history. This is the only genuine estimate history; it starts on 2026-09-24.
 2. On Fridays, `backfill.py` reconstructs older history ("method B"): each future quarter valued at its pre-report consensus. This carries look-ahead. Each ticker is graded good, caution or biased against Yahoo's sparse genuine forward P/E points, and the app says how far to trust it.
 3. `screen/forward_screen.py --all --allow-biased` computes the percentile signals and walk-forward tests. This is a copy of the `stock-research` skill's script, and the skill's copy is the source of truth.
-4. `sales_history.py` rebuilds trailing price-to-sales history for loss-makers from SEC filings. Set your own contact in its `SEC_UA`; SEC requires one.
-5. `breadth.py` and `horizon.py` write the breadth and horizon views. PositioningLab, checked out next to this folder, collects its public sources and exports `positioning.json`; without it that step is skipped.
+4. `sales_history.py` rebuilds trailing price-to-sales history for loss-makers from SEC filings. SEC asks for a declared user agent in `SEC_UA`.
+5. `breadth.py`, `highlow.py`, `horizon.py`, `markets.py`, `industry.py`, `compute.py`, `discounts.py` and `korea_margin.py` write the other tabs' data, `extra_forecasts.py` fetches third-year forecasts for Chinese A-shares, and `fundamentals.py` refreshes balance sheets and cash flow for EV/FCF and P/B. PositioningLab, checked out next to this folder, collects its public sources and exports `positioning.json`; without it that step is skipped.
 6. `export_app.py` writes the app's JSON, including per-window percentile levels from the full daily series.
 
 `tickers.csv` lists the universe. The `estimates_from` column points one share class at another's consensus (Samsung preferred uses the common's).

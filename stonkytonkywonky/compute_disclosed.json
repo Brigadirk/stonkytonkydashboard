@@ -1,0 +1,617 @@
+{
+ "commitments_title": "Anthropic's compute commitments (draft S-1, as reported by the WSJ on 2026-10-20)",
+ "commitments": [
+  {
+   "counterparty": "Google Cloud",
+   "amount_bn": 111,
+   "what": "Cloud computing, to be paid regardless of actual usage",
+   "source": "WSJ",
+   "url": "https://www.wsj.com/tech/ai/anthropic-revenue-growth-ipo-accaf0f1"
+  },
+  {
+   "counterparty": "Amazon Web Services",
+   "amount_bn": 110,
+   "what": "Cloud computing, to be paid regardless of actual usage",
+   "source": "WSJ",
+   "url": "https://www.wsj.com/tech/ai/anthropic-revenue-growth-ipo-accaf0f1"
+  },
+  {
+   "counterparty": "Microsoft",
+   "amount_bn": 31,
+   "what": "Cloud computing, to be paid regardless of actual usage",
+   "source": "WSJ",
+   "url": "https://www.wsj.com/tech/ai/anthropic-revenue-growth-ipo-accaf0f1"
+  },
+  {
+   "counterparty": "Nscale and Lambda",
+   "amount_bn": 86,
+   "what": "Up to this much renting Nvidia chips, through 2033 and 2034",
+   "source": "WSJ",
+   "url": "https://www.wsj.com/tech/ai/anthropic-revenue-growth-ipo-accaf0f1"
+  },
+  {
+   "counterparty": "Google via Broadcom",
+   "amount_bn": 160,
+   "what": "More than this to lease Google TPU chips",
+   "source": "WSJ",
+   "url": "https://www.wsj.com/tech/ai/anthropic-revenue-growth-ipo-accaf0f1"
+  },
+  {
+   "counterparty": "Under negotiation",
+   "amount_bn": 150,
+   "what": "Up to this much in further computing deals",
+   "source": "WSJ",
+   "url": "https://www.wsj.com/tech/ai/anthropic-revenue-growth-ipo-accaf0f1"
+  }
+ ],
+ "series_names": {
+  "anthropic_revenue_runrate": "Anthropic: annualized revenue run-rate",
+  "anthropic_revenue_actual": "Anthropic: booked revenue",
+  "openai_revenue_runrate": "OpenAI: annualized revenue run-rate",
+  "openai_revenue_actual": "OpenAI: booked revenue",
+  "google_tokens_month": "Google: tokens processed a month, all products",
+  "google_api_tokens_min": "Google: API tokens a minute",
+  "google_cloud_backlog": "Google Cloud: backlog",
+  "google_gemini_mau": "Google: Gemini app monthly users",
+  "microsoft_ai_runrate": "Microsoft: AI business run-rate",
+  "openai_api_tokens": "OpenAI: API tokens",
+  "openai_weekly_users": "OpenAI: ChatGPT weekly users",
+  "bytedance_tokens_day": "ByteDance (Volcano Engine): tokens a day",
+  "alibaba_china_tokens": "Alibaba Cloud: tokens a day",
+  "aws_ai_runrate": "AWS: AI revenue run-rate",
+  "aws_backlog": "AWS: backlog"
+ },
+ "points": [
+  {
+   "series": "anthropic_revenue_runrate",
+   "date": "2025-01-01",
+   "value": 1,
+   "unit": "USD billion annualized run-rate",
+   "who": "Anthropic",
+   "where": "company announcement / press",
+   "quote": "At the start of 2025 ... run-rate revenue had grown to approximately $1 billion.",
+   "url": "https://www.anthropic.com/news/anthropic-raises-series-f-at-usd183b-post-money-valuation"
+  },
+  {
+   "series": "anthropic_revenue_runrate",
+   "date": "2025-08-31",
+   "value": 5,
+   "unit": "USD billion annualized run-rate",
+   "who": "Anthropic",
+   "where": "company announcement / press",
+   "quote": "our run-rate revenue reached over $5 billion",
+   "url": "https://www.anthropic.com/news/anthropic-raises-series-f-at-usd183b-post-money-valuation",
+   "note": "announced 2025-09-02"
+  },
+  {
+   "series": "anthropic_revenue_runrate",
+   "date": "2025-12-31",
+   "value": 9,
+   "unit": "USD billion annualized run-rate",
+   "who": "Anthropic",
+   "where": "company announcement / press",
+   "quote": "Our run-rate revenue has now surpassed $30 billion--up from approximately $9 billion at the end of 2025.",
+   "url": "https://www.anthropic.com/news/google-broadcom-partnership-compute"
+  },
+  {
+   "series": "anthropic_revenue_runrate",
+   "date": "2026-02-12",
+   "value": 14,
+   "unit": "USD billion annualized run-rate",
+   "who": "Anthropic",
+   "where": "company announcement / press",
+   "quote": "Today, our run-rate revenue is $14 billion",
+   "url": "https://www.anthropic.com/news/anthropic-raises-30-billion-series-g-funding-380-billion-post-money-valuation"
+  },
+  {
+   "series": "anthropic_revenue_runrate",
+   "date": "2026-04-06",
+   "value": 30,
+   "unit": "USD billion annualized run-rate",
+   "who": "Anthropic",
+   "where": "company announcement / press",
+   "quote": "Our run-rate revenue has now surpassed $30 billion--up from approximately $9 billion at the end of 2025.",
+   "url": "https://www.anthropic.com/news/google-broadcom-partnership-compute"
+  },
+  {
+   "series": "anthropic_revenue_runrate",
+   "date": "2026-05-29",
+   "value": 47,
+   "unit": "USD billion annualized run-rate",
+   "who": "Anthropic",
+   "where": "company announcement / press",
+   "quote": "run-rate revenue crossed $47 billion earlier this month (Series H announcement)",
+   "url": "https://simonwillison.net/2026/May/29/anthropic/",
+   "note": "date = blog post date; Anthropic page not opened"
+  },
+  {
+   "series": "anthropic_revenue_runrate",
+   "date": "2026-07-31",
+   "value": 65,
+   "unit": "USD billion annualized run-rate",
+   "who": "Anthropic",
+   "where": "company announcement / press",
+   "quote": "annualized revenue run rate reached $65 billion at the end of July 2026",
+   "url": "https://axios.com/2026/08/17/anthropic-revenue-run-rate-ipo-openai",
+   "note": "Bloomberg/Reuters/CNBC via investor update, reported 2026-08-17"
+  },
+  {
+   "series": "anthropic_revenue_actual",
+   "date": "2025-12-31",
+   "value": 4.6,
+   "unit": "USD billion booked revenue (full year 2025)",
+   "who": "Anthropic draft S-1",
+   "where": "WSJ, 2026-10-20",
+   "quote": "all of 2025, when it spent $7.3 billion and generated $4.6 billion in revenue",
+   "url": "https://www.wsj.com/tech/ai/anthropic-revenue-growth-ipo-accaf0f1",
+   "note": ""
+  },
+  {
+   "series": "anthropic_revenue_actual",
+   "date": "2026-03-31",
+   "value": 4.73,
+   "unit": "USD billion booked revenue (Q1 2026)",
+   "who": "Bloomberg review of company documents",
+   "where": "Bloomberg",
+   "quote": "Q1 revenue was $4.73 billion (search summary)",
+   "url": "https://explodingtopics.com/blog/anthropic-revenue",
+   "note": "preliminary; secondary"
+  },
+  {
+   "series": "anthropic_revenue_actual",
+   "date": "2026-06-30",
+   "value": 11.5,
+   "unit": "USD billion booked revenue (Q2 2026, 'above')",
+   "who": "Bloomberg review of company documents",
+   "where": "Bloomberg",
+   "quote": "Q2 above $11.5 billion (search summary)",
+   "url": "https://fourweekmba.com/ai-anthropic-took-in-about-1-80-per-compute-dollar-in-h1/",
+   "note": "preliminary; CONFLICTS with WSJ Q2 ~$10.9B (secondary blog) below"
+  },
+  {
+   "series": "anthropic_revenue_actual",
+   "date": "2026-06-30",
+   "value": 16.3,
+   "unit": "USD billion booked revenue (H1 2026)",
+   "who": "Anthropic draft S-1",
+   "where": "WSJ, 2026-10-20",
+   "quote": "Anthropic generated around $16.3 billion in revenue in the six months ended June 30, up from $1.1 billion in the year-earlier period",
+   "url": "https://www.wsj.com/tech/ai/anthropic-revenue-growth-ipo-accaf0f1",
+   "note": ""
+  },
+  {
+   "series": "openai_revenue_runrate",
+   "date": "2024-12-31",
+   "value": 6,
+   "unit": "USD billion annualized run-rate",
+   "who": "OpenAI (reported)",
+   "where": "press reports",
+   "quote": "~$6 billion (end of 2024)",
+   "url": "https://www.reuters.com/business/openai-cfo-says-annualized-revenue-crosses-20-billion-2025-2026-01-19/",
+   "note": "secondary quote via Exploding Topics; original not opened"
+  },
+  {
+   "series": "openai_revenue_runrate",
+   "date": "2025-06-09",
+   "value": 10,
+   "unit": "USD billion annualized run-rate",
+   "who": "OpenAI (reported)",
+   "where": "press reports",
+   "quote": "$10 billion annualized",
+   "url": "https://www.cnbc.com/2025/06/09/openai-hits-10-billion-in-annualized-revenue-fueled-by-chatgpt-growth.html",
+   "note": "secondary quote via Exploding Topics; original not opened"
+  },
+  {
+   "series": "openai_revenue_runrate",
+   "date": "2025-12-31",
+   "value": 20,
+   "unit": "USD billion annualized run-rate",
+   "who": "OpenAI (reported)",
+   "where": "press reports",
+   "quote": "run rate passed $20 billion by the end of 2025",
+   "url": "https://www.reuters.com/business/openai-cfo-says-annualized-revenue-crosses-20-billion-2025-2026-01-19/",
+   "note": "secondary quote via Exploding Topics; original not opened"
+  },
+  {
+   "series": "openai_revenue_runrate",
+   "date": "2026-02-28",
+   "value": 25,
+   "unit": "USD billion annualized run-rate",
+   "who": "OpenAI (reported)",
+   "where": "press reports",
+   "quote": "It topped $25 billion at the end of February 2026",
+   "url": "https://www.theinformation.com/articles/openai-tops-25-billion-annualized-revenue-anthropic-narrows-gap",
+   "note": "secondary quote via Exploding Topics; original not opened"
+  },
+  {
+   "series": "openai_revenue_runrate",
+   "date": "2026-08-13",
+   "value": 40,
+   "unit": "USD billion annualized run-rate",
+   "who": "OpenAI (reported)",
+   "where": "press reports",
+   "quote": "Its run rate passed $40 billion over the summer",
+   "url": "https://www.bloomberg.com/news/articles/2026-08-13/openai-s-revenue-run-rate-tops-40-billion-ahead-of-ipo",
+   "note": "secondary quote via Exploding Topics; original not opened"
+  },
+  {
+   "series": "openai_revenue_runrate",
+   "date": "2026-09-30",
+   "value": 50,
+   "unit": "USD billion annualized run-rate",
+   "who": "OpenAI (reported)",
+   "where": "press reports",
+   "quote": "The ChatGPT developer's annualized revenue stood at roughly $50 billion at the end of September.",
+   "url": "https://www.axios.com/2026/10/08/openai-50-billion-arr-anthropic-revenue-accounting",
+   "note": "Bloomberg said ~$50B end-Sept and expects >=$70B by end of 2026; Axios 2026-10-08"
+  },
+  {
+   "series": "openai_revenue_actual",
+   "date": "2024-12-31",
+   "value": 3.7,
+   "unit": "USD billion booked revenue (full year)",
+   "who": "Fortune/WSJ (leaked accounts)",
+   "where": "press reports",
+   "quote": "its 2024 revenue of $3.7 billion",
+   "url": "https://fortune.com/2026/06/16/openai-financials-leaked-losses-revenue-profit/",
+   "note": "secondary via Exploding Topics"
+  },
+  {
+   "series": "openai_revenue_actual",
+   "date": "2025-12-31",
+   "value": 13.07,
+   "unit": "USD billion booked revenue (full year)",
+   "who": "Fortune/WSJ (leaked accounts)",
+   "where": "press reports",
+   "quote": "OpenAI made $13.07 billion in revenue in 2025",
+   "url": "https://www.wsj.com/tech/ai/openais-second-quarter-sales-show-tepid-growth-compared-with-anthropic-5cb42998",
+   "note": "secondary via Exploding Topics"
+  },
+  {
+   "series": "openai_revenue_actual",
+   "date": "2026-03-31",
+   "value": 5.7,
+   "unit": "USD billion booked revenue (quarter)",
+   "who": "Fortune/WSJ (leaked accounts)",
+   "where": "press reports",
+   "quote": "OpenAI made $5.7 billion in Q1 2026",
+   "url": "https://www.wsj.com/tech/ai/openais-second-quarter-sales-show-tepid-growth-compared-with-anthropic-5cb42998",
+   "note": "secondary via Exploding Topics"
+  },
+  {
+   "series": "openai_revenue_actual",
+   "date": "2026-06-30",
+   "value": 6.7,
+   "unit": "USD billion booked revenue (quarter)",
+   "who": "Fortune/WSJ (leaked accounts)",
+   "where": "press reports",
+   "quote": "$6.7 billion in Q2 2026",
+   "url": "https://www.wsj.com/tech/ai/openais-second-quarter-sales-show-tepid-growth-compared-with-anthropic-5cb42998",
+   "note": "secondary via Exploding Topics"
+  },
+  {
+   "series": "google_tokens_month",
+   "date": "2024-05-14",
+   "value": 9.7,
+   "unit": "trillion tokens per month",
+   "who": "Sundar Pichai",
+   "where": "Google I/O 2026 keynote (recalled 2024 level)",
+   "quote": "Two years ago, Google's models processed 9.7 trillion tokens a month.",
+   "url": "https://techweez.com/2026/05/21/google-io-2026/",
+   "note": "date approximate (I/O 2024); secondary quote of keynote"
+  },
+  {
+   "series": "google_tokens_month",
+   "date": "2025-05-20",
+   "value": 480,
+   "unit": "trillion tokens per month",
+   "who": "Sundar Pichai",
+   "where": "Google I/O 2025",
+   "quote": "Last year that climbed to 480 trillion. (also: 'processing 480 trillion monthly tokens across our surfaces')",
+   "url": "https://techweez.com/2026/05/21/google-io-2026/",
+   "note": "I/O 2025 date approximate; also recapped on Q2 2025 call"
+  },
+  {
+   "series": "google_tokens_month",
+   "date": "2025-07-23",
+   "value": 980,
+   "unit": "trillion tokens per month",
+   "who": "Sundar Pichai",
+   "where": "Alphabet Q2 2025 earnings call",
+   "quote": "'processing over 980 trillion monthly tokens' across our surfaces (search summary of call; doubled since May)",
+   "url": "https://abc.xyz/2025-q2-earnings-call",
+   "note": "quote paraphrased from search summary; Decoder says June"
+  },
+  {
+   "series": "google_tokens_month",
+   "date": "2025-10-09",
+   "value": 1300,
+   "unit": "trillion tokens per month",
+   "who": "Sundar Pichai",
+   "where": "Google Cloud event (Gemini Enterprise launch), recapped on Q3 2025 call",
+   "quote": "1.3 quadrillion monthly tokens processed across our surfaces",
+   "url": "https://the-decoder.com/google-boasts-1-3-quadrillion-tokens-each-month-but-the-figure-is-mostly-window-dressing/",
+   "note": "verified only via secondary sources (Decoder, lifearchitect, MarketBeat); AIBase misprints as 1.3 trillion"
+  },
+  {
+   "series": "google_tokens_month",
+   "date": "2026-05-20",
+   "value": 3200,
+   "unit": "trillion tokens per month",
+   "who": "Sundar Pichai",
+   "where": "Google I/O 2026 keynote",
+   "quote": "Today it's over 3.2 quadrillion per month, roughly seven times larger than last year.",
+   "url": "https://techweez.com/2026/05/21/google-io-2026/",
+   "note": "keynote date approximate (article dated 2026-05-21)"
+  },
+  {
+   "series": "google_api_tokens_min",
+   "date": "2025-10-29",
+   "value": 7,
+   "unit": "billion tokens per minute",
+   "who": "Sundar Pichai",
+   "where": "Alphabet Q3 2025 earnings release",
+   "quote": "our first party models, like Gemini, now process 7 billion tokens per minute, via direct API use by our customers.",
+   "url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204425000087/googexhibit991q32025.htm"
+  },
+  {
+   "series": "google_api_tokens_min",
+   "date": "2026-02-04",
+   "value": 10,
+   "unit": "billion tokens per minute",
+   "who": "Sundar Pichai",
+   "where": "Alphabet Q4 2025 earnings call",
+   "quote": "Our first-party models, like Gemini, now process over 10 billion tokens per minute via direct API use by our customers, up from 7 billion last quarter.",
+   "url": "https://s206.q4cdn.com/479360582/files/doc_events/2026/Feb/04/2025_Q4_Earnings_Transcript.pdf"
+  },
+  {
+   "series": "google_api_tokens_min",
+   "date": "2026-04-29",
+   "value": 16,
+   "unit": "billion tokens per minute",
+   "who": "Sundar Pichai",
+   "where": "Alphabet Q1 2026 earnings call",
+   "quote": "Our first-party models now process more than 16 billion tokens per minute",
+   "url": "https://blog.google/company-news/inside-google/message-ceo/alphabet-earnings-q1-2026/"
+  },
+  {
+   "series": "google_api_tokens_min",
+   "date": "2026-05-20",
+   "value": 19,
+   "unit": "billion tokens per minute",
+   "who": "Sundar Pichai",
+   "where": "Google I/O 2026 keynote",
+   "quote": "...the APIs are processing about 19 billion tokens per minute.",
+   "url": "https://techweez.com/2026/05/21/google-io-2026/",
+   "note": "date approximate"
+  },
+  {
+   "series": "google_api_tokens_min",
+   "date": "2026-07-22",
+   "value": 22,
+   "unit": "billion tokens per minute",
+   "who": "Sundar Pichai",
+   "where": "Alphabet Q2 2026 earnings call",
+   "quote": "Our model APIs are now processing approximately 22 billion tokens per minute.",
+   "url": "https://blog.google/company-news/inside-google/message-ceo/alphabet-earnings-q2-2026/"
+  },
+  {
+   "series": "google_cloud_backlog",
+   "date": "2025-10-29",
+   "value": 155,
+   "unit": "USD billion",
+   "who": "Sundar Pichai / Alphabet",
+   "where": "Alphabet earnings",
+   "quote": "Google Cloud accelerated, ending the quarter with $155 billion in backlog.",
+   "url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204425000087/googexhibit991q32025.htm"
+  },
+  {
+   "series": "google_cloud_backlog",
+   "date": "2026-02-04",
+   "value": 240,
+   "unit": "USD billion",
+   "who": "Sundar Pichai / Alphabet",
+   "where": "Alphabet earnings",
+   "quote": "Backlog grew by 55% quarter over quarter to $240 billion",
+   "url": "https://s206.q4cdn.com/479360582/files/doc_events/2026/Feb/04/2025_Q4_Earnings_Transcript.pdf"
+  },
+  {
+   "series": "google_cloud_backlog",
+   "date": "2026-04-29",
+   "value": 460,
+   "unit": "USD billion",
+   "who": "Sundar Pichai / Alphabet",
+   "where": "Alphabet earnings",
+   "quote": "our backlog nearly doubled quarter-on-quarter to over $460 billion.",
+   "url": "https://blog.google/company-news/inside-google/message-ceo/alphabet-earnings-q1-2026/"
+  },
+  {
+   "series": "google_cloud_backlog",
+   "date": "2026-07-22",
+   "value": 514,
+   "unit": "USD billion",
+   "who": "Sundar Pichai / Alphabet",
+   "where": "Alphabet earnings",
+   "quote": "And Cloud backlog grew to $514 billion.",
+   "url": "https://blog.google/company-news/inside-google/message-ceo/alphabet-earnings-q2-2026/"
+  },
+  {
+   "series": "google_gemini_mau",
+   "date": "2025-07-23",
+   "value": 450,
+   "unit": "million monthly active users",
+   "who": "Sundar Pichai",
+   "where": "Alphabet earnings",
+   "quote": "Gemini app at more than 450 million monthly active users (search summary)",
+   "url": "https://abc.xyz/2025-q2-earnings-call"
+  },
+  {
+   "series": "google_gemini_mau",
+   "date": "2025-10-29",
+   "value": 650,
+   "unit": "million monthly active users",
+   "who": "Sundar Pichai",
+   "where": "Alphabet earnings",
+   "quote": "Gemini app has over 650 million monthly active users",
+   "url": "https://www.dtnext.in/news/business/alphabets-revenue-crosses-100-billion-for-1st-time-gemini-tops-650-mn-monthly-active-users-851332"
+  },
+  {
+   "series": "google_gemini_mau",
+   "date": "2026-02-04",
+   "value": 750,
+   "unit": "million monthly active users",
+   "who": "Sundar Pichai",
+   "where": "Alphabet earnings",
+   "quote": "Our Gemini App now has over 750 million monthly active users.",
+   "url": "https://s206.q4cdn.com/479360582/files/doc_events/2026/Feb/04/2025_Q4_Earnings_Transcript.pdf"
+  },
+  {
+   "series": "google_gemini_mau",
+   "date": "2026-07-22",
+   "value": 950,
+   "unit": "million monthly active users",
+   "who": "Sundar Pichai",
+   "where": "Alphabet earnings",
+   "quote": "the Gemini app, which now has 950 million monthly active users",
+   "url": "https://blog.google/company-news/inside-google/message-ceo/alphabet-earnings-q2-2026/"
+  },
+  {
+   "series": "microsoft_ai_runrate",
+   "date": "2025-01-29",
+   "value": 13,
+   "unit": "USD billion annual revenue run rate",
+   "who": "Satya Nadella",
+   "where": "Microsoft FY25 Q2 earnings",
+   "quote": "our AI business has surpassed an annual revenue run rate of $13 billion, up 175% year-over-year.",
+   "url": "https://www.fortune.com/2025/01/30/microsofts-ai-business-has-topped-an-annual-revenue-run-rate-of-13-billion"
+  },
+  {
+   "series": "microsoft_ai_runrate",
+   "date": "2026-04-29",
+   "value": 37,
+   "unit": "USD billion ARR",
+   "who": "Satya Nadella",
+   "where": "Microsoft FY26 Q3 earnings call",
+   "quote": "Our AI business surpassed $37 billion ARR, up 123%.",
+   "url": "https://stocknow.ai/en/calls/x3bcf9w5ytt4q4cf6cmer8be/msft_q3-2026-earnings-call",
+   "note": "not restated on FY26 Q4 call"
+  },
+  {
+   "series": "openai_api_tokens",
+   "date": "2025-10-06",
+   "value": 6,
+   "unit": "billion tokens per minute (API)",
+   "who": "Sam Altman",
+   "where": "OpenAI DevDay 2025",
+   "quote": "More than 800 million people use ChatGPT every week, and we process over 6 billion tokens per minute on the API.",
+   "url": "https://techcrunch.com/2025/10/06/sam-altman-says-chatgpt-has-hit-800m-weekly-active-users/"
+  },
+  {
+   "series": "openai_weekly_users",
+   "date": "2025-10-06",
+   "value": 800,
+   "unit": "million weekly active users",
+   "who": "Sam Altman / OpenAI",
+   "where": "OpenAI announcements",
+   "quote": "More than 800 million people use ChatGPT every week",
+   "url": "https://techcrunch.com/2025/10/06/sam-altman-says-chatgpt-has-hit-800m-weekly-active-users/"
+  },
+  {
+   "series": "openai_weekly_users",
+   "date": "2026-02-27",
+   "value": 900,
+   "unit": "million weekly active users",
+   "who": "Sam Altman / OpenAI",
+   "where": "OpenAI announcements",
+   "quote": "900 million weekly users in February 2026 (TechCrunch, per aggregator)",
+   "url": "https://techcrunch.com/2026/02/27/chatgpt-reaches-900m-weekly-active-users/",
+   "note": "URL not opened"
+  },
+  {
+   "series": "bytedance_tokens_day",
+   "date": "2025-05-15",
+   "value": 16.4,
+   "unit": "trillion tokens per day",
+   "who": "Volcano Engine",
+   "where": "FORCE conference May 2025 (per search summary)",
+   "quote": "16.4 trillion (announced May 2025)",
+   "url": "https://news.aibase.com/news/29083",
+   "note": "secondary; not directly quoted"
+  },
+  {
+   "series": "bytedance_tokens_day",
+   "date": "2025-09-30",
+   "value": 30,
+   "unit": "trillion tokens per day",
+   "who": "Volcano Engine",
+   "where": "end of September 2025",
+   "quote": "As of the end of September 2025, its daily Token calls exceeded 30 trillion.",
+   "url": "https://news.aibase.com/news/29083"
+  },
+  {
+   "series": "bytedance_tokens_day",
+   "date": "2025-12-18",
+   "value": 50,
+   "unit": "trillion tokens per day",
+   "who": "Tan Dai, Volcano Engine president",
+   "where": "FORCE Original Power Conference",
+   "quote": "the daily call volume of the Doubao Large Model had exceeded 50 trillion Tokens",
+   "url": "https://baike.baidu.com/en/item/Tan%20Dai/3440712"
+  },
+  {
+   "series": "bytedance_tokens_day",
+   "date": "2026-01-31",
+   "value": 63,
+   "unit": "trillion tokens per day",
+   "who": "Volcano Engine (per Robonomics)",
+   "where": "January 2026",
+   "quote": "from 2 trillion at the end of 2024 to 63 trillion in January 2026",
+   "url": "https://robonomics.substack.com/p/token-tracker-and-implications"
+  },
+  {
+   "series": "bytedance_tokens_day",
+   "date": "2026-04-02",
+   "value": 120,
+   "unit": "trillion tokens per day",
+   "who": "Volcano Engine",
+   "where": "announcement, reported by China Daily",
+   "quote": "Doubao's daily token usage has surged past 120 trillion per day.",
+   "url": "https://global.chinadaily.com.cn/a/202604/02/WS69ce3326a310d6866eb41733.html"
+  },
+  {
+   "series": "bytedance_tokens_day",
+   "date": "2026-06-23",
+   "value": 180,
+   "unit": "trillion tokens per day",
+   "who": "Tan Dai, Volcano Engine president",
+   "where": "Volcano Engine FORCE 2026 Summer conference",
+   "quote": "daily average token usage of the Doubao large model had exceeded 180 trillion",
+   "url": "https://www.kucoin.com/news/flash/volcanic-engine-launches-doubao-2-1-with-daily-token-usage-exceeding-180-trillion",
+   "note": "AIBase headline misprints 18 trillion"
+  },
+  {
+   "series": "aws_ai_runrate",
+   "date": "2026-07-30",
+   "value": 25,
+   "unit": "USD billion annual run rate (AWS AI revenue)",
+   "who": "Andy Jassy / Amazon",
+   "where": "Amazon Q2 2026 earnings call",
+   "quote": "Its AI revenue run rate ... is now also over $25 billion. (summary)",
+   "url": "https://finance.biggo.com/news/US_AMZN_2026-07-30",
+   "note": "secondary summary; not primary transcript"
+  },
+  {
+   "series": "aws_backlog",
+   "date": "2026-07-30",
+   "value": 496,
+   "unit": "USD billion",
+   "who": "Amazon",
+   "where": "Q2 2026 earnings",
+   "quote": "AWS backlog reached $496 billion.",
+   "url": "https://www.cnbc.com/2026/07/30/amazon-amzn-q2-earnings-report-2026.html",
+   "note": "from search summary"
+  }
+ ],
+ "commitments_total_bn": 600,
+ "commitments_total_note": "WSJ: future infrastructure costs top $600 billion, including other cloud deals not itemised"
+}

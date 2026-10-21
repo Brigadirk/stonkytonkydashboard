@@ -1,0 +1,176 @@
+//@version=6
+// Forward EPS valuation bands: realised earnings for the past, consensus for the future.
+//
+// For each past day the forward EPS is the sum of the next four quarters' EPS as
+// actually reported (two half-years for semi-annual reporters). Quarters not yet
+// reported use TradingView's next-quarter estimate and, when you enter it, the
+// 12-month consensus for the rest. The bands are the P/E levels the stock actually
+// traded at over the lookback, read off percentiles (−2σ = 2.3rd … +2σ = 97.7th),
+// times that forward EPS. They extend one year ahead on the consensus path.
+//
+// Pine only exposes the next quarter's estimate, so the two consensus inputs are
+// where multi-quarter forecasts come in (StonkyTonkyWonky shows them per stock).
+indicator("Forward EPS bands (realised + consensus)", shorttitle = "Fwd EPS bands", overlay = true,
+     max_polylines_count = 20, max_labels_count = 5)
+
+lookbackYears = input.int(3, "P/E range lookback (years)", minval = 1, maxval = 10)
+ntmInput      = input.float(0.0, "Consensus EPS, next 12 months (0 = next quarter × 4)", step = 0.01,
+     tooltip = "Fills the quarters not yet reported. Leave 0 to repeat TradingView's next-quarter estimate.")
+fy1Input      = input.float(0.0, "Consensus EPS, 12 months starting a year from now (0 = flat)", step = 0.01,
+     tooltip = "Where the projected bands head over the next year. Next fiscal year's consensus is a fair stand-in.")
+epsField      = input.string("As reported", "EPS series", options = ["As reported", "Standardized"])
+showZones     = input.bool(true, "Shade the zones")
+showTable     = input.bool(true, "Show the price table")
+
+// Zone colours: blue cheap, grey normal, red expensive (validated diverging palette).
+cCheap3 = #1c5cab
+cCheap2 = #3987e5
+cCheap1 = #86b6ef
+cNormal = #9a9993
+cRich1  = #ee9998
+cRich2  = #e34948
+cRich3  = #a8201f
+
+var array<int>   repTime  = array.new<int>()
+var array<float> repEps   = array.new<float>()
+var array<int>   barTimes = array.new<int>()
+var array<float> barClose = array.new<float>()
+
+fld = epsField == "Standardized" ? earnings.standardized : earnings.actual
+e = request.earnings(syminfo.tickerid, fld, barmerge.gaps_on, barmerge.lookahead_off, ignore_invalid_symbol = true)
+if not na(e)
+    repTime.push(time)
+    repEps.push(e)
+barTimes.push(time)
+barClose.push(close)
+
+// Reports per year from the median gap between reports: 4 quarterly, 2 semi-annual.
+reportsPerYear() =>
+    int n = repTime.size()
+    int per = 4
+    if n >= 3
+        gaps = array.new<float>()
+        for i = math.max(1, n - 8) to n - 1
+            gaps.push((repTime.get(i) - repTime.get(i - 1)) / 86400000.0)
+        per := gaps.median() > 150 ? 2 : 4
+    per
+
+// Forward EPS at time t: the next `per` reports as announced; unreported periods from consensus.
+fwdEps(int t, int per, float nextP, float restP) =>
+    float s = 0.0
+    int got = 0
+    for i = 0 to repTime.size() - 1
+        if repTime.get(i) > t and got < per
+            s += repEps.get(i)
+            got += 1
+    int missing = per - got
+    if missing > 0
+        s += nz(nextP) + (missing - 1) * nz(restP)
+    na(nextP) and missing > 0 ? na : s
+
+pctOf(float x, array<float> sorted) =>
+    int below = 0
+    for v in sorted
+        if v < x
+            below += 1
+    100.0 * below / sorted.size()
+
+// A band: `mult` × forward EPS at every point in time.
+bandPoints(array<int> ts, array<float> fe, float mult) =>
+    pts = array.new<chart.point>()
+    for j = 0 to ts.size() - 1
+        pts.push(chart.point.from_time(ts.get(j), mult * fe.get(j)))
+    pts
+
+// A shaded zone between two bands: the upper edge forward, the lower edge back.
+zone(array<int> ts, array<float> fe, float lo, float hi, color c) =>
+    upper = bandPoints(ts, fe, hi)
+    lower = bandPoints(ts, fe, lo)
+    lower.reverse()
+    for p in lower
+        upper.push(p)
+    polyline.new(upper, closed = true, xloc = xloc.bar_time, line_color = color.new(c, 100),
+         fill_color = color.new(c, 80))
+
+if barstate.islast
+    for p in polyline.all
+        p.delete()
+    for l in label.all
+        l.delete()
+
+    int per = reportsPerYear()
+    float nextP = earnings.future_eps
+    float ntm = ntmInput > 0 ? ntmInput : (na(nextP) ? na : nextP * per)
+    float restP = na(ntm) or na(nextP) ? nextP : (ntm - nextP) / math.max(per - 1, 1)
+    float ahead = fy1Input > 0 ? fy1Input : ntm
+
+    int tEnd = barTimes.last()
+    int tStart = tEnd - lookbackYears * 365 * 86400000
+    int first = 0
+    while first < barTimes.size() - 1 and barTimes.get(first) < tStart
+        first += 1
+    int n = barTimes.size() - first
+    int step = math.max(1, int(math.ceil(n / 1500.0)))
+
+    // Past points: time, forward EPS, forward P/E.
+    ts  = array.new<int>()
+    fe  = array.new<float>()
+    pes = array.new<float>()
+    for i = first to barTimes.size() - 1 by step
+        float f = fwdEps(barTimes.get(i), per, nextP, restP)
+        if not na(f) and f > 0
+            ts.push(barTimes.get(i))
+            fe.push(f)
+            pes.push(barClose.get(i) / f)
+
+    if pes.size() >= 30 and not na(ntm) and ntm > 0
+        sorted = pes.copy()
+        sorted.sort()
+        pcts   = array.from(2.275, 6.681, 15.866, 50.0, 84.134, 93.319, 97.725)
+        levels = array.new<float>()
+        for q in pcts
+            levels.push(sorted.percentile_linear_interpolation(q))
+
+        // One year ahead, weekly, EPS moving from today's NTM to the year-ahead consensus.
+        for k = 1 to 52
+            ts.push(tEnd + k * 7 * 86400000)
+            fe.push(ntm + (ahead - ntm) * k / 52.0)
+
+        if showZones
+            zone(ts, fe, levels.get(0), levels.get(1), cCheap2)
+            zone(ts, fe, levels.get(1), levels.get(2), cCheap1)
+            zone(ts, fe, levels.get(2), levels.get(4), cNormal)
+            zone(ts, fe, levels.get(4), levels.get(5), cRich1)
+            zone(ts, fe, levels.get(5), levels.get(6), cRich2)
+
+        lineCols = array.from(cCheap3, cCheap2, cCheap1, color.gray, cRich1, cRich2, cRich3)
+        for j = 0 to 6
+            polyline.new(bandPoints(ts, fe, levels.get(j)), xloc = xloc.bar_time, line_color = lineCols.get(j),
+                 line_width = j == 3 ? 2 : 1, line_style = j == 3 ? line.style_dashed : line.style_solid)
+
+        float peNow = close / ntm
+        float pNow  = pctOf(peNow, sorted)
+        string zoneName = pNow <= 2.275 ? "Extremely cheap" : pNow <= 6.681 ? "Very cheap" : pNow <= 15.866 ? "Cheap" :
+             pNow < 84.134 ? "Normal" : pNow < 93.319 ? "Expensive" : pNow < 97.725 ? "Very expensive" : "Extremely expensive"
+        label.new(bar_index, close, str.format("{0}\nFwd P/E {1,number,#.0} · {2,number,#}th pct of {3}y",
+             zoneName, peNow, pNow, lookbackYears), style = label.style_label_left, color = color.new(color.black, 20),
+             textcolor = color.white, size = size.small)
+
+        if showTable
+            var table tbl = table.new(position.top_right, 4, 9, bgcolor = color.new(color.black, 15),
+                 border_color = color.new(color.gray, 60), border_width = 1)
+            names = array.from("+2σ", "+1.5σ", "+1σ", "Median", "−1σ", "−1.5σ", "−2σ")
+            table.cell(tbl, 0, 0, "Level", text_color = color.white, text_size = size.small)
+            table.cell(tbl, 1, 0, "P/E", text_color = color.white, text_size = size.small)
+            table.cell(tbl, 2, 0, "Price now", text_color = color.white, text_size = size.small)
+            table.cell(tbl, 3, 0, "In 1 year", text_color = color.white, text_size = size.small)
+            for r = 0 to 6
+                int j = 6 - r
+                float m = levels.get(j)
+                table.cell(tbl, 0, r + 1, names.get(r), text_color = lineCols.get(j), text_size = size.small)
+                table.cell(tbl, 1, r + 1, str.tostring(m, "#.0") + "×", text_color = color.white, text_size = size.small)
+                table.cell(tbl, 2, r + 1, str.tostring(m * ntm, format.mintick), text_color = color.white, text_size = size.small)
+                table.cell(tbl, 3, r + 1, str.tostring(m * ahead, format.mintick), text_color = color.white, text_size = size.small)
+            table.cell(tbl, 0, 8, str.format("Fwd EPS {0,number,#.##} → {1,number,#.##}", ntm, ahead),
+                 text_color = color.gray, text_size = size.tiny)
+            table.merge_cells(tbl, 0, 8, 3, 8)

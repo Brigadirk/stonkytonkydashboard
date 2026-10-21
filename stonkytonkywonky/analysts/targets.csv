@@ -1,0 +1,15 @@
+ticker,date,firm,analyst,action,rating,target,prev_target,currency,source_url
+SMTC,2026-10-21,B. Riley,,reiterated,Buy,210,210,USD,https://www.investing.com/news/analyst-ratings/briley-raises-semtech-stock-price-target-on-data-center-growth-outlook-93CH-4961984
+SMTC,2026-10-16,DA Davidson,,set,,230,,USD,https://www.marketbeat.com/stocks/NASDAQ/SMTC/price-target/
+SMTC,2026-10-16,Morgan Stanley,Joseph Moore,raised,Equal Weight,205,195,USD,https://www.investing.com/news/analyst-ratings/morgan-stanley-raises-semtech-stock-price-target-on-data-center-growth-93CH-4953809
+SMTC,2026-10-16,TD Cowen,Sean O'Loughlin,reiterated,Buy,215,215,USD,https://www.marketbeat.com/instant-alerts/analyst-semtechs-smtc-buy-rating-reaffirmed-at-td-cowen-2026-10-16/
+SMTC,2026-10-16,Stifel,Tore Svanberg,lowered,Buy,200,220,USD,https://www.marketbeat.com/stocks/NASDAQ/SMTC/price-target/
+SMTC,2026-10-16,Northland,Gus Richard,upgraded,Outperform,186,,USD,https://www.gurufocus.com/news/9127509/northland-upgrades-semtech-smtc-to-outperform-with-186-price-target-amid-share-price-drop
+SMTC,2026-10-13,BMO Capital,Harsh Kumar,raised,Outperform,230,155,USD,https://www.investing.com/news/analyst-ratings/bmo-raises-semtech-stock-price-target-to-230-ahead-of-analyst-day-93CH-4947088
+SMTC,2026-10-01,Oppenheimer,Rick Schafer,raised,Outperform,225,200,USD,https://www.marketbeat.com/stocks/NASDAQ/SMTC/price-target/
+SMTC,2026-09-22,Seaport Research,,initiated,Buy,200,,USD,https://www.defenseworld.net/2026/10/19/equities-analysts-offer-predictions-for-semtech-q3-earnings.html
+SMTC,2026-08-27,Baird,Craig Ellis,raised,Outperform,300,225,USD,https://www.marketbeat.com/stocks/NASDAQ/SMTC/price-target/
+SMTC,2026-08-26,Roth Capital,Scott Searle,set,,220,,USD,https://www.marketbeat.com/stocks/NASDAQ/SMTC/price-target/
+SMTC,2026-08-26,UBS,Timothy Arcuri,raised,Buy,230,225,USD,https://www.marketbeat.com/stocks/NASDAQ/SMTC/price-target/
+SMTC,2026-08-26,Needham,Quinn Bolton,reiterated,Buy,200,200,USD,https://www.marketbeat.com/stocks/NASDAQ/SMTC/price-target/
+SMTC,2026-08-20,New Street Research,,set,,230,,USD,https://www.marketbeat.com/stocks/NASDAQ/SMTC/price-target/
