@@ -1,0 +1,61 @@
+{
+  "groups": {
+    "us": "US stock indexes",
+    "world": "Other stock indexes",
+    "rates": "Rates and yields",
+    "credit": "Credit spreads",
+    "fx": "Currencies",
+    "commodities": "Commodities",
+    "crypto": "Crypto"
+  },
+  "series": [
+    {"id": "^GSPC", "name": "S&P 500", "group": "us"},
+    {"id": "^NDX", "name": "Nasdaq-100", "group": "us"},
+    {"id": "^DJI", "name": "Dow Jones", "group": "us"},
+    {"id": "^RUT", "name": "Russell 2000", "group": "us", "note": "small caps"},
+    {"id": "RSP", "name": "S&P 500 equal weight", "group": "us", "note": "the average stock, ETF"},
+    {"id": "^SOX", "name": "Philadelphia Semiconductor", "group": "us"},
+
+    {"id": "^KS11", "name": "Kospi", "group": "world"},
+    {"id": "^N225", "name": "Nikkei 225", "group": "world"},
+    {"id": "^TWII", "name": "Taiex", "group": "world"},
+    {"id": "^HSI", "name": "Hang Seng", "group": "world"},
+    {"id": "3033.HK", "name": "Hang Seng Tech", "group": "world", "note": "CSOP ETF; Yahoo keeps no index history"},
+    {"id": "510300.SS", "name": "CSI 300", "group": "world", "note": "China A-shares, Huatai-PB ETF"},
+    {"id": "^GDAXI", "name": "DAX", "group": "world"},
+    {"id": "^STOXX50E", "name": "Euro Stoxx 50", "group": "world"},
+    {"id": "^AEX", "name": "AEX", "group": "world"},
+
+    {"id": "DFF", "source": "fred", "name": "Fed funds (effective)", "group": "rates", "unit": "%"},
+    {"id": "DGS3MO", "source": "fred", "name": "US 3-month", "group": "rates", "unit": "%"},
+    {"id": "DGS2", "source": "fred", "name": "US 2-year", "group": "rates", "unit": "%"},
+    {"id": "DGS10", "source": "fred", "name": "US 10-year", "group": "rates", "unit": "%"},
+    {"id": "DGS30", "source": "fred", "name": "US 30-year", "group": "rates", "unit": "%"},
+    {"id": "T10Y2Y", "source": "fred", "name": "2s10s curve", "group": "rates", "unit": "%", "note": "10-year minus 2-year; below 0 is inverted"},
+    {"id": "DFII10", "source": "fred", "name": "US 10-year real", "group": "rates", "unit": "%", "note": "TIPS yield; what long-duration growth stocks are discounted at"},
+    {"id": "T10YIE", "source": "fred", "name": "10-year breakeven inflation", "group": "rates", "unit": "%"},
+    {"id": "IRLTLT01DEM156N", "source": "fred", "name": "German 10-year", "group": "rates", "unit": "%", "note": "monthly"},
+    {"id": "IRLTLT01JPM156N", "source": "fred", "name": "Japan 10-year", "group": "rates", "unit": "%", "note": "monthly"},
+
+    {"id": "BAMLH0A0HYM2", "source": "fred", "name": "High-yield spread", "group": "credit", "unit": "%", "note": "over Treasuries; widening is risk-off"},
+    {"id": "BAMLC0A0CM", "source": "fred", "name": "Investment-grade spread", "group": "credit", "unit": "%"},
+
+    {"id": "DX-Y.NYB", "name": "Dollar index", "group": "fx"},
+    {"id": "EURUSD=X", "name": "EUR/USD", "group": "fx"},
+    {"id": "JPY=X", "name": "USD/JPY", "group": "fx"},
+    {"id": "KRW=X", "name": "USD/KRW", "group": "fx", "note": "Hynix, Samsung"},
+    {"id": "TWD=X", "name": "USD/TWD", "group": "fx", "note": "TSMC"},
+    {"id": "CNY=X", "name": "USD/CNY", "group": "fx", "note": "onshore yuan"},
+
+    {"id": "BZ=F", "name": "Brent", "group": "commodities", "note": "front month"},
+    {"id": "CL=F", "name": "WTI", "group": "commodities", "note": "front month"},
+    {"id": "NG=F", "name": "US natural gas", "group": "commodities"},
+    {"id": "GC=F", "name": "Gold", "group": "commodities"},
+    {"id": "SI=F", "name": "Silver", "group": "commodities"},
+    {"id": "HG=F", "name": "Copper", "group": "commodities"},
+
+    {"id": "BTC-USD", "name": "Bitcoin", "group": "crypto"},
+    {"id": "ETH-USD", "name": "Ether", "group": "crypto"},
+    {"id": "XMR-USD", "name": "Monero", "group": "crypto"}
+  ]
+}

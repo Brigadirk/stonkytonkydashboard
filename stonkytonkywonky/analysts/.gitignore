@@ -1,0 +1,10 @@
+# Broker PDFs and their text are copyrighted and stay local; only code and the source list are shared.
+pdfs/
+text/
+inbox/
+downloads/
+state/
+observations.csv
+ids.log
+__pycache__/
+failed/

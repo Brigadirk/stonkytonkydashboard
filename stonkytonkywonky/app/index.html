@@ -12,11 +12,22 @@
         <h1>StonkyTonkyWonky</h1>
         <p class="sub" id="asof">Forward P/E against each stock's own history</p>
       </div>
-      <div class="controls">
+      <div class="controls" id="valuation-controls">
         <button id="expand" class="chip" aria-pressed="false">⤢ Expand list: 1-year price targets</button>
         <input id="search" type="search" placeholder="Filter ticker or name" aria-label="Filter ticker or name" />
       </div>
     </header>
+    <nav class="tabs" aria-label="Sections">
+      <button class="tab" data-page="valuation" aria-current="page">Valuation</button>
+      <button class="tab" data-page="breadth" title="NYSE McClellan Summation Index with its RSI and MACD">Market breadth</button>
+      <button class="tab" data-page="highlow" title="Dip-buying scores for the market and sectors, stocks at new 52-week highs and lows, and what followed such readings since 1991">Highs &amp; lows</button>
+      <button class="tab" data-page="positioning" title="Futures positioning by trader type, volatility and hedging, margin debt, and long and short crowding per stock">Positioning</button>
+      <button class="tab" data-page="horizon" title="What the market is waiting for, how likely it is, and how far prices have run ahead">Horizon</button>
+      <button class="tab" data-page="markets" title="Stock indexes, rates and yields, credit spreads, currencies, commodities and crypto">Markets</button>
+      <button class="tab" data-page="discounts" title="Stocks that are mostly a claim on another stock: holding companies against their stakes, preferred against common shares">Discounts</button>
+      <button class="tab" data-page="compute" title="How much AI compute is being used and paid for: tokens, lab revenue, hyperscaler capex and contracted cloud backlog">AI demand</button>
+      <button class="tab" data-page="industry" title="Oil shipping through the chokepoints, memory spot prices and GPU rental prices">Industry</button>
+    </nav>
 
     <main class="layout">
       <section class="list" aria-label="Ranking">
@@ -26,12 +37,18 @@
               <th rowspan="2" data-sort="ticker">Ticker</th>
               <th rowspan="2" data-sort="score" class="num" title="Combined score 0–100: low forward P/E, high growth, forecasts rising, return if valued at its typical level">Score</th>
               <th rowspan="2" data-sort="rel" class="num" title="Cheap compared with other stocks, 0–100 (100 = cheapest): P/E vs all, vs industry peers, and vs growth">vs others</th>
-              <th rowspan="2" data-sort="sig3">Valuation</th>
+              <th rowspan="2" data-sort="sig3" title="Cheap or expensive against its own past: 60% last 90 days, 20% last 180 days, 20% last year">Valuation</th>
               <th rowspan="2" data-sort="pe" class="num" title="Price ÷ profit analysts expect over the next 12 months">Fwd P/E</th>
-              <th rowspan="2" data-sort="trailing_pe" class="num xcol" title="Price ÷ profit over the last 12 months">Trail P/E</th>
+              <th rowspan="2" data-sort="trailing_pe" class="num" title="Price ÷ profit over the last 12 months">Trail P/E</th>
+              <th rowspan="2" data-sort="pb" class="num" title="Price ÷ book value: market value over the shareholders' equity on the last balance sheet">P/B</th>
+              <th rowspan="2" data-sort="ev_fcf" class="num" title="Enterprise value (market value + debt − cash) ÷ free cash flow (operating cash flow − capex) over the last 12 months. n/m when free cash flow is negative">EV/FCF</th>
               <th rowspan="2" data-sort="growth" class="num" title="Expected profit growth, next 12 months vs last 12">Growth</th>
+              <th rowspan="2" data-sort="growth_24m" class="num" title="Expected profit growth over 24 months: forecast profit in months 13–24 from now vs the last 12 months. Hover a cell for the yearly rate">Growth 24m</th>
+              <th rowspan="2" data-sort="pegRaw" class="num" title="Forward P/E ÷ expected growth in %. Below 1 is cheap for the growth; n/m when growth is zero or negative">PEG</th>
+              <th rowspan="2" data-sort="fy27" class="num" title="Consensus EPS for the fiscal year ending in 2027, in the price currency">FY27 EPS</th>
+              <th rowspan="2" data-sort="fy28" class="num" title="Consensus EPS for the fiscal year ending in 2028. ~ = Yahoo's earlier year grown at another source's rate (Nasdaq/Zacks, Eastmoney or named analysts); ≈ = no forecast found, extrapolated at half the previous year's growth">FY28 EPS</th>
               <th rowspan="2" data-sort="rev90" title="How analysts' forecast for next year moved over the last 90 days">Forecasts</th>
-              <th rowspan="2" data-sort="pctMain" class="num xcol" title="Where today's forward P/E sits within its own 3-year range">Pct</th>
+              <th rowspan="2" data-sort="pctMain" class="num xcol" title="Where today's forward P/E sits within its own past: 60% last 90 days, 20% last 180 days, 20% last year">Pct</th>
               <th rowspan="2" data-sort="price" class="num xcol">Price now</th>
               <th colspan="2" class="xcol group" title="Next year's expected profit × the P/E at the low end of its usual range (−1σ)">In 1 year if valued at its low end (−1σ)</th>
               <th colspan="2" class="xcol group" title="Next year's expected profit × its typical (median) P/E">…at its typical level</th>
@@ -55,7 +72,11 @@
       </section>
     </main>
 
-    <footer class="foot">
+    <main class="page" id="page" hidden>
+      <section class="detail" id="pagebody" aria-live="polite"></section>
+    </main>
+
+    <footer class="foot" id="foot">
       Valuation compares each stock's price-to-expected-profit with its own last 3 years. Past values before
       2026-09-24 are reconstructed from analysts' forecasts at the time and can be off; each stock says how reliable
       its history is. Not investment advice.

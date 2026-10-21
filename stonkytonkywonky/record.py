@@ -44,12 +44,15 @@ FIELDS = [
     "yahoo_forward_eps", "yahoo_forward_pe",
     "nasdaq_ntm_eps", "nasdaq_ntm_pe", "error", "ntm_method",
     "trailing_eps", "trailing_pe", "sector", "industry",
+    "rev_fy0", "rev_fy1", "ntm_rev", "rev_analysts", "ttm_rev",
+    "shares", "shares_source", "market_cap", "ntm_ps", "ttm_ps",
 ]
 INFO_KEYS = [
     "currency", "financialCurrency", "regularMarketPrice", "currentPrice",
     "regularMarketTime", "forwardEps", "forwardPE", "trailingEps", "trailingPE",
     "lastFiscalYearEnd", "nextFiscalYearEnd", "mostRecentQuarter",
     "sharesOutstanding", "numberOfAnalystOpinions", "longName", "quoteType", "sector", "industry",
+    "totalRevenue",
 ]
 
 
@@ -127,9 +130,12 @@ def fx_rate(src: str, dst: str) -> float:
     return rate
 
 
-def record_one(ticker: str, name: str, today: date, estimates_from: str = "") -> tuple[dict, dict]:
+def record_one(ticker: str, name: str, today: date, estimates_from: str = "",
+               shares_override: float | None = None, shares_source: str = "") -> tuple[dict, dict]:
     """`estimates_from` points a share class at its main line's consensus (Samsung pref
-    uses the common's: same company, same profit per share, only the price differs)."""
+    uses the common's: same company, same profit per share, only the price differs).
+    `shares_override` replaces Yahoo's share count, in units of the quoted line (ADS for an
+    ADR); Yahoo's count for XPEV is 783.6M against 978.8M fully diluted ADS equivalents."""
     t = yf.Ticker(ticker)
     info = retry(lambda: t.info) or {}
     src = yf.Ticker(estimates_from) if estimates_from else t
@@ -137,6 +143,7 @@ def record_one(ticker: str, name: str, today: date, estimates_from: str = "") ->
     estimate = frame_to_dict(retry(lambda: src.earnings_estimate))
     trend = frame_to_dict(retry(lambda: src.eps_trend))
     revisions = frame_to_dict(retry(lambda: src.eps_revisions))
+    revenue = frame_to_dict(retry(lambda: src.revenue_estimate))
     nasdaq = fetch_nasdaq(estimates_from or ticker)
 
     raw = {
@@ -146,6 +153,7 @@ def record_one(ticker: str, name: str, today: date, estimates_from: str = "") ->
         "earnings_estimate": estimate,
         "eps_trend": trend,
         "eps_revisions": revisions,
+        "revenue_estimate": revenue,
         "nasdaq_forecast": nasdaq,
         "estimates_from": estimates_from or None,
     }
@@ -211,13 +219,47 @@ def record_one(ticker: str, name: str, today: date, estimates_from: str = "") ->
         "sector": src_info.get("sector") or info.get("sector"),
         "industry": src_info.get("industry") or info.get("industry"),
     }
+    row.update(sales_fields(info, revenue, eps_ccy, fx, today, fy0_end, price,
+                            shares_override, shares_source, company_level=not estimates_from))
     return row, raw
 
 
-def load_tickers() -> list[tuple[str, str, str]]:
+def sales_fields(info: dict, revenue: dict | None, eps_ccy: str, fx: float, today: date,
+                 fy0_end: date | None, price: float | None, shares_override: float | None,
+                 shares_source: str, company_level: bool) -> dict:
+    """Revenue consensus and price-to-sales, the valuation for companies without profits.
+
+    Yahoo's own priceToSales mixes currencies (XPEV: USD market cap over CNY revenue),
+    so everything is converted to the quote currency here. A share class that borrows
+    another line's estimates skips P/S: company revenue over one class's shares is meaningless.
+    """
+    rev_ccy = next((v.get("currency") for v in (revenue or {}).values() if v.get("currency")), None) or eps_ccy
+    rate = 1.0 if rev_ccy == info.get("currency") else (fx if rev_ccy == eps_ccy else None)
+    conv = (lambda v: None if v is None or rate is None else v * rate)
+    fy0, fy1 = conv(cell(revenue, "0y", "avg")), conv(cell(revenue, "+1y", "avg"))
+    ntm, _ = blend_ntm(today, fy0_end, fy0, fy1)
+    fin_ccy = info.get("financialCurrency")
+    ttm_rate = 1.0 if fin_ccy == info.get("currency") else (fx if fin_ccy == eps_ccy else None)
+    ttm = num(info.get("totalRevenue"))
+    ttm = None if ttm is None or ttm_rate is None else ttm * ttm_rate
+    shares = shares_override or num(info.get("sharesOutstanding"))
+    cap = price * shares if price and shares else None
+    ok = company_level and cap
+    return {
+        "rev_fy0": fy0, "rev_fy1": fy1, "ntm_rev": ntm,
+        "rev_analysts": cell(revenue, "+1y", "numberOfAnalysts"), "ttm_rev": ttm,
+        "shares": shares, "shares_source": shares_source if shares_override else "yahoo sharesOutstanding",
+        "market_cap": cap,
+        "ntm_ps": cap / ntm if ok and ntm and ntm > 0 else None,
+        "ttm_ps": cap / ttm if ok and ttm and ttm > 0 else None,
+    }
+
+
+def load_tickers() -> list[tuple[str, str, str, float | None, str]]:
     with open(ROOT / "tickers.csv", newline="", encoding="utf-8") as fh:
         return [
-            (r["ticker"].strip(), r["name"].strip(), (r.get("estimates_from") or "").strip())
+            (r["ticker"].strip(), r["name"].strip(), (r.get("estimates_from") or "").strip(),
+             num(r.get("shares")), (r.get("shares_source") or "").strip())
             for r in csv.DictReader(fh) if r["ticker"].strip()
         ]
 
@@ -236,14 +278,14 @@ def rebuild_snapshots() -> None:
 def main(argv: list[str]) -> int:
     today = date.today()
     only = {a.upper() for a in argv}
-    tickers = [(t, n, e) for t, n, e in load_tickers() if not only or t.upper() in only]
+    tickers = [row for row in load_tickers() if not only or row[0].upper() in only]
     (DATA / "raw").mkdir(parents=True, exist_ok=True)
     (DATA / "daily").mkdir(parents=True, exist_ok=True)
 
     rows, raws, failed = [], [], 0
-    for ticker, name, estimates_from in tickers:
+    for ticker, name, estimates_from, shares, shares_source in tickers:
         try:
-            row, raw = record_one(ticker, name, today, estimates_from)
+            row, raw = record_one(ticker, name, today, estimates_from, shares, shares_source)
         except Exception as exc:  # noqa: BLE001 — one bad ticker must not lose the day
             row = {k: None for k in FIELDS} | {
                 "date": today.isoformat(), "ticker": ticker, "name": name, "error": repr(exc)[:300],
