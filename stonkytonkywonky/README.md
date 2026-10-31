@@ -14,16 +14,25 @@ For each stock, the app shows:
 
 Companies without profits are valued on sales instead: price-to-sales against its own history, from revenue consensus.
 
-Besides the valuation list, the app has these tabs (`?page=`):
+The app opens on **Signals**: one line per area with its current reading, built from the same data and verdict cards as the tabs. The tabs (`?page=`):
 
-- **Market breadth**: the NYSE McClellan Summation Index with its RSI and MACD.
-- **Highs & lows**: new 52-week highs and lows across the S&P 1500 with a since-1991 study of what followed, and research-based dip-buying scores for the market and each sector (`highlow.py`, `dipscore.py`).
-- **Positioning**: CFTC futures positioning by trader type, volatility and hedging indices (VIX term structure, VXN against the Nasdaq, SKEW), FINRA margin debt, and long and short crowding per stock. It comes from the separate PositioningLab project.
+- **Valuation**: the list above and each stock's detail.
+- **Market** (`?page=market`), stacking:
+  - Highs & lows: new 52-week highs and lows across the S&P 1500 with a since-1991 study of what followed, and research-based dip-buying scores for the market and each sector (`highlow.py`, `dipscore.py`).
+  - Market breadth: the NYSE McClellan Summation Index with its RSI and MACD.
+  - Positioning: CFTC futures positioning by trader type, volatility and hedging indices (VIX term structure, VXN against the Nasdaq, SKEW), FINRA margin debt, and long and short crowding per stock. It comes from the separate PositioningLab project.
+  - Markets: indexes, rates, credit, currencies, commodities and crypto (`markets.py`, `markets.json`).
 - **Horizon**: dated catalysts in the next 75 days (Fed, CPI, payrolls and other Kalshi macro releases, key earnings with their options-implied moves, manual dates in `horizon.json`), Polymarket probabilities for the events in `horizon.json` with their 1-, 7- and 30-day changes, and how far each stock has run ahead of its event.
-- **Markets**: indexes, rates, credit, currencies, commodities and crypto (`markets.py`, `markets.json`).
-- **Discounts**: stocks that are mostly a claim on another stock, over time: SK Square against its SK hynix stake, Samsung preferred against common (`discounts.py`; pairs in its `PAIRS`).
-- **AI demand**: OpenRouter tokens by model maker, hyperscaler capex and contracted backlog from SEC filings, and disclosed usage and revenue figures (`compute.py`, `compute_disclosed.json`), in one log-scale chart.
-- **Industry**: oil shipping through the chokepoints, memory spot prices and GPU rental prices (`industry.py`).
+- **AI & memory** (`?page=ai`), stacking:
+  - AI demand (`compute.py`, `compute_disclosed.json`): OpenRouter tokens by model maker, hyperscaler capex and contracted backlog from SEC filings, disclosed usage and revenue figures, and two studies of whether the build-out can keep going. *Does it pay?* puts free cash flow, capex against operating cash flow, depreciation against revenue and the operating return on property and equipment (SEC XBRL) next to cloud segment profit parsed from the earnings releases (Google Cloud, AWS, Microsoft). *Who buys?* puts Nvidia's Hyperscale against its AI Clouds, Industrial & Enterprise revenue (CFO commentary), the monthly revenue of the hyperscalers' Taiwanese server builders (FinMind), and Supermicro and CoreWeave revenue.
+  - Industry: oil shipping through the chokepoints, memory spot prices and GPU rental prices (`industry.py`).
+  - Discounts: stocks that are mostly a claim on another stock, over time: SK Square against its SK hynix stake, Samsung preferred against common (`discounts.py`; pairs in its `PAIRS`).
+
+Older single-topic links (`?page=breadth`, `?page=discounts` and so on) open the tab that now holds them, scrolled to the section. Every section opens with its verdict; the rest folds under its heading, and the method text shows only with **Explanations** on.
+
+sec.gov's filing archive refuses requests without a contact email in the user agent, so segment figures come from the companies' investor-relations pages, and only the SEC's XBRL API (which needs none) is used.
+
+A hand-entered price for one day, such as the after-hours price on an earnings night, goes in `data/price_overrides.csv` (`date,ticker,price,note`); `record.py` uses it instead of Yahoo's close on that date only.
 
 ## Pipeline
 

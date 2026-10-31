@@ -159,6 +159,12 @@ def record_one(ticker: str, name: str, today: date, estimates_from: str = "",
     }
 
     price = num(info.get("currentPrice")) or num(info.get("regularMarketPrice"))
+    mkt_ts = info.get("regularMarketTime")
+    override = price_overrides().get((today.isoformat(), ticker.upper()))
+    if override:
+        # An after-hours move on earnings, entered by hand for the day it happens.
+        price, mkt_ts = override, time.time()
+        raw["price_override"] = override
     quote_ccy = info.get("currency")
     eps_ccy = estimate_currency(trend) or quote_ccy
     # ADRs and cross-listings can quote in one currency and estimate in another.
@@ -178,7 +184,6 @@ def record_one(ticker: str, name: str, today: date, estimates_from: str = "",
         # Yahoo sometimes leaves the current year empty just after a fiscal year end.
         ntm, method = fy1, "fy1_only"
     n_ntm = nasdaq_ntm(nasdaq)
-    mkt_ts = info.get("regularMarketTime")
 
     row = {
         "date": today.isoformat(),
@@ -253,6 +258,17 @@ def sales_fields(info: dict, revenue: dict | None, eps_ccy: str, fx: float, toda
         "ntm_ps": cap / ntm if ok and ntm and ntm > 0 else None,
         "ttm_ps": cap / ttm if ok and ttm and ttm > 0 else None,
     }
+
+
+def price_overrides() -> dict[tuple[str, str], float]:
+    """data/price_overrides.csv (date,ticker,price,note): a hand-entered price used instead
+    of Yahoo's close on that date only, e.g. the after-hours price after an earnings report."""
+    path = DATA / "price_overrides.csv"
+    if not path.exists():
+        return {}
+    with open(path, newline="", encoding="utf-8") as fh:
+        return {(r["date"].strip(), r["ticker"].strip().upper()): float(r["price"])
+                for r in csv.DictReader(fh) if r.get("price")}
 
 
 def load_tickers() -> list[tuple[str, str, str, float | None, str]]:

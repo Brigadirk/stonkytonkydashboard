@@ -424,3 +424,39 @@ h4 { margin: 12px 0 4px; font-size: 13px; color: var(--ink-2); }
 .note-card .note-head a:hover { text-decoration: underline; }
 .note-card p { margin: 6px 0 0; color: var(--ink-2); line-height: 1.45; }
 .chained { color: var(--muted); }
+
+/* ---------- folding and the Signals page ---------- */
+.tab-explain { margin: 4px 0 4px auto; align-self: center; font-size: 13px; }
+.sub + .sub { margin-top: 28px; padding-top: 6px; border-top: 1px solid var(--grid); }
+/* Method text is hidden until Explanations is on; chart readouts and data lines stay. */
+#pagebody .help:not(.ps-readout):not(.keep), #pagebody .note-line { display: none; }
+body.explain #pagebody .help, body.explain #pagebody .note-line { display: block; }
+section.fold { margin: 0 0 6px; }
+section.fold > h3 { cursor: pointer; user-select: none; margin: 0; padding: 8px 0; border-bottom: 1px solid var(--grid); }
+section.fold > h3::before { content: "▸"; display: inline-block; width: 1.1em; color: var(--muted); transition: transform .15s; }
+section.fold.open > h3::before { transform: rotate(90deg); }
+section.fold > h3:focus-visible { outline: 2px solid var(--line); outline-offset: 2px; }
+section.fold:not(.open) > :not(h3):not(.v-lines) { display: none; }
+section.fold:not(.open) > .v-lines { margin-bottom: 10px; }
+section.fold.open { margin-bottom: 18px; }
+
+.sig-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.sig-row {
+  display: grid; grid-template-columns: 12px 110px 1fr; gap: 10px; align-items: baseline; text-align: left;
+  font: inherit; color: inherit; background: var(--surface); border: 1px solid var(--grid); border-radius: 8px;
+  padding: 10px 14px; cursor: pointer;
+}
+.sig-row:hover { border-color: var(--axis); }
+.sig-row:focus-visible { outline: 2px solid var(--line); outline-offset: 2px; }
+.sig-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--z-n); align-self: center; }
+.sig-row.side-cheap .sig-dot { background: var(--z-c2); }
+.sig-row.side-rich .sig-dot { background: var(--z-e2); }
+.sig-area { font-weight: 600; font-size: 14px; }
+.sig-body { font-size: 15px; line-height: 1.45; }
+.sig-tks { display: inline-flex; flex-wrap: wrap; gap: 4px; vertical-align: baseline; }
+.sig-tk { font-size: 13px; padding: 1px 6px; border: 1px solid var(--grid); border-radius: 4px; cursor: pointer; }
+.sig-tk:hover { border-color: var(--line); color: var(--line); }
+@media (max-width: 640px) {
+  .sig-row { grid-template-columns: 12px 1fr; }
+  .sig-body { grid-column: 1 / -1; }
+}

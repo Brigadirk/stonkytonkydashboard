@@ -151,27 +151,44 @@ async function load() {
   const params = new URLSearchParams(location.search);
   const wanted = params.get("t");
   const first = state.rows.find((r) => r.ticker === wanted) || visibleRows()[0];
-  const page = wanted === BREADTH ? "breadth" : params.get("page"); // old links used t=$NYSI
-  if (first) await select(first.ticker, { keepPage: PAGES[page] });
+  const asked = wanted === BREADTH ? "breadth" : params.get("page"); // old links used t=$NYSI
+  // No page and no ticker in the link: open on Signals; a ticker link opens its valuation.
+  const page = asked in PAGES || asked in MOVED ? asked : wanted ? "valuation" : "signals";
+  if (first) await select(first.ticker, { keepPage: page !== "valuation" });
   if (params.get("view") === "list") setExpanded(true);
-  if (PAGES[page]) await showPage(page);
+  await showPage(page);
 }
 
 // ---------- sections: valuation is the list and detail; the others get the full width ----------
 
-const PAGES = {
-  valuation: null,
-  breadth: () => showBreadth(),
-  highlow: () => showHighLow(),
-  positioning: () => showPositioning(),
-  horizon: () => showHorizon(),
-  markets: () => showMarkets(),
-  industry: () => showIndustry(),
-  compute: () => showCompute(),
+// Five tabs. Market and AI & memory stack the former single-topic pages, each in its own slot so
+// a page's own re-render (a range button, a clicked row) only redraws its part.
+const SHOW = {
+  breadth: () => showBreadth(), highlow: () => showHighLow(), positioning: () => showPositioning(),
+  markets: () => showMarkets(), industry: () => showIndustry(), compute: () => showCompute(),
   discounts: () => showDiscounts(),
 };
+const GROUPS = { market: ["highlow", "breadth", "positioning", "markets"], ai: ["compute", "industry", "discounts"] };
+// Old links (?page=breadth) land on the tab that now holds that page, scrolled to it.
+const MOVED = Object.fromEntries(Object.entries(GROUPS).flatMap(([g, keys]) => keys.map((k) => [k, g])));
+const PAGES = {
+  signals: () => showSignals(),
+  valuation: null,
+  market: () => showGroup("market"),
+  horizon: () => showHorizon(),
+  ai: () => showGroup("ai"),
+};
+
+async function showGroup(g) {
+  const box = $("#pagebody");
+  box.replaceChildren(...GROUPS[g].map((k) => el("div", { id: `sub-${k}`, class: "sub" })));
+  await Promise.all(GROUPS[g].map((k) => SHOW[k]()));
+}
 
 async function showPage(name) {
+  const asked = name;
+  const focus = MOVED[name];
+  if (focus) name = focus;
   if (!(name in PAGES)) name = "valuation";
   const onValuation = name === "valuation";
   document.querySelectorAll(".tab").forEach((t) => {
@@ -190,19 +207,159 @@ async function showPage(name) {
     url.searchParams.delete("t");
   }
   history.replaceState(null, "", url);
-  if (!onValuation) await PAGES[name]();
+  if (onValuation) return;
+  $("#pagebody").replaceChildren();
+  await PAGES[name]();
+  const target = focus && document.getElementById(`sub-${asked}`);
+  if (target) target.scrollIntoView({ block: "start" });
 }
-const pageBox = () => $("#pagebody");
+// A page draws into its own slot on a combined tab, else into the page body.
+const pageBox = (key) => document.getElementById(`sub-${key}`) ?? $("#pagebody");
 const PAGE_SUBS = {
-  breadth: "How many NYSE stocks take part in the move",
-  highlow: "How washed out the market and each sector are, and when that was a time to buy",
-  positioning: "Who is already leaning which way",
+  signals: "Every area's current reading on one page; click a line to open it",
+  market: "Dip scores, breadth, positioning and the market reference frame",
   horizon: "What the market is waiting for, and how far it has run ahead",
-  markets: "The reference frame: indexes, rates, credit, currencies, commodities",
-  industry: "Oil shipping, memory spot prices and GPU rental prices",
-  compute: "How much AI compute the world uses and pays for, and who uses it",
-  discounts: "Holding companies against their stakes, preferred against common shares",
+  ai: "AI demand and who pays for it, memory and GPU prices, oil shipping, holding-company discounts",
 };
+
+// ---------- signals: one line per area, built from the same data and verdict cards as the tabs ----------
+
+async function showSignals() {
+  const box = pageBox("signals");
+  const names = ["ranking", "highlow", "breadth", "positioning", "horizon", "markets", "compute", "industry", "discounts"];
+  const got = await Promise.all(names.map((n) => fetch(`data/${n}.json`, { cache: "no-store" }).then((r) => (r.ok ? r.json() : null)).catch(() => null)));
+  const D = Object.fromEntries(names.map((n, i) => [n, got[i]]));
+  box.replaceChildren();
+  const head = el("div", { class: "d-head" });
+  head.append(el("h2", {}, "Signals"), el("div", { class: "d-sub" }, `Each area's current reading · click a line to open it · data as of ${D.ranking?.as_of ?? "n/a"}`));
+  const list = el("div", { class: "sig-list" });
+  box.append(head, list);
+
+  // From a verdict card: its colour, its headline when that changes with the data, and its first lines.
+  const fromCard = (card, n = 1, useHead = true) => ({
+    side: ["cheap", "rich"].find((s) => card.classList.contains(`side-${s}`)) ?? "na",
+    title: useHead ? card.querySelector("h3")?.textContent : null,
+    text: [...card.querySelectorAll(".v-lines > p:not(.note-line)")].slice(0, n).map((p) => p.textContent).join(" "),
+  });
+  const add = (area, tab, sub, build) => {
+    let r;
+    try { r = build(); } catch { r = null; }
+    if (!r) return;
+    const row = el("button", { class: `sig-row side-${r.side ?? "na"}` });
+    const body = el("div", { class: "sig-body" });
+    if (r.title) body.append(el("strong", {}, r.title), " ");
+    body.append(r.text);
+    if (r.extra) body.append(r.extra);
+    row.append(el("span", { class: "sig-dot", "aria-hidden": "true" }), el("span", { class: "sig-area" }, area), body);
+    row.addEventListener("click", (e) => {
+      if (e.target.closest(".sig-tk")) return;
+      showPage(sub ?? tab);
+    });
+    list.append(row);
+  };
+
+  add("Valuation", "valuation", null, () => {
+    const rows = D.ranking.rows;
+    const hold = rows.filter((r) => r.signal === "CHEAP, estimates holding").sort((a, b) => a.pe_pct - b.pe_pct);
+    const falling = rows.filter((r) => /estimates falling/.test(r.signal)).length;
+    const extra = el("span", { class: "sig-tks" });
+    for (const r of hold.slice(0, 10)) {
+      const b = el("span", { class: "sig-tk", role: "link", tabindex: "0", title: `${r.name}: forward P/E ${fmt(r.pe, 1)}, ${Math.round(r.pe_pct)}th percentile of its own history` }, r.ticker);
+      b.addEventListener("click", () => select(r.ticker));
+      extra.append(b);
+    }
+    return { text: `${hold.length} stocks cheap against their own history with estimates holding (${falling} cheap but with estimates falling). Cheapest: `, extra };
+  });
+  add("Dip score", "market", "highlow", () => {
+    const m = D.highlow.dip.market;
+    const lv = { washout: "washout", deep: "deep dip", dip: "dip", none: "no dip" }[m.level] ?? m.level;
+    return { side: ["washout", "deep", "dip"].includes(m.level) ? "cheap" : "na", title: `S&P 500 ${fmt(m.score, 0)} of 100 (${lv})`,
+      text: `S&P ${pct(m.spx_vs_200, 1)} against its 200-day, Baa spread ${hzSigned(m.baa_chg_3m * 100, 0)} bp in 3 months. Sectors in a dip or deeper: ${D.highlow.dip.sectors.filter((s) => s.score >= 60).map((s) => s.etf).join(", ") || "none"}.` };
+  });
+  add("Highs & lows", "market", "highlow", () => fromCard(hlSummary(D.highlow), 1));
+  add("Breadth", "market", "breadth", () => fromCard(breadthCard(D.breadth), 1));
+  add("Positioning", "market", "positioning", () => fromCard(psSummary(D.positioning), 3, false));
+  add("Markets", "market", "markets", () => {
+    const S = Object.fromEntries(D.markets.series.map((s) => [s.id, s]));
+    const px = (id, label) => S[id] && `${label} ${pct(S[id].chg["1w"], 1)}`;
+    const yl = (id, label) => S[id] && `${label} ${fmt(S[id].last, 2)}% (${hzSigned(S[id].chg["1w"] * 100, 0)} bp)`;
+    return { title: "This week:", text: [px("^GSPC", "S&P 500"), px("^NDX", "Nasdaq-100"), px("^SOX", "semis"), px("^KS11", "KOSPI"), yl("DGS10", "US 10-year"), yl("BAMLH0A0HYM2", "high-yield spread"), px("BZ=F", `Brent $${fmt(S["BZ=F"]?.last, 0)}`), px("DX-Y.NYB", "dollar")].filter(Boolean).join(" · ") + "." };
+  });
+  add("Horizon", "horizon", null, () => fromCard(hzSummary(D.horizon, D.horizon.scheduled.filter((e) => e.impact >= 2)), 2, false));
+  add("AI demand", "ai", "compute", () => {
+    const c = D.compute, s = c.sec;
+    const qi = s.capex_total_bn.findLastIndex((v) => v != null);
+    const parts = [`Big-five capex ${bn(s.capex_total_bn[qi])} in ${s.quarters[qi]} (${pct(growth(s.capex_total_bn[qi], s.capex_total_bn[qi - 4]), 0)} on a year earlier)`];
+    const nv = c.buyers?.nvidia;
+    if (nv?.length) parts.push(`${hlPct(nv[nv.length - 1].acie_share)} of Nvidia's data-centre sales go outside the hyperscalers`);
+    const cl = c.returns?.cloud;
+    if (cl?.googl_cloud && cl?.amzn_aws) {
+      const m = (x) => hlPct(x.margin[cpLast(x.margin)]);
+      parts.push(`cloud margins Google ${m(cl.googl_cloud)}, AWS ${m(cl.amzn_aws)}`);
+    }
+    const co = c.returns?.companies;
+    if (co) {
+      const over = Object.entries(co).filter(([, v]) => v.capex_ocf[cpLast(v.capex_ocf)] > 1).map(([t, v]) => `${CP_CO[t]} ${hlPct(v.capex_ocf[cpLast(v.capex_ocf)])}`);
+      if (over.length) parts.push(`capex above operating cash flow at ${over.join(", ")}`);
+    }
+    return { text: `${parts.join("; ")}.` };
+  });
+  add("Memory", "ai", "industry", () => {
+    const x = D.industry.memory.dxi, n = x.values.length - 1;
+    const back = (days) => {
+      const t = dayNum(x.dates[n]) - days;
+      const i = x.dates.findIndex((d) => dayNum(d) >= t);
+      return x.values[n] / x.values[i] - 1;
+    };
+    const items = D.industry.memory.items.filter((it) => !it.stale && it.chg?.["1m"] != null);
+    const movers = items.sort((a, b) => Math.abs(b.chg["1m"]) - Math.abs(a.chg["1m"])).slice(0, 2).map((it) => `${it.item} ${pct(it.chg["1m"], 0)}`);
+    return { text: `DRAM spot index ${pct(back(28), 1)} in 4 weeks, ${pct(back(91), 0)} in 3 months.${movers.length ? ` Biggest monthly moves: ${movers.join(", ")}.` : ""}` };
+  });
+  add("Discounts", "ai", "discounts", () => ({
+    text: D.discounts.items.map((it) => `${it.name}: discount ${hlPct(it.stats.last)} (${psOrd(it.stats.pct_1y)} percentile of the year, median ${hlPct(it.stats.median_1y)})`).join(" · ") + ".",
+  }));
+}
+
+// ---------- folding: verdicts stay open, sections open on a click, method text on request ----------
+
+const lsGet = (k) => { try { return localStorage.getItem(k); } catch { return null; } };
+const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch { /* private window */ } };
+// Open until closed once: the section whose verdict lives in its body rather than in a card.
+const FOLD_DEFAULT_OPEN = ["Dip-buying score: S&P 500"];
+const foldOpen = new Set((() => { try { return JSON.parse(lsGet("fold-open") ?? JSON.stringify(FOLD_DEFAULT_OPEN)); } catch { return FOLD_DEFAULT_OPEN; } })());
+
+function foldSections(root) {
+  root.querySelectorAll("section").forEach((sec) => {
+    if (sec.dataset.fold || sec.classList.contains("verdict")) return;
+    const h = sec.querySelector(":scope > h3");
+    if (!h) return;
+    sec.dataset.fold = "1";
+    sec.classList.add("fold");
+    const key = h.textContent.trim();
+    if (foldOpen.has(key)) sec.classList.add("open");
+    h.tabIndex = 0;
+    h.setAttribute("role", "button");
+    const toggle = () => {
+      const open = sec.classList.toggle("open");
+      if (open) foldOpen.add(key); else foldOpen.delete(key);
+      lsSet("fold-open", JSON.stringify([...foldOpen]));
+    };
+    h.addEventListener("click", toggle);
+    h.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); }
+    });
+  });
+}
+new MutationObserver(() => foldSections($("#pagebody"))).observe($("#pagebody"), { childList: true, subtree: true });
+
+const explainBtn = $("#explain");
+const setExplain = (on) => {
+  document.body.classList.toggle("explain", on);
+  explainBtn.setAttribute("aria-pressed", String(on));
+  lsSet("explain", on ? "1" : "0");
+};
+explainBtn.addEventListener("click", () => setExplain(!document.body.classList.contains("explain")));
+setExplain(lsGet("explain") === "1");
 
 // ---------- list ----------
 
@@ -1241,7 +1398,7 @@ const BREADTH_RANGES = [
 let breadthRange = 365;
 
 async function showBreadth() {
-  const box = pageBox();
+  const box = pageBox("breadth");
   try {
     const res = await fetch("data/breadth.json", { cache: "no-store" });
     if (!res.ok) throw new Error(res.status);
@@ -1301,7 +1458,7 @@ function breadthCard(b) {
 }
 
 function renderBreadth(b) {
-  const box = pageBox();
+  const box = pageBox("breadth");
   box.replaceChildren();
   const head = el("div", { class: "d-head" });
   head.append(el("h2", {}, "Market breadth"), el("div", { class: "d-sub" }, `NYSE McClellan Summation Index (ratio-adjusted) · data as of ${b.as_of}`));
@@ -1363,7 +1520,7 @@ const HZ_MONTH = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep",
 const hz = { range: 31, all: false };
 
 async function showHorizon() {
-  const box = pageBox();
+  const box = pageBox("horizon");
   try {
     const res = await fetch("data/horizon.json", { cache: "no-store" });
     if (!res.ok) throw new Error(res.status);
@@ -1511,7 +1668,7 @@ function hzSummary(d, events) {
 }
 
 function renderHorizon(d) {
-  const box = pageBox();
+  const box = pageBox("horizon");
   box.replaceChildren();
   const head = el("div", { class: "d-head" });
   head.append(el("h2", {}, "Horizon"), el("div", { class: "d-sub" }, `What the market is waiting for, how likely it is, and how far it has run ahead · data as of ${d.as_of}`));
@@ -1560,7 +1717,7 @@ const PS_SIDES = { leveraged: "Hedge funds (leveraged funds)", asset_managers: "
 const ps = { contract: "20974+", group: "all", sv: "QQQ" };
 
 async function showPositioning() {
-  const box = pageBox();
+  const box = pageBox("positioning");
   try {
     const res = await fetch("data/positioning.json", { cache: "no-store" });
     if (!res.ok) throw new Error(res.status);
@@ -1631,7 +1788,7 @@ function psCell(v, { digits = 1, pctFmt = false, hi = null, lo = null } = {}) {
 }
 
 function renderPositioning(d) {
-  const box = pageBox();
+  const box = pageBox("positioning");
   box.replaceChildren();
   const head = el("div", { class: "d-head" });
   head.append(el("h2", {}, "Positioning"), el("div", { class: "d-sub" }, `Who is already leaning which way · prices as of ${d.as_of}`));
@@ -1820,7 +1977,7 @@ const HL_RANGES = [
 const hl = { range: 1826, open: null, sector: null, data: null };
 
 async function showHighLow() {
-  const box = pageBox();
+  const box = pageBox("highlow");
   try {
     const res = await fetch("data/highlow.json", { cache: "no-store" });
     if (!res.ok) throw new Error(res.status);
@@ -1970,7 +2127,7 @@ function dipMarket(dip) {
   const txt = el("div");
   txt.append(
     el("div", { class: "dip-level" }, `${DIP_LEVEL[m.level]} · ${DIP_REGIME[m.regime]}`),
-    el("div", { class: "help" }, `S&P ${pct(m.spx_vs_200, 1)} against its 200-day; Baa spread ${fmt(m.baa, 2)} (${m.baa_chg_3m >= 0 ? "+" : ""}${fmt(m.baa_chg_3m, 2)} in 3 months).` +
+    el("div", { class: "help keep" }, `S&P ${pct(m.spx_vs_200, 1)} against its 200-day; Baa spread ${fmt(m.baa, 2)} (${m.baa_chg_3m >= 0 ? "+" : ""}${fmt(m.baa_chg_3m, 2)} in 3 months).` +
       (cell ? ` In this state before, the S&P 500 did ${pct(cell.med_3m, 1)} over 3 months and ${pct(cell.med_12m, 1)} over 12 (up ${Math.round(cell.up_12m * 100)}% of the time; ${cell.days} days), against ${pct(all.med_12m, 1)} on any day.` : "")),
   );
   card.append(big, txt);
@@ -2097,7 +2254,7 @@ const level = (v) => (v == null ? null : v >= 90 ? "washout" : v >= 80 ? "deep" 
 
 function renderHighLow(d) {
   hl.data = d;
-  const box = pageBox();
+  const box = pageBox("highlow");
   box.replaceChildren();
   const head = el("div", { class: "d-head" });
   head.append(el("h2", {}, "Highs & lows"), el("div", { class: "d-sub" }, `S&P 1500 stocks at new 52-week highs and lows · data as of ${d.as_of}`));
@@ -2143,7 +2300,7 @@ const CP_CO = { MSFT: "Microsoft", GOOGL: "Alphabet", AMZN: "Amazon", META: "Met
 const cp = { range: null };
 
 async function showCompute() {
-  const box = pageBox();
+  const box = pageBox("compute");
   try {
     const res = await fetch("data/compute.json", { cache: "no-store" });
     if (!res.ok) throw new Error(res.status);
@@ -2154,7 +2311,7 @@ async function showCompute() {
 }
 
 const tn = (v, d = 1) => (v == null ? "n/a" : `${fmt(v / 1e12, d)}T`);
-const bn = (v, d = 0) => (v == null ? "n/a" : `$${fmt(v, d)}bn`);
+const bn = (v, d = 0) => (v == null ? "n/a" : `${v < 0 ? "−" : ""}$${fmt(Math.abs(v), d)}bn`);
 const growth = (a, b) => (a == null || b == null || !b ? null : a / b - 1);
 
 function cpSummary(d) {
@@ -2251,6 +2408,122 @@ function cpCapex(d) {
   for (const [tk, r] of Object.entries(s.rpo)) {
     const rs = { dates: r.dates };
     psChart(sec, rs, { title: `${CP_CO[tk]}: remaining performance obligations, $bn`, values: r.bn, digits: 0 }, (i) => `${r.dates[i]}: ${bn(r.bn[i])}${i >= 4 ? ` (${pct(growth(r.bn[i], r.bn[i - 4]), 0)} on a year earlier)` : ""}`);
+  }
+  return sec;
+}
+
+const cpQDate = (q) => `${q.slice(0, 4)}-${String(Number(q.slice(5)) * 3).padStart(2, "0")}-28`;
+const cpLast = (vals) => vals.findLastIndex((v) => v != null);
+
+// Does the spending earn money? Company-level cash and returns from SEC filings, cloud segment
+// profit from the earnings releases. Every figure is trailing twelve months unless it says quarter.
+function cpReturns(d) {
+  const r = d.returns;
+  const sec = el("section", { class: "hz-sec" });
+  sec.append(el("h3", {}, "Does it pay? Returns on the build-out"));
+  sec.append(el("p", { class: "help" }, "Company figures from SEC filings, trailing twelve months. Capex share: capex as a share of operating cash flow; above 100% the rest is borrowed or raised. Operating return: operating profit over average property and equipment (before tax). Incremental return: the extra operating profit of the last year divided by the property and equipment added the year before, since new data centres take about a year to earn. Amazon's capex is gross (its own free cash flow nets off incentives) and includes logistics; Microsoft's and Oracle's exclude finance leases. Cloud segments come from the earnings releases: Microsoft replaced its Intelligent Cloud segment with the broader Agents and Infra in fiscal 2027, so that line starts over."));
+  const qs = r.quarters;
+  const lines = el("div", { class: "v-lines" });
+  for (const [tk, c] of Object.entries(r.companies)) {
+    const i = cpLast(c.capex_ocf);
+    if (i < 0) continue;
+    const j = i - 4;
+    lines.append(el("p", {}, `${CP_CO[tk]} (${qs[i]}): capex ${hlPct(c.capex_ocf[i])} of operating cash flow (${hlPct(c.capex_ocf[j])} a year earlier), free cash flow ${bn(c.fcf_bn[i], 1)}; operating return on property and equipment ${hlPct(c.ret_ppe[i])} (${hlPct(c.ret_ppe[j])}), incremental return ${hlPct(c.inc_ret[i])}.`));
+  }
+  for (const s of Object.values(r.cloud)) {
+    const i = cpLast(s.margin);
+    if (i < 0) continue;
+    const j = i - 4;
+    const yoy = j >= 0 && s.rev_bn[j] ? `, ${pct(growth(s.rev_bn[i], s.rev_bn[j]), 0)} on a year earlier` : "";
+    lines.append(el("p", {}, `${s.label} (${qs[i]}): revenue ${bn(s.rev_bn[i], 1)} in the quarter${yoy}, operating margin ${hlPct(s.margin[i])}${j >= 0 && s.margin[j] != null ? ` (${hlPct(s.margin[j])} a year earlier)` : ""}${s.oi_per_capex[i] != null ? `; ${fmt(100 * s.oi_per_capex[i], 0)}¢ of yearly operating profit per dollar of ${CP_CO[s.parent]}'s capex a year before` : ""}.`));
+  }
+  sec.append(lines);
+
+  const t = el("table", { class: "ps-table" });
+  t.append(el("thead"), el("tbody"));
+  const hr = el("tr");
+  ["Trailing 12 months", "Quarter", "Free cash flow", "Capex share", "a year earlier", "Depreciation / revenue", "a year earlier", "Operating return", "a year earlier", "Incremental return"]
+    .forEach((h, k) => hr.append(el("th", { class: k ? "num" : "" }, h)));
+  t.tHead.append(hr);
+  for (const [tk, c] of Object.entries(r.companies)) {
+    const i = cpLast(c.capex_ocf), j = i - 4;
+    const tr = el("tr");
+    tr.append(el("td", {}, CP_CO[tk]), el("td", { class: "num" }, qs[i]), el("td", { class: "num" }, bn(c.fcf_bn[i], 1)),
+      ...[c.capex_ocf[i], c.capex_ocf[j], c.da_rev[i], c.da_rev[j], c.ret_ppe[i], c.ret_ppe[j], c.inc_ret[i]].map((v) => el("td", { class: "num" }, hlPct(v))));
+    t.tBodies[0].append(tr);
+  }
+  const sc = el("div", { class: "ps-scroll" });
+  sc.append(t);
+  sec.append(sc);
+
+  const n = qs.length;
+  const s = { dates: qs.map(cpQDate) };
+  const g = r.cloud.googl_cloud, a = r.cloud.amzn_aws;
+  if (g && a) {
+    const m = (x) => x.margin.map((v) => (v == null ? null : 100 * v));
+    psChart(sec, s, { title: "Cloud operating margin, %: Google Cloud (solid), AWS (dashed)", values: m(g), extra: m(a), digits: 0 },
+      (i) => `${qs[i]}: Google Cloud ${hlPct(g.margin[i])} on ${bn(g.rev_bn[i], 1)} · AWS ${hlPct(a.margin[i])} on ${bn(a.rev_bn[i], 1)}`);
+    const c = (x) => x.oi_per_capex.map((v) => (v == null ? null : 100 * v));
+    psChart(sec, s, { title: "Cloud operating profit (12 months) per dollar of the parent's capex a year before, ¢: Google Cloud (solid), AWS (dashed)", values: c(g), extra: c(a), digits: 0 },
+      (i) => `${qs[i]}: Google Cloud ${g.oi_per_capex[i] == null ? "n/a" : `${fmt(100 * g.oi_per_capex[i], 0)}¢`} · AWS ${a.oi_per_capex[i] == null ? "n/a" : `${fmt(100 * a.oi_per_capex[i], 0)}¢`}`);
+  }
+  const cs = r.companies;
+  const pc = (tk, k) => cs[tk][k].map((v) => (v == null ? null : 100 * v));
+  psChart(sec, s, { title: "Capex as % of operating cash flow: Alphabet (solid), Amazon (dashed)", values: pc("GOOGL", "capex_ocf"), extra: pc("AMZN", "capex_ocf"), digits: 0 },
+    (i) => `${qs[i]}: ${Object.keys(cs).map((tk) => `${CP_CO[tk]} ${hlPct(cs[tk].capex_ocf[i])}`).join(" · ")}`);
+  psChart(sec, s, { title: "Operating return on property and equipment, %: Microsoft (solid), Meta (dashed)", values: pc("MSFT", "ret_ppe"), extra: pc("META", "ret_ppe"), digits: 0 },
+    (i) => `${qs[i]}: ${Object.keys(cs).map((tk) => `${CP_CO[tk]} ${hlPct(cs[tk].ret_ppe[i])}`).join(" · ")}`);
+  if (n && r.azure_rev_bn.some((v) => v != null)) {
+    const i = cpLast(r.azure_rev_bn);
+    sec.append(el("p", { class: "help keep" }, `Azure revenue, reported in dollars from fiscal 2027: ${bn(r.azure_rev_bn[i], 1)} in ${qs[i]}.`));
+  }
+  return sec;
+}
+
+// Who buys besides the hyperscalers: Nvidia's own split, the hyperscalers' Taiwanese server
+// builders (monthly), and buyers outside that channel with revenue in their SEC filings.
+function cpBuyers(d) {
+  const b = d.buyers;
+  const sec = el("section", { class: "hz-sec" });
+  sec.append(el("h3", {}, "Who buys? Hyperscalers against everyone else"));
+  sec.append(el("p", { class: "help" }, "Nvidia, from its CFO commentary: since fiscal 2027 it reports Hyperscale (public clouds and the largest consumer internet companies) against AI Clouds, Industrial & Enterprise (ACIE: neoclouds, sovereigns, enterprises, labs building their own). Earlier quarters only have the large cloud providers' approximate share of Data Center revenue (italic). In fiscal Q2 2027 Nvidia moved one customer from ACIE to Hyperscale and recast only the quarters in that report, so compare like with like (marked ✓). Quarters are labelled by the calendar quarter they mostly cover. The hyperscalers buy their servers directly from Taiwanese contract manufacturers (Quanta, Wiwynn, Wistron), whose revenue comes out monthly: an early read on the hyperscaler channel. Supermicro and CoreWeave stand for the buyers outside it."));
+  const nv = b.nvidia;
+  const lines = el("div", { class: "v-lines" });
+  const last = nv[nv.length - 1];
+  if (last) {
+    const ago = nv.find((r) => r.label === `${Number(last.label.slice(0, 4)) - 1}${last.label.slice(4)}`);
+    const same = ago && ago.current_basis === last.current_basis;
+    lines.append(el("p", {}, `Nvidia ${last.label}: Hyperscale ${bn(last.hyperscale_bn, 1)}${same ? ` (${pct(growth(last.hyperscale_bn, ago.hyperscale_bn), 0)} on a year earlier)` : ""}, everyone else (ACIE) ${bn(last.acie_bn, 1)}${same ? ` (${pct(growth(last.acie_bn, ago.acie_bn), 0)})` : ""}: ${hlPct(last.acie_share)} of Data Center revenue${same ? `, against ${hlPct(ago.acie_share)} a year earlier` : ""}.`));
+  }
+  const o = b.odm;
+  const oi = cpLast(o.yoy3);
+  if (oi >= 0) lines.append(el("p", {}, `Hyperscaler server builders (Quanta, Wiwynn, Wistron): NT$${fmt(o.total_bn_twd[oi], 0)}bn in ${o.months[oi]}; the last three months ${pct(o.yoy3[oi], 0)} on a year earlier (${pct(o.yoy3[oi - 3], 0)} three months before).`));
+  for (const x of Object.values(b.others)) {
+    const i = cpLast(x.rev_bn);
+    if (i >= 4) lines.append(el("p", {}, `${x.label}: revenue ${bn(x.rev_bn[i], 1)} in ${x.quarters[i]}, ${pct(growth(x.rev_bn[i], x.rev_bn[i - 4]), 0)} on a year earlier.`));
+  }
+  sec.append(lines);
+
+  const t = el("table", { class: "ps-table" });
+  t.append(el("thead"), el("tbody"));
+  const hr = el("tr");
+  ["Nvidia Data Center", "Hyperscale", "Everyone else (ACIE)", "ACIE share", "Comparable"].forEach((h, k) => hr.append(el("th", { class: k ? "num" : "" }, h)));
+  t.tHead.append(hr);
+  for (const r of nv) {
+    const tr = el("tr", { class: r.exact ? "" : "cp-uncertain" });
+    tr.append(el("td", {}, r.label), el("td", { class: "num" }, bn(r.hyperscale_bn, 1)), el("td", { class: "num" }, bn(r.acie_bn, 1)),
+      el("td", { class: "num" }, hlPct(r.acie_share)), el("td", { class: "num" }, r.current_basis ? "✓" : r.exact ? "old basis" : "approx."));
+    t.tBodies[0].append(tr);
+  }
+  const sc = el("div", { class: "ps-scroll" });
+  sc.append(t);
+  sec.append(sc);
+
+  if (o.months.length) {
+    const from = o.months.findIndex((m) => m >= "2021-01");
+    const s = { dates: o.months.slice(from).map((m) => `${m}-15`) };
+    psChart(sec, s, { title: "Hyperscaler server builders: revenue, last 3 months against a year earlier, %", values: o.yoy3.slice(from).map((v) => (v == null ? null : 100 * v)), digits: 0 },
+      (i) => `${o.months[from + i]}: NT$${fmt(o.total_bn_twd[from + i], 0)}bn · ${Object.entries(o.by_company).map(([n, v]) => `${n} ${fmt(v[from + i], 0)}`).join(" · ")} · 3 months ${pct(o.yoy3[from + i], 0)}`);
   }
   return sec;
 }
@@ -2458,12 +2731,14 @@ function cpCombined(d) {
 }
 
 function renderCompute(d) {
-  const box = pageBox();
+  const box = pageBox("compute");
   box.replaceChildren();
   const head = el("div", { class: "d-head" });
   head.append(el("h2", {}, "AI demand"), el("div", { class: "d-sub" }, `Tokens, lab revenue, hyperscaler capex and backlog · updated ${d.generated.slice(0, 10)}`));
   box.append(head, cpSummary(d));
   if (d.combined) box.append(cpCombined(d));
+  if (d.returns) box.append(cpReturns(d));
+  if (d.buyers) box.append(cpBuyers(d));
   box.append(cpDisclosed(d), cpCapex(d), cpTokens(d));
 }
 
@@ -2477,7 +2752,7 @@ const MK_RANGES = [
 const mk = { sel: "^GSPC", range: 365 };
 
 async function showMarkets() {
-  const box = pageBox();
+  const box = pageBox("markets");
   try {
     const res = await fetch("data/markets.json", { cache: "no-store" });
     if (!res.ok) throw new Error(res.status);
@@ -2524,7 +2799,7 @@ function mkSummary(d) {
 }
 
 function renderMarkets(d) {
-  const box = pageBox();
+  const box = pageBox("markets");
   box.replaceChildren();
   const head = el("div", { class: "d-head" });
   head.append(el("h2", {}, "Markets"), el("div", { class: "d-sub" }, `Indexes, rates, credit, currencies, commodities and crypto · as of ${d.as_of}`));
@@ -2600,7 +2875,7 @@ const IND_RANGES = [
 const IND_MEM_ORDER = ["DRAM chips", "DRAM modules", "GDDR", "NAND wafers", "NAND chips", "Memory cards"];
 
 async function showIndustry() {
-  const box = pageBox();
+  const box = pageBox("industry");
   try {
     const res = await fetch("data/industry.json", { cache: "no-store" });
     if (!res.ok) throw new Error(res.status);
@@ -2649,7 +2924,7 @@ function indSummary(d) {
 }
 
 function renderIndustry(d) {
-  const box = pageBox();
+  const box = pageBox("industry");
   box.replaceChildren();
   const head = el("div", { class: "d-head" });
   head.append(el("h2", {}, "Industry"), el("div", { class: "d-sub" }, "Oil shipping, memory spot prices and GPU rental prices"));
@@ -2771,7 +3046,7 @@ const DC_TICKERS = {
 const DC_RANGES = [{ label: "1Y", days: 365 }, { label: "3Y", days: 1095 }, { label: "5Y", days: 1826 }, { label: "All", days: 0 }];
 
 async function showDiscounts() {
-  const box = pageBox();
+  const box = pageBox("discounts");
   try {
     const res = await fetch("data/discounts.json", { cache: "no-store" });
     if (!res.ok) throw new Error(res.status);
@@ -2792,7 +3067,7 @@ function dcVerdict(s) {
 }
 
 function renderDiscounts(d) {
-  const box = pageBox();
+  const box = pageBox("discounts");
   box.replaceChildren();
   const head = el("div", { class: "d-head" });
   head.append(el("h2", {}, "Discounts"), el("div", { class: "d-sub" }, "Stocks that are mostly a claim on another stock, and how far below that stock they trade"));
