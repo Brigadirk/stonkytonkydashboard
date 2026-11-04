@@ -216,7 +216,26 @@ def memory_view() -> dict:
     if (OUT / "dxi.csv").exists():
         with open(OUT / "dxi.csv", newline="", encoding="utf-8") as fh:
             dxi = [(r["date"], float(r["dxi"])) for r in csv.DictReader(fh)]
-    return {"items": [i for i in items if not i["stale"]], "dxi": {"dates": [d for d, _ in dxi], "values": [v for _, v in dxi]}}
+    return {"items": [i for i in items if not i["stale"]], "dxi": {"dates": [d for d, _ in dxi], "values": [v for _, v in dxi]},
+            "nand": nand_index(series)}
+
+
+# NAND has no published index; the TLC wafer prices are the closest to what SSD makers pay.
+NAND_INDEX_ITEMS = ["128Gb TLC", "256Gb TLC", "512Gb TLC"]
+
+
+def nand_index(series: dict) -> dict:
+    """Geometric mean of the TLC wafer spot prices, 100 at the first week all three are quoted."""
+    by_day: dict[str, dict[str, float]] = {}
+    for item in NAND_INDEX_ITEMS:
+        for d, v in series.get(("NAND wafers", item), []):
+            by_day.setdefault(d, {})[item] = v
+    days = [d for d in sorted(by_day) if len(by_day[d]) == len(NAND_INDEX_ITEMS)]
+    if not days:
+        return {"dates": [], "values": [], "items": NAND_INDEX_ITEMS}
+    base = by_day[days[0]]
+    vals = [round(100 * statistics.geometric_mean([by_day[d][k] / base[k] for k in base]), 1) for d in days]
+    return {"dates": days, "values": vals, "items": NAND_INDEX_ITEMS}
 
 
 # ---------- GPU rental ----------
@@ -333,6 +352,9 @@ def main(argv: list[str]) -> int:
         old = json.loads(previous.read_text(encoding="utf-8"))
         for label in ("memory", "gpu", "shipping"):
             payload.setdefault(label, old.get(label))
+    checkpoints = ROOT / "memory_checkpoints.json"
+    if checkpoints.exists():
+        payload["checkpoints"] = json.loads(checkpoints.read_text(encoding="utf-8"))
     payload["failed"] = sorted(set(failed))
     tmp = previous.with_suffix(".json.tmp")
     tmp.write_text(json.dumps(payload, separators=(",", ":")), encoding="utf-8")

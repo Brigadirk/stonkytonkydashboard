@@ -427,7 +427,6 @@ h4 { margin: 12px 0 4px; font-size: 13px; color: var(--ink-2); }
 
 /* ---------- folding and the Signals page ---------- */
 .tab-explain { margin: 4px 0 4px auto; align-self: center; font-size: 13px; }
-.sub + .sub { margin-top: 28px; padding-top: 6px; border-top: 1px solid var(--grid); }
 /* Method text is hidden until Explanations is on; chart readouts and data lines stay. */
 #pagebody .help:not(.ps-readout):not(.keep), #pagebody .note-line { display: none; }
 body.explain #pagebody .help, body.explain #pagebody .note-line { display: block; }
@@ -436,13 +435,12 @@ section.fold > h3 { cursor: pointer; user-select: none; margin: 0; padding: 8px 
 section.fold > h3::before { content: "▸"; display: inline-block; width: 1.1em; color: var(--muted); transition: transform .15s; }
 section.fold.open > h3::before { transform: rotate(90deg); }
 section.fold > h3:focus-visible { outline: 2px solid var(--line); outline-offset: 2px; }
-section.fold:not(.open) > :not(h3):not(.v-lines) { display: none; }
 section.fold:not(.open) > .v-lines { margin-bottom: 10px; }
 section.fold.open { margin-bottom: 18px; }
 
 .sig-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
 .sig-row {
-  display: grid; grid-template-columns: 12px 110px 1fr; gap: 10px; align-items: baseline; text-align: left;
+  display: grid; grid-template-columns: 12px 130px 1fr; gap: 10px; align-items: baseline; text-align: left;
   font: inherit; color: inherit; background: var(--surface); border: 1px solid var(--grid); border-radius: 8px;
   padding: 10px 14px; cursor: pointer;
 }
@@ -460,3 +458,54 @@ section.fold.open { margin-bottom: 18px; }
   .sig-row { grid-template-columns: 12px 1fr; }
   .sig-body { grid-column: 1 / -1; }
 }
+
+.why { margin: 2px 0 4px 1.1em; font-size: 13px; color: var(--ink-2); }
+section.fold:not(.open) > .why { display: block; }
+section.fold:not(.open) > :not(h3):not(.v-lines):not(.why) { display: none; }
+.sig-means { margin: 0; font-size: 15px; font-weight: 500; }
+.sig-reading { margin: 4px 0 0; font-size: 13px; color: var(--ink-2); }
+.verdict.clip > .v-lines > p:not(.note-line):nth-of-type(n+3) { display: none; }
+.v-more { font: inherit; font-size: 13px; color: var(--line); background: none; border: 0; padding: 6px 0 0; cursor: pointer; }
+
+/* ---------- levels: good (blue), care (amber), caution (red), neutral (grey) ---------- */
+:root { --lv-good: var(--z-c2); --lv-care: #d08a00; --lv-bad: var(--z-e2); --lv-na: var(--z-n); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --lv-care: #fab219; } }
+.verdict.lv-good { border-left-color: var(--lv-good); }
+.verdict.lv-care { border-left-color: var(--lv-care); }
+.verdict.lv-bad { border-left-color: var(--lv-bad); }
+.state { display: inline-block; font-size: 12px; font-weight: 700; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--lv-na); color: var(--ink-2); white-space: nowrap; vertical-align: 1px; }
+.state:empty { display: none; }
+.state.lv-good { border-color: var(--lv-good); color: var(--z-c3); }
+.state.lv-care { border-color: var(--lv-care); color: var(--warn-text); }
+.state.lv-bad { border-color: var(--lv-bad); color: var(--z-e3); }
+.sig-row.lv-good .sig-dot { background: var(--lv-good); }
+.sig-row.lv-care .sig-dot { background: var(--lv-care); }
+.sig-row.lv-bad .sig-dot { background: var(--lv-bad); }
+
+/* The card on top of every tab */
+.verdict.top { margin-top: 0; }
+.top-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.top-head .state { font-size: 14px; padding: 2px 10px; }
+.top-means { margin: 8px 0 0; font-size: 16px; font-weight: 600; }
+.v-lines .top-reading { font-size: 14px; color: var(--ink-2); }
+.fresh { font-size: 12px; color: var(--muted); }
+.fresh.stale { color: var(--z-e3); font-weight: 600; }
+.sig-body .fresh { display: block; margin-top: 4px; }
+.tab.stale::after { content: ""; display: inline-block; width: 6px; height: 6px; margin-left: 5px; border-radius: 50%; background: var(--lv-bad); vertical-align: 2px; }
+
+/* Folded sections show only their first line: the state and the reading. */
+section.fold:not(.open) > .v-lines > :not(:first-child) { display: none; }
+section.fold > .v-lines > p.now { font-size: 14px; }
+section.fold > h3 + .why + .v-lines, section.fold > h3 + .v-lines { margin-top: 2px; }
+
+/* What changed since the last data day */
+.changes { margin: 12px 0 4px; padding: 10px 14px; border: 1px solid var(--grid); border-radius: 8px; background: var(--surface); }
+.changes h3 { font-size: 15px; }
+.changes ul { margin: 6px 0 0; padding-left: 18px; }
+.changes li { margin: 2px 0; }
+.changes p { margin: 4px 0 0; }
+.sig-means .state { margin-right: 4px; }
+.sig-body .sig-tks { margin-top: 6px; }
+.empty { color: var(--muted); }
+.ps-table.wrap td { white-space: normal; }
+.ps-table.wrap td:nth-child(2) { min-width: 180px; }

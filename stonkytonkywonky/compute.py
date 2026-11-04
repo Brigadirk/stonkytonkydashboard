@@ -570,6 +570,81 @@ def buyers_view(split: dict, odm: dict, others: dict) -> dict:
     return {"nvidia": nv, "odm": odm_v, "others": oth}
 
 
+# ---------- Vendor financing ----------
+
+NVDA_CIK = 1045810
+# Instant values: stakes in listed companies, stakes in private ones (the second tag is what older
+# filings used for the same line), the guarantees' maximum exposure, and receivables.
+VENDOR_STOCK = {"listed": ["EquitySecuritiesFvNi"],
+                "private": ["EquitySecuritiesFVNINoncurrent", "EquitySecuritiesWithoutReadilyDeterminableFairValueAmount"],
+                "guarantees": ["GuaranteeObligationsMaximumExposure"],
+                "receivables": ["AccountsReceivableNetCurrent"]}
+VENDOR_FLOW = {"rev": ["Revenues"], "gains": ["GainLossOnInvestments"], "bought": ["PaymentsToAcquireEquitySecuritiesFvNi"]}
+# Hand-entered from the latest 10-Q's commitments note (the XBRL does not tag these lines).
+# Update when a new 10-Q lands.
+VENDOR_PROMISED = {"as_of": "2026-07-26", "source": "Nvidia 10-Q, quarter to 26 Jul 2026, note 10",
+                   "equity_bn": 25, "cloud_bn": 65,
+                   "note": "$25bn of equity investments not yet paid in; $65bn of cloud capacity Nvidia has agreed to rent back "
+                           "from its customers ($29bn cloud service agreements, $36bn AI cloud agreements). "
+                           "$105bn of the guarantees back leases of an OpenAI affiliate (about 4.25 GW in Ohio, from fiscal 2029)."}
+# Lucent's customer financing at the 1999-2000 peak: about $7bn committed, near a fifth of a year's revenue.
+LUCENT_SHARE = 0.2
+
+
+def vendor() -> dict:
+    """Nvidia's stakes in, guarantees for and receivables from its customers, by quarter end."""
+    store = OUT / "vendor.json"
+    try:
+        data = {}
+        for key, tags in {**VENDOR_STOCK, **VENDOR_FLOW}.items():
+            merged: dict[str, float] = {}
+            for tag in tags:
+                facts = (get_json(SEC.format(cik=NVDA_CIK, tag=tag), SEC_UA) or {}).get("units", {}).get("USD", [])
+                time.sleep(0.2)
+                if key in VENDOR_STOCK:
+                    merged.update({f["end"]: f["val"] for f in facts if f.get("form", "").startswith(("10-Q", "10-K"))})
+                else:
+                    merged.update(quarters_from_ytd(facts))
+            data[key] = dict(sorted(merged.items()))
+        store.write_text(json.dumps(data))
+    except Exception as e:  # noqa: BLE001
+        print(f"vendor financing failed ({e}); using the stored pull")
+        data = json.loads(store.read_text())
+    return data
+
+
+def vendor_view(v: dict) -> dict:
+    ends = [e for e in v["rev"] if e >= "2024-01-01"]
+    bnr = lambda x: None if x is None else round(x / 1e9, 1) + 0.0  # noqa: E731  (no −0.0)
+    rows = []
+    for k, e in enumerate(ends):
+        prev = ends[k - 1] if k else None
+        listed, private = v["listed"].get(e), v["private"].get(e)
+        # Before 2026 the filings do not tag listed stakes; they were small then except CoreWeave.
+        stakes = (listed or 0) + private if private is not None else None
+        # New money into stakes: cash paid where tagged, else the change in holdings less the
+        # quarter's investment gains (needs both quarter ends complete).
+        new = v["bought"].get(e)
+        if new is None and prev and listed is not None and v["listed"].get(prev) is not None and prev in v["private"]:
+            new = stakes - v["listed"][prev] - v["private"][prev] - v["gains"].get(e, 0)
+        rev = v["rev"][e]
+        rows.append({"end": e, "label": quarter_label((date.fromisoformat(e) - timedelta(days=31)).isoformat()),
+                     "rev_bn": bnr(rev), "stakes_bn": bnr(stakes), "listed_known": listed is not None,
+                     "new_bn": bnr(new), "new_share": None if new is None else round(new / rev, 3),
+                     "dso": None if e not in v["receivables"] else round(v["receivables"][e] / rev * 91),
+                     "guarantees_bn": bnr(v["guarantees"].get(e))})
+    last4 = rows[-4:]
+    ttm_rev = sum(r["rev_bn"] for r in last4)
+    ttm_new = sum(r["new_bn"] for r in last4) if all(r["new_bn"] is not None for r in last4) else None
+    g = next((r["guarantees_bn"] for r in reversed(rows) if r["guarantees_bn"] is not None), None)
+    last = rows[-1]
+    return {"quarters": rows, "ttm_rev_bn": round(ttm_rev, 1),
+            "ttm_new_bn": None if ttm_new is None else round(ttm_new, 1),
+            "ttm_new_share": None if ttm_new is None else round(ttm_new / ttm_rev, 3),
+            "exposure_bn": round((last["stakes_bn"] or 0) + VENDOR_PROMISED["equity_bn"] + (g or 0), 1),
+            "guarantees_bn": g, "promised": VENDOR_PROMISED, "lucent_share": LUCENT_SHARE}
+
+
 # Series for the one-chart view: (key, label, group, series id in compute_disclosed.json)
 DISCLOSED_LINES = [
     ("google_tokens", "Google tokens a month (all products)", "tokens", "google_tokens_month"),
@@ -633,6 +708,10 @@ def main() -> int:
         payload["buyers"] = buyers_view(nvidia_split(), odm_monthly(), other_buyers())
     except Exception as e:  # noqa: BLE001 — the rest of the view still ships
         print(f"buyers failed ({e})")
+    try:
+        payload["vendor"] = vendor_view(vendor())
+    except Exception as e:  # noqa: BLE001
+        print(f"vendor failed ({e})")
     out = APP / "public" / "data" / "compute.json"
     tmp = out.with_suffix(".tmp")
     tmp.write_text(json.dumps(payload, separators=(",", ":")))
