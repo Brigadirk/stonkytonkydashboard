@@ -1,0 +1,82 @@
+{
+  "note": "Hand-entered: what each memory maker committed to on its latest call, and the print that tests it. Update status and result after each print.",
+  "items": [
+    {
+      "company": "Micron",
+      "ticker": "MU",
+      "said_on": "2026-09-30",
+      "source": "Fiscal Q4 2026 call (via AJ Investment Research memo, 1 Oct 2026)",
+      "said": "Fiscal 2027 grows revenue every quarter; gross margin of about 86% in fiscal Q1 is the floor for the year.",
+      "test": "Fiscal Q1 2027: revenue at or above the $61.5bn guidance midpoint, gross margin at least 86%, and fiscal Q2 guidance above Q1.",
+      "check_at": "2026-12",
+      "status": "open",
+      "result": ""
+    },
+    {
+      "company": "Micron",
+      "ticker": "MU",
+      "said_on": "2026-09-30",
+      "source": "Fiscal Q4 2026 prepared remarks",
+      "said": "Supply and demand tighter in 2027 and 2028 than in 2026; industry bit growth in the low 20s % for DRAM, mid 20s % for NAND.",
+      "test": "Repeated on the December call, and the DRAM and NAND spot indexes not falling for a month or more.",
+      "check_at": "2026-12",
+      "status": "open",
+      "result": ""
+    },
+    {
+      "company": "SK hynix",
+      "ticker": "000660.KS",
+      "said_on": "2026-10",
+      "source": "Q3 2026 call",
+      "said": "Long-term agreements with 14 customers cover more than half of 2027 and 2028 capacity, with deposits; DRAM and HBM through 2029 effectively sold out.",
+      "test": "Q4 call: coverage held or extended to 2029, no price renegotiation, deposits not reduced.",
+      "check_at": "2027-01",
+      "status": "open",
+      "result": ""
+    },
+    {
+      "company": "SK hynix",
+      "ticker": "000660.KS",
+      "said_on": "2026-10",
+      "source": "Q3 2026 call",
+      "said": "New fabs (Yongin, M17): shells built early, clean rooms opened in phases as demand is confirmed. 2027 capex significantly higher.",
+      "test": "2027 capex guidance: how much is equipment rather than buildings, and is it matched by new contracted volume?",
+      "check_at": "2027-01",
+      "status": "open",
+      "result": ""
+    },
+    {
+      "company": "Samsung",
+      "ticker": "005930.KS",
+      "said_on": "2026-10-30",
+      "source": "Q3 2026 call",
+      "said": "2027 HBM sold out at agreed target prices; shortage through 2027, possibly 2028; capex mostly goes to new buildings and will not add many bits in 2028.",
+      "test": "Q4 call: 2027 HBM prices unchanged, 2027 capex guidance not sharply above 2026's ₩84.4tn in equipment.",
+      "check_at": "2027-01",
+      "status": "open",
+      "result": ""
+    },
+    {
+      "company": "Kioxia",
+      "ticker": "285A.T",
+      "said_on": "2026-10-30",
+      "source": "Fiscal Q2 2026 results",
+      "said": "October–December: NAND prices broadly flat, revenue about ¥2.5tn (+0.8%), operating profit about ¥2tn; pickup expected in January–March. Next year's capacity sold; long-term hyperscaler contracts cover more than half of 2028 shipments. Unclear whether prices keep rising in fiscal 2027.",
+      "test": "January–March guidance (early February): prices rising again and shipments picking up, as promised.",
+      "check_at": "2027-02",
+      "status": "open",
+      "result": ""
+    },
+    {
+      "company": "SanDisk",
+      "ticker": "SNDK",
+      "said_on": "2026-10-29",
+      "source": "Fiscal Q1 2027 results, 29 Oct 2026",
+      "said": "December quarter: revenue $12.2–12.6bn (+11–14%), gross margin 84.5–85.5%, EPS $55–57 (pre-split). Growth last quarter 60% volume, 40% price. Return 100% of excess cash; 50% free cash flow margin target for fiscal 2028–2030.",
+      "test": "Late-January print: revenue at least $12.4bn and margin inside the range, despite Kioxia's flat-price outlook from the same fabs. AJ expects $59.60 EPS, above the top of the guide. 8-for-1 split from 20 November: divide pre-split figures by 8.",
+      "check_at": "2027-01",
+      "status": "open",
+      "result": ""
+    }
+  ]
+}

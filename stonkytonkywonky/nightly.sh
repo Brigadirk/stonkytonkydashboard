@@ -37,9 +37,15 @@ fi
 # collect-public exits 2 when one source fails; the export still uses everything that arrived.
 (cd ../PositioningLab && /home/dirk/.local/bin/uv run --quiet positioning collect-public --days 10 > data/collect.log 2>&1 || true;
  /home/dirk/.local/bin/uv run --quiet positioning export-app --out "$OLDPWD/app/public/data/positioning.json") || echo "positioning export failed; keeping earlier positioning data"
+# Fear, flows and rates: Nasdaq fear state against estimates, rotation, rates volatility, funding plumbing.
+./fear.py > data/fear/fear.log 2>&1 || echo "fear.py failed; keeping earlier fear data"
+# Dip judge: daily panel since 1990 (prices, volatility, FRED rates and credit, breadth, margin, estimates), then the verdict.
+(./dippanel.py --refresh > data/dip/panel.log 2>&1 && ./dipjudge.py > data/dip/judge.log 2>&1) || echo "dip judge failed; keeping earlier verdict"
 python3 "$HOME/.codex/skills/stock-research/scripts/forward_screen.py" --all --allow-biased --out "$PWD/data/screen" || true
 # Balance sheet and cash flow for EV/FCF and P/B; each ticker is refreshed once a week.
 ./fundamentals.py > data/fundamentals.log 2>&1 || echo "fundamentals.py failed; keeping earlier statement data"
 # Third-year EPS forecasts Yahoo and Nasdaq lack (Eastmoney for Shanghai/Shenzhen listings).
 ./extra_forecasts.py > data/extra_forecasts.log 2>&1 || echo "extra_forecasts.py failed; keeping earlier forecasts"
 ./export_app.py
+# What changed: today's readings against the previous data day, for the Signals tab (same code as the app).
+node app/scripts/snapshot.mjs > data/snapshot.log 2>&1 || echo "snapshot.mjs failed; What changed keeps the earlier snapshots"
